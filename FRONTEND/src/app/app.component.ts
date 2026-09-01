@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular';
 
 @Component({
@@ -6,6 +6,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular';
   templateUrl: 'app.component.html',
   imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent{
+  constructor(){}
 }

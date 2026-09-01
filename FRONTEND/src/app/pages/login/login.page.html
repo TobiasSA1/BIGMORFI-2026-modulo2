@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>BIGMORFI</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="login-container">
+
+    <h1>Iniciar sesión</h1>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="iniciarSesion()">
+
+      <ion-item>
+        <ion-input
+          label="Correo electrónico"
+          labelPlacement="stacked"
+          type="email"
+          placeholder="ejemplo@correo.com"
+          formControlName="email">
+        </ion-input>
+      </ion-item>
+
+      @if (
+        loginForm.controls.email.touched &&
+        loginForm.controls.email.hasError('required')
+      ) {
+        <p>El correo electrónico es obligatorio.</p>
+      }
+
+      @if (
+        loginForm.controls.email.touched &&
+        loginForm.controls.email.hasError('email')
+      ) {
+        <p>Ingresá un correo electrónico válido.</p>
+      }
+
+
+      <ion-item>
+        <ion-input
+          label="Contraseña"
+          labelPlacement="stacked"
+          type="password"
+          placeholder="Ingresá tu contraseña"
+          formControlName="password">
+        </ion-input>
+      </ion-item>
+
+      @if (
+        loginForm.controls.password.touched &&
+        loginForm.controls.password.hasError('required')
+      ) {
+        <p>La contraseña es obligatoria.</p>
+      }
+
+      @if (
+        loginForm.controls.password.touched &&
+        loginForm.controls.password.hasError('minlength')
+      ) {
+        <p>La contraseña debe tener al menos 6 caracteres.</p>
+      }
+
+      @if (mensajeError) {
+        <div class="error-message">
+          {{ mensajeError }}
+        </div>
+      }
+
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="cargando">
+        @if (cargando) {
+          Iniciando sesión...
+        } @else {
+          Iniciar sesión
+        }
+      </ion-button>
+
+    </form>
+
+  </div>
+
+</ion-content>

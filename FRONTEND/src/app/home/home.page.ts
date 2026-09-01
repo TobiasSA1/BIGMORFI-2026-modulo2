@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
+import { SupabaseService } from '../core/services/supabase.service';
 
 @Component({
   selector: 'app-home',
