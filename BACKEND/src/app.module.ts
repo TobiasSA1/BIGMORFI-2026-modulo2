@@ -1,15 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
+import { SupabaseModule } from './supabase/supabase.module';
+import { EmpleadosModule } from './empleados/empleados.module';
+import { ClientesModule } from './clientes/clientes.module';
+import { FirebaseAdminService } from './notifications/firebase-admin/firebase-admin.service';
+import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationsService } from './notifications/notifications.service';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    isGlobal: true,
-  }),
-  AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    SupabaseModule,
+    EmpleadosModule,
+    ClientesModule,
+    NotificationsModule
+  ],
+  providers: [NotificationsService, FirebaseAdminService],
 })
 export class AppModule {}
