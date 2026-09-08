@@ -19,13 +19,11 @@
     "@angular/forms": "22.0.1",
     "@angular/platform-browser": "22.0.1",
     "@angular/router": "22.0.1",
-    "@capacitor/app": "8.1.1",
-    "@capacitor/core": "8.5.0",
-    "@capacitor/haptics": "8.0.2",
-    "@capacitor/keyboard": "8.0.5",
-    "@capacitor/status-bar": "8.0.3",
+    "@capacitor-mlkit/barcode-scanning": "^8.1.1",
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/camera": "^8.2.4",
     "@ionic/angular": "^9.0.0",
-    "@supabase/supabase-js": "^2.112.4",
+    "@supabase/supabase-js": "^2.115.0",
     "ionicons": "^8.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -35,7 +33,7 @@
     "@angular/cli": "22.0.1",
     "@angular/compiler-cli": "22.0.1",
     "@angular/language-service": "22.0.1",
-    "@capacitor/cli": "8.5.0",
+    "@capacitor/cli": "^8.5.1",
     "@ionic/angular-toolkit": "^13.0.0",
     "angular-eslint": "22.0.0",
     "eslint": "^9.16.0",
@@ -44,5 +42,12 @@
     "typescript-eslint": "^8.61.0",
     "vitest": "^4.0.8"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "allowScripts": {
+    "esbuild@0.28.0": true,
+    "esbuild@0.27.7": true,
+    "lmdb@3.5.4": true,
+    "msgpackr-extract@3.0.4": true,
+    "@parcel/watcher@2.6.0": true
+  }
 }

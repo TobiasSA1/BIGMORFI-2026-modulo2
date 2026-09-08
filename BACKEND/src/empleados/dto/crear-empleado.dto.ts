@@ -1,7 +1,7 @@
 import { IsEmail, IsIn, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-const ROLES_EMPLEADO = ['dueño', 'supervisor', 'cocinero'] as const;
+const ROLES_EMPLEADO = ['dueño', 'supervisor', 'cocinero', 'mozo', 'cantinero', 'metre'] as const;
 export type RolEmpleado = (typeof ROLES_EMPLEADO)[number];
 
 export class CrearEmpleadoDto {

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ accion === 'aprobar' ? 'Aprobar cliente' : 'Rechazar cliente' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar(false)">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <div class="foto-frame">
+    <img *ngIf="cliente.foto_url" [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
+  </div>
+
+  <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+
+  <p *ngIf="accion === 'aprobar'">
+    ¿Confirmás <strong>aprobar</strong> el registro de este cliente? Va a poder ingresar a la app y le enviamos un
+    correo de confirmación.
+  </p>
+  <p *ngIf="accion === 'rechazar'">
+    ¿Confirmás <strong>rechazar</strong> el registro de este cliente? No va a poder ingresar a la app y le enviamos
+    un correo informándole la situación.
+  </p>
+
+  <ion-button expand="block" [color]="accion === 'aprobar' ? 'success' : 'danger'" (click)="cerrar(true)">
+    {{ accion === 'aprobar' ? 'Confirmar aprobación' : 'Confirmar rechazo' }}
+  </ion-button>
+  <ion-button expand="block" fill="clear" (click)="cerrar(false)">Cancelar</ion-button>
+</ion-content>

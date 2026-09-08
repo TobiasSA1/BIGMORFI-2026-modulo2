@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Estado de tu cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <ng-container *ngIf="estado === 'pendiente'">
+    <h2>Tu registro está pendiente de aprobación</h2>
+    <p>Todavía no podés ingresar. Te avisamos por correo apenas el restaurante revise tu solicitud.</p>
+  </ng-container>
+
+  <ng-container *ngIf="estado === 'rechazado'">
+    <h2>Tu registro no fue aprobado</h2>
+    <p>No podés ingresar a la aplicación. Te enviamos un correo con más información.</p>
+  </ng-container>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="volverAlLogin()">Volver al login</ion-button>
+</ion-content>

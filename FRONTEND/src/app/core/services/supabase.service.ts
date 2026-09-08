@@ -4,16 +4,18 @@ import { environment } from '../../../environments/environment';
 
 @Service()
 export class SupabaseService {
-  private supabase: SupabaseClient;
+    readonly client: SupabaseClient = createClient(
+    environment.supabaseUrl,
+    environment.supabaseAnonKey,
+  );
 
-  constructor() {
-    this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
-    );
+  async getSession() {
+    const { data } = await this.client.auth.getSession();
+    return data.session;
   }
 
-  get client(): SupabaseClient {
-    return this.supabase;
+  async getAccessToken(): Promise<string | null> {
+    const session = await this.getSession();
+    return session?.access_token ?? null;
   }
 }

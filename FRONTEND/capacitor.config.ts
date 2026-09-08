@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'FRONTEND',
+  appId: 'com.bigmorfi.restaurante',
+  appName: 'Bigmorfi',
   webDir: 'www'
 };
 

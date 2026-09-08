@@ -1,7 +1,5 @@
 {
   "name": "FRONTEND",
-  "integrations": {
-    "capacitor": {}
-  },
+  "integrations": {},
   "type": "angular-standalone"
 }

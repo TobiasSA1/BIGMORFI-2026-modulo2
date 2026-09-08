@@ -1,77 +1,46 @@
-import { inject, Service } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
-@Service()
-export class AuthService {
-    private supabaseService = inject(SupabaseService);
-  
-    async register(
-      email: string,
-      password: string,
-      datos: {
-        nombre: string;
-        apellido: string;
-        dni: string;
-        cuil?: string;
-        perfil: string;
-        foto_url?: string;
-      }
-    ) {
-      const { data, error } = await this.supabaseService.client.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            nombre: datos.nombre,
-            apellido: datos.apellido,
-            dni: datos.dni,
-            cuil: datos.cuil,
-            perfil: datos.perfil,
-            foto_url: datos.foto_url
-          }
-        }
-      });
-  
-      if (error) {
-        throw error;
-      }
-  
-      return data;
-    }
-  
-    async login(email: string, password: string) {
-      const { data, error } =
-        await this.supabaseService.client.auth.signInWithPassword({
-          email,
-          password
-        });
-  
-      if (error) {
-        throw error;
-      }
-  
-      return data;
-    }
-  
-    async logout() {
-      const { error } =
-        await this.supabaseService.client.auth.signOut();
-  
-      if (error) {
-        throw error;
-      }
-    }
-  
-    async obtenerSesion() {
-      const { data, error } =
-        await this.supabaseService.client.auth.getSession();
-  
-      if (error) {
-        throw error;
-      }
-  
-      return data.session;
-    }
+
+export interface Perfil {
+  id: string;
+  nombre: string;
+  apellido: string;
+  dni: string;
+  cuil: string | null;
+  rol: 'dueño' | 'supervisor' | 'cocinero' | 'cliente' | 'metre';
+  estado: 'pendiente' | 'aprobado' | 'rechazado';
+  foto_url: string | null;
 }
 
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+    constructor(private readonly supabase: SupabaseService) {}
 
+  async login(email: string, password: string) {
+    const { data, error } = await this.supabase.client.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  }
+
+  async logout() {
+    await this.supabase.client.auth.signOut();
+  }
+
+  async estaLogueado(): Promise<boolean> {
+    return (await this.supabase.getSession()) !== null;
+  }
+
+  async getPerfilActual(): Promise<Perfil | null> {
+    const session = await this.supabase.getSession();
+    if (!session) return null;
+
+    const { data, error } = await this.supabase.client
+      .from('profiles')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+
+    return error ? null : (data as Perfil);
+  }
+}

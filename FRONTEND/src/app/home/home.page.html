@@ -1,20 +1,17 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <h2 *ngIf="perfil">¡Hola, {{ perfil.nombre }}!</h2>
+  <p *ngIf="perfil">Rol: {{ perfil.rol }}</p>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
+    <ion-button expand="block" routerLink="/empleados/alta">Agregar empleado</ion-button>
+    <ion-button expand="block" routerLink="/clientes/pendientes">Ver clientes pendientes</ion-button>
+  </ng-container>
+
+  <ion-button expand="block" fill="clear" (click)="logout()">Cerrar sesión</ion-button>
 </ion-content>
