@@ -18,6 +18,8 @@ import {
   IonText,
   ModalController,
   ToastController,
+  IonButtons,
+  IonBackButton,
 } from '@ionic/angular';
 import { ClientesService, ClientePendiente } from '../clientes.service';
 import { ConfirmarClienteModalComponent } from '../confirmar-cliente-modal/confirmar-cliente-modal.component';
@@ -42,6 +44,8 @@ import { ConfirmarClienteModalComponent } from '../confirmar-cliente-modal/confi
     IonRefresher,
     IonRefresherContent,
     IonText,
+    IonButtons,
+    IonBackButton
   ],
 })
 export class ClientesPendientesPage implements OnInit {

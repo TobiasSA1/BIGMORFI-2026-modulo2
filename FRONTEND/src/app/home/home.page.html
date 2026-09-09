@@ -13,5 +13,9 @@
     <ion-button expand="block" routerLink="/clientes/pendientes">Ver clientes pendientes</ion-button>
   </ng-container>
 
+  <ng-container *ngIf="perfil?.rol === 'metre'">
+    <ion-button expand="block" routerLink="/clientes/registro">Crear cliente</ion-button>
+  </ng-container>
+
   <ion-button expand="block" fill="clear" (click)="logout()">Cerrar sesión</ion-button>
 </ion-content>

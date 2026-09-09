@@ -21,6 +21,7 @@ import {
 import { CamaraService } from '../../core/services/camara.service';
 import { EscanerQrService } from '../../core/services/escaner-qr.service';
 import { ClientesService } from '../clientes.service';
+import { AuthService } from '../../core/services/auth.service';
 import { DNI_REGEX, PASSWORD_REGEX, SOLO_LETRAS_REGEX } from '../../core/validators/patterns';
 
 @Component({
@@ -63,6 +64,7 @@ export class RegistroClientePage {
     private readonly camaraService: CamaraService,
     private readonly escanerQrService: EscanerQrService,
     private readonly clientesService: ClientesService,
+    private readonly authService: AuthService,
     private readonly toastController: ToastController,
     private readonly router: Router,
   ) {}
@@ -102,8 +104,16 @@ export class RegistroClientePage {
 
     try {
       await firstValueFrom(this.clientesService.registrar(this.form.getRawValue()));
-      await this.mostrarToast('Registro enviado. Te avisaremos por correo cuando sea aprobado.', 'success');
-      this.router.navigate(['/login']);
+
+      const yaHaySesion = await this.authService.estaLogueado();
+
+      if (yaHaySesion) {
+        await this.mostrarToast('Cliente registrado correctamente.', 'success');
+        this.router.navigate(['/home']);
+      } else {
+        await this.mostrarToast('Registro enviado. Te avisaremos por correo cuando sea aprobado.', 'success');
+        this.router.navigate(['/login']);
+      }
     } catch (error: any) {
       const mensaje = error?.error?.message;
       this.errorMensaje = Array.isArray(mensaje) ? mensaje.join(' ') : (mensaje ?? 'Ocurrió un error al registrarte.');
