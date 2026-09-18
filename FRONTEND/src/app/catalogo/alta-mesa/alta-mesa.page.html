@@ -1,0 +1,89 @@
+<!-- MÓDULO 2 - PUNTO 4: Alta de mesa + QR automático (dueño / supervisor) -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva mesa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- ---- QR de la mesa recién creada ---- -->
+  <div class="qr-nuevo" *ngIf="mesaCreada">
+    <ion-text color="success"><h3>Mesa {{ mesaCreada.numero }} creada</h3></ion-text>
+    <img [src]="mesaCreada.qr_url" class="qr-img" alt="QR de la mesa {{ mesaCreada.numero }}" />
+    <p>Imprimí este QR y pegalo en la mesa.</p>
+  </div>
+
+  <!-- ---- Formulario de alta ---- -->
+  <div class="foto-container">
+    <img *ngIf="fotoPreview" [src]="fotoPreview" class="foto-preview" alt="Foto de la mesa" />
+    <ion-button expand="block" fill="outline" (click)="tomarFoto()">Tomar foto de la mesa</ion-button>
+    <ion-text color="danger" *ngIf="f.fotoBase64.touched && f.fotoBase64.invalid">
+      <p>La foto es obligatoria.</p>
+    </ion-text>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Número de mesa</ion-label>
+      <ion-input type="number" inputmode="numeric" formControlName="numero"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="f.numero.touched && f.numero.invalid">
+      <p *ngIf="f.numero.errors?.['required']">El número es obligatorio.</p>
+      <p *ngIf="f.numero.errors?.['min'] || f.numero.errors?.['max']">Tiene que estar entre 1 y 999.</p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Cantidad de comensales</ion-label>
+      <ion-input type="number" inputmode="numeric" formControlName="cantidadComensales"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="f.cantidadComensales.touched && f.cantidadComensales.invalid">
+      <p *ngIf="f.cantidadComensales.errors?.['required']">La cantidad es obligatoria.</p>
+      <p *ngIf="f.cantidadComensales.errors?.['min'] || f.cantidadComensales.errors?.['max']">
+        Tiene que estar entre 1 y 20.
+      </p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label>Tipo de mesa</ion-label>
+      <ion-select formControlName="tipo" interface="popover">
+        <ion-select-option value="estandar">Estándar</ion-select-option>
+        <ion-select-option value="vip">VIP</ion-select-option>
+        <ion-select-option value="movilidad_reducida">Movilidad reducida</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-text color="danger" *ngIf="errorMensaje">
+      <p>{{ errorMensaje }}</p>
+    </ion-text>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="cargando">
+      <ion-spinner *ngIf="cargando" name="dots"></ion-spinner>
+      <span *ngIf="!cargando">Crear mesa</span>
+    </ion-button>
+  </form>
+
+  <!-- ---- Mesas ya cargadas (para reimprimir su QR) ---- -->
+  <ion-list class="ion-margin-top">
+    <ion-list-header>Mesas cargadas</ion-list-header>
+
+    <div class="ion-text-center ion-padding" *ngIf="cargandoMesas">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
+
+    <ion-text class="ion-padding" *ngIf="!cargandoMesas && mesas.length === 0">
+      <p>Todavía no hay mesas cargadas.</p>
+    </ion-text>
+
+    <ion-item *ngFor="let mesa of mesas">
+      <img slot="start" [src]="mesa.qr_url" class="qr-mini" alt="QR mesa {{ mesa.numero }}" />
+      <ion-label>
+        <h2>Mesa {{ mesa.numero }}</h2>
+        <p>{{ etiquetaTipo(mesa.tipo) }} · {{ mesa.cantidad_comensales }} comensales</p>
+        <p>Estado: {{ etiquetaDisponibilidad(mesa.disponibilidad) }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

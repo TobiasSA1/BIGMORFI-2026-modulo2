@@ -6,6 +6,8 @@ import { ClientesModule } from './clientes/clientes.module';
 import { FirebaseAdminService } from './notifications/firebase-admin/firebase-admin.service';
 import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationsService } from './notifications/notifications.service';
+// Módulo 2 (Catálogo, Mesas y Sectores) - Tobi
+import { CatalogoModule } from './catalogo/catalogo.module';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { NotificationsService } from './notifications/notifications.service';
     SupabaseModule,
     EmpleadosModule,
     ClientesModule,
-    NotificationsModule
+    NotificationsModule,
+    // Módulo 2 (Catálogo, Mesas y Sectores) - Tobi
+    CatalogoModule,
   ],
   providers: [NotificationsService, FirebaseAdminService],
 })

@@ -17,5 +17,21 @@
     <ion-button expand="block" routerLink="/clientes/registro">Crear cliente</ion-button>
   </ng-container>
 
+  <!-- ===== Módulo 2 - Catálogo, Mesas y Sectores (Tobi) ===== -->
+  <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
+    <ion-button expand="block" routerLink="/catalogo/mesas/alta">Agregar mesa</ion-button>
+  </ng-container>
+
+  <ng-container *ngIf="perfil?.rol === 'cocinero'">
+    <ion-button expand="block" routerLink="/catalogo/platos/alta">Cargar plato</ion-button>
+    <ion-button expand="block" routerLink="/catalogo/cocina">Cocina</ion-button>
+  </ng-container>
+
+  <ng-container *ngIf="perfil?.rol === 'cantinero'">
+    <ion-button expand="block" routerLink="/catalogo/bebidas/alta">Cargar bebida</ion-button>
+    <ion-button expand="block" routerLink="/catalogo/bar">Bar</ion-button>
+  </ng-container>
+  <!-- ===== fin Módulo 2 ===== -->
+
   <ion-button expand="block" fill="clear" (click)="logout()">Cerrar sesión</ion-button>
 </ion-content>

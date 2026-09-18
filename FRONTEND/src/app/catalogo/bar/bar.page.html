@@ -1,0 +1,45 @@
+<!-- MÓDULO 2 - PUNTO 17: Bar (bebidas pendientes agrupadas por mesa) -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Bar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="ion-text-center ion-padding" *ngIf="cargando && mesas.length === 0">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-text class="ion-padding" *ngIf="!cargando && mesas.length === 0">
+    <p>No hay bebidas pendientes.</p>
+  </ion-text>
+
+  <ion-list *ngFor="let mesa of mesas">
+    <ion-list-header>
+      Mesa {{ mesa.mesaNumero }}
+      <ion-badge slot="end" color="warning">{{ totalItems(mesa) }}</ion-badge>
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of mesa.items">
+      <ion-label>
+        <h2>{{ item.cantidad }}× {{ item.nombre }}</h2>
+        <p>{{ item.tiempoElaboracion }} min de preparación</p>
+      </ion-label>
+      <ion-button
+        slot="end"
+        color="success"
+        (click)="marcarListo(mesa.mesaId, item.itemId)"
+        [disabled]="procesando.has(item.itemId)"
+      >
+        Listo
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

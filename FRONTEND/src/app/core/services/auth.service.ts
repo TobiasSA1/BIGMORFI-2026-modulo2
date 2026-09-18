@@ -8,7 +8,8 @@ export interface Perfil {
   apellido: string;
   dni: string;
   cuil: string | null;
-  rol: 'dueño' | 'supervisor' | 'cocinero' | 'cliente' | 'metre';
+  // 'cantinero' y 'mozo' agregados para el Módulo 2 (Cocina/Bar y botones del home).
+  rol: 'dueño' | 'supervisor' | 'cocinero' | 'cantinero' | 'mozo' | 'cliente' | 'metre';
   estado: 'pendiente' | 'aprobado' | 'rechazado';
   foto_url: string | null;
 }

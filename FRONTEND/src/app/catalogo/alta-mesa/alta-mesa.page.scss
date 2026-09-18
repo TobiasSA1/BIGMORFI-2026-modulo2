@@ -1,0 +1,40 @@
+/* MÓDULO 2 - PUNTO 4 - estilos del alta de mesa. */
+
+.foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.foto-preview {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 2px solid var(--ion-color-medium);
+}
+
+/* QR grande de la mesa recién creada */
+.qr-nuevo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--ion-color-step-150, #ddd);
+  border-radius: 12px;
+}
+
+.qr-img {
+  width: 220px;
+  height: 220px;
+}
+
+/* QR chico en el listado de mesas */
+.qr-mini {
+  width: 56px;
+  height: 56px;
+}
