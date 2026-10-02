@@ -1,0 +1,17 @@
+// ============================================================
+// Reset mínimo. Ionic ya trae normalize.css (importado en global.scss antes
+// que esta librería), así que acá solo se ajusta lo puntual que falta.
+// ============================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Que las imágenes nunca se salgan de su contenedor por defecto (evita el
+// clásico "position: absolute a lo loco para que la foto entre").
+img {
+  max-width: 100%;
+  display: block;
+}

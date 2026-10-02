@@ -1,0 +1,28 @@
+// ============================================================
+// .bm-avatar — para avatares fuera de <ion-avatar> (ej: dentro de un
+// .bm-card armado a mano). <ion-avatar> ya tiene su borde temado en
+// base/_ionic-overrides.scss.
+// ============================================================
+
+@use '../abstracts/mixins' as m;
+
+.bm-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bm-color-primary);
+  background: var(--bm-color-surface-dark);
+  @include m.bm-flex-center;
+  color: var(--bm-color-text-light);
+  font-family: var(--bm-font-heading);
+
+  &--sm {
+    width: 32px;
+    height: 32px;
+  }
+  &--lg {
+    width: 64px;
+    height: 64px;
+  }
+}

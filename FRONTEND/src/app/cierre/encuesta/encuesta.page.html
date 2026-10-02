@@ -1,0 +1,68 @@
+<!-- MOCKUP VISUAL - Módulo 4, Punto 20. Ver comentario en el .ts -->
+<app-header-marca titulo="Encuesta" backHref="/home"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-encuesta">
+    <!-- ---- Formulario ---- -->
+    <ng-container *ngIf="!enviada">
+      <header class="bm-encuesta__intro">
+        <h1 class="bm-heading--lg bm-reveal">¿Cómo estuvo tu experiencia?</h1>
+        <p class="bm-caption bm-fade-in">Tu opinión nos ayuda a mejorar cada día.</p>
+      </header>
+
+      <div class="bm-stack bm-stagger bm-stagger--cards">
+        <div class="bm-card" *ngFor="let pregunta of preguntas">
+          <div class="bm-card__body ion-text-center">
+            <p>{{ pregunta.texto }}</p>
+            <div class="bm-estrellas" role="radiogroup" [attr.aria-label]="pregunta.texto">
+              <button
+                type="button"
+                class="bm-estrella"
+                *ngFor="let n of [1, 2, 3, 4, 5]"
+                [class.bm-estrella--activa]="n <= pregunta.puntaje"
+                [attr.aria-label]="n + ' de 5'"
+                (click)="puntuar(pregunta, n)"
+              >
+                <ion-icon [name]="n <= pregunta.puntaje ? 'star' : 'star-outline'"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ion-textarea
+        [(ngModel)]="comentario"
+        placeholder="¿Algo más que quieras contarnos? (opcional)"
+        [autoGrow]="true"
+        class="bm-textarea"
+      ></ion-textarea>
+
+      <ion-button expand="block" [disabled]="!puedeEnviar" (click)="enviar()">
+        Enviar encuesta
+      </ion-button>
+    </ng-container>
+
+    <!-- ---- Resultados / estadísticas (post-envío o "ver encuestas") ---- -->
+    <div class="bm-hero" *ngIf="enviada">
+      <app-check-animado></app-check-animado>
+      <h2 class="bm-heading--md bm-reveal bm-encuesta__gracias">¡Gracias por tu opinión!</h2>
+    </div>
+
+    <section class="bm-section bm-fade-in">
+      <h2 class="bm-section__title ion-text-center">Cómo nos calificaron en general</h2>
+      <div class="bm-card">
+        <div class="bm-card__body">
+          <div class="bm-barra" *ngFor="let stat of estadisticas">
+            <div class="bm-barra__header">
+              <span>{{ stat.categoria }}</span>
+              <span>{{ stat.porcentaje }}%</span>
+            </div>
+            <div class="bm-barra__pista">
+              <div class="bm-barra__relleno" [style.transform]="'scaleX(' + stat.porcentaje / 100 + ')'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</ion-content>

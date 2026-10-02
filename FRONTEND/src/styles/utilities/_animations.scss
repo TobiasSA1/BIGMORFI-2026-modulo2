@@ -1,0 +1,394 @@
+// ============================================================
+// Motion language — Big Morfi
+//
+// TODAS las animaciones de la app salen de acá (más las transiciones de
+// pantalla/modales en src/app/core/motion/motion.ts, que leen los MISMOS
+// tokens). Velocidad, curvas e intensidad son variables CSS definidas en
+// abstracts/_variables.scss → base/_tokens.scss.
+//
+// Personalidad del movimiento (las 4 reglas que hacen que todo se sienta
+// de la misma familia):
+//   1. ENTRAR subiendo: el contenido aparece desde abajo, con desaceleración
+//      natural (--bm-ease-out). Nunca de costado salvo navegación lateral.
+//   2. POP en lo positivo: agregar, confirmar, marcar como listo → un rebote
+//      corto y controlado (--bm-ease-spring). Nunca en errores.
+//   3. CORTO en lo táctil: presionar algo responde en ~100ms (se comprime)
+//      y al soltar vuelve con un mini rebote.
+//   4. LENTO en lo decorativo: fondos, brillos y flotaciones en ciclos de
+//      varios segundos, casi imperceptibles.
+//
+// Reglas técnicas: solo transform y opacity (GPU, sin recalcular layout);
+// nada infinito salvo indicadores de espera y decoración ambiental.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+// ---- Keyframes base -------------------------------------------------
+
+// Entrada estándar: sube y aparece.
+@keyframes bm-fade-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--bm-motion-distance), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bm-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Entrada de componentes chicos (íconos, heros, modales).
+@keyframes bm-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Entrada de cards: sube con un rebote apenas perceptible al llegar.
+@keyframes bm-card-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--bm-motion-distance) * 1.5), 0) scale(0.97);
+  }
+  70% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Títulos: "se revelan" subiendo con una leve inclinación que se endereza.
+@keyframes bm-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 60%, 0) skewY(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bm-slide-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Ítems que llegan "nuevos" (pedidos, comandas): entran desde la derecha.
+@keyframes bm-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translate3d(32px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Pop positivo: contadores, badges, selección.
+@keyframes bm-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(var(--bm-motion-pop));
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Pop con un giro chiquito (badges, estrellas): un poco más de carácter.
+@keyframes bm-pop-rot {
+  0% {
+    transform: scale(0.6) rotate(-12deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(var(--bm-motion-pop)) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+// Número que cambia: el nuevo valor "cae" en su lugar (contadores, totales).
+@keyframes bm-flip-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -55%, 0) rotateX(60deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bm-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translate3d(-5px, 0, 0);
+  }
+  40% {
+    transform: translate3d(4px, 0, 0);
+  }
+  60% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+// Ambiental: flotación lenta.
+@keyframes bm-float {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translate3d(0, -5px, 0) rotate(-1deg);
+  }
+}
+
+// Onda que se expande y desvanece (estado que cambia, "esperando").
+@keyframes bm-ripple {
+  from {
+    opacity: 0.55;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+// Brillo que cruza un elemento una sola vez (botón principal, acento).
+@keyframes bm-sheen {
+  from {
+    transform: translate3d(-120%, 0, 0) skewX(-20deg);
+  }
+  to {
+    transform: translate3d(260%, 0, 0) skewX(-20deg);
+  }
+}
+
+@keyframes bm-skeleton {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+// Trazo SVG que se dibuja (check de éxito).
+@keyframes bm-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+// ---- Clases utilitarias ---------------------------------------------
+
+.bm-fade-in {
+  animation: bm-fade-in var(--bm-duration-slow) var(--bm-ease-out) backwards;
+}
+
+.bm-fade {
+  animation: bm-fade var(--bm-duration-base) var(--bm-ease-out) backwards;
+}
+
+.bm-scale-in {
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-spring-soft) backwards;
+}
+
+.bm-card-in {
+  animation: bm-card-in var(--bm-duration-slow) var(--bm-ease-out) backwards;
+}
+
+.bm-reveal {
+  animation: bm-reveal var(--bm-duration-slow) var(--bm-ease-out) backwards;
+}
+
+.bm-slide-up {
+  animation: bm-slide-up var(--bm-duration-slow) var(--bm-ease-out) backwards;
+}
+
+.bm-slide-in-right {
+  animation: bm-slide-in-right var(--bm-duration-slow) var(--bm-ease-out) backwards;
+}
+
+.bm-fade-in-item {
+  animation: bm-fade-in var(--bm-duration-base) var(--bm-ease-out) backwards;
+}
+
+// Cascada: hijo 1 → 0ms, 2 → 40ms ... hasta el 8; del 9 en adelante entran
+// todos juntos (no se hace esperar en listas largas).
+// .bm-stagger        entrada estándar (sube)
+// .bm-stagger--cards entrada de cards (sube con rebote suave)
+// .bm-stagger--right entrada lateral (pedidos/comandas que "llegan")
+.bm-stagger > * {
+  animation: bm-fade-in var(--bm-duration-base) var(--bm-ease-out) backwards;
+  animation-delay: calc(var(--bm-stagger-step) * 7);
+
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) {
+      animation-delay: calc(var(--bm-stagger-step) * #{$i - 1});
+    }
+  }
+}
+
+.bm-stagger--cards > * {
+  animation-name: bm-card-in;
+  animation-duration: var(--bm-duration-slow);
+}
+
+.bm-stagger--right > * {
+  animation-name: bm-slide-in-right;
+  animation-duration: var(--bm-duration-slow);
+}
+
+.bm-pop {
+  display: inline-block;
+  animation: bm-pop var(--bm-duration-base) var(--bm-ease-spring);
+}
+
+// No fuerza display: se usa en badges (inline-flex), círculos (flex), etc.
+.bm-pop-rot {
+  animation: bm-pop-rot var(--bm-duration-slow) var(--bm-ease-spring) backwards;
+}
+
+// Para valores que cambian (el elemento se recrea con un *ngFor de un
+// solo valor, ver STYLEGUIDE → "re-animar al cambiar un valor").
+.bm-flip-in {
+  display: inline-block;
+  animation: bm-flip-in var(--bm-duration-base) var(--bm-ease-spring-soft) backwards;
+}
+
+.bm-shake {
+  animation: bm-shake 360ms var(--bm-ease-standard);
+}
+
+// Feedback táctil propio (los ion-button ya lo traen): se comprime rápido
+// al apretar y vuelve con un mini rebote al soltar.
+.bm-press {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 260ms var(--bm-ease-spring);
+
+  &:active {
+    transform: scale(var(--bm-motion-press));
+    transition-duration: 90ms;
+    transition-timing-function: var(--bm-ease-out);
+  }
+}
+
+.bm-float {
+  animation: bm-float var(--bm-duration-ambient) ease-in-out infinite;
+}
+
+// Brillo que cruza el elemento UNA vez (con demora opcional vía
+// --bm-sheen-delay). El elemento necesita position: relative.
+.bm-sheen {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: translate3d(-120%, 0, 0) skewX(-20deg);
+    animation: bm-sheen 900ms var(--bm-ease-out) var(--bm-sheen-delay, 600ms) backwards;
+    pointer-events: none;
+  }
+}
+
+// Skeleton: bloque "cargando" con brillo que lo recorre. Se usa en lugar
+// de un spinner suelto cuando se está trayendo una lista/cards.
+//   <div class="bm-skeleton bm-skeleton--row"></div>
+// Formas: --row (renglón de lista), --card (card/pedido), --hero (bloque
+// grande de estado). Ponerlas dentro de un .bm-stack para separarlas.
+.bm-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--bm-radius-md);
+  background: rgba(255, 255, 255, 0.06);
+  animation: bm-fade var(--bm-duration-base) var(--bm-ease-out) backwards;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(245, 164, 0, 0.1), transparent);
+    animation: bm-skeleton 1.2s v.$bm-ease-standard infinite;
+  }
+
+  &--row {
+    height: 64px;
+  }
+
+  &--card {
+    height: 120px;
+  }
+
+  &--hero {
+    height: 200px;
+    border-radius: var(--bm-radius-lg);
+  }
+}
+
+// Punto que "vuela" al carrito (ver volarAlCarrito en core/motion).
+.bm-vuelo {
+  position: fixed;
+  z-index: v.$bm-z-toast;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffd36b, var(--bm-color-primary) 60%, var(--bm-color-primary-dark));
+  box-shadow: 0 0 12px rgba(245, 164, 0, 0.8);
+  pointer-events: none;
+}
+
+// ---- Reducir movimiento ----------------------------------------------
+// Con "reducir movimiento" activado en el sistema (Windows: Accesibilidad →
+// Efectos de animación), se frenan SOLO los movimientos ambientales en loop
+// (decoración). Las animaciones que comunican algo — entradas, feedback de
+// toque, la línea del escáner, un pedido que cambia de estado — siguen
+// funcionando, porque sin ellas la interfaz pierde información.
+@media (prefers-reduced-motion: reduce) {
+  .bm-float,
+  .bm-sheen::after {
+    animation: none;
+  }
+}

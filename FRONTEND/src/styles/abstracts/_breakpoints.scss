@@ -1,0 +1,15 @@
+// ============================================================
+// Breakpoints — el diseño de Figma es mobile-first, pero el team a veces
+// prueba en navegador de escritorio. Estos breakpoints evitan que la app
+// se vea rota/estirada en pantallas grandes.
+// ============================================================
+
+$bm-bp-sm: 576px;
+$bm-bp-md: 768px;
+$bm-bp-lg: 992px;
+
+@mixin bm-respond-above($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}

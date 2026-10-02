@@ -1,0 +1,90 @@
+// MOCKUP VISUAL - Módulo 4, Punto 20.
+
+.bm-encuesta {
+  gap: var(--bm-spacing-lg);
+}
+
+.bm-encuesta__intro {
+  text-align: center;
+
+  h1,
+  p {
+    margin: 0 0 var(--bm-spacing-xs);
+  }
+}
+
+// Estrellas: cada una es un botón de 44px (área táctil cómoda) aunque el
+// ícono se vea un poco más chico. Al marcarla, rebota.
+.bm-estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.bm-estrella {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bm-touch-min);
+  height: var(--bm-touch-min);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--bm-color-primary);
+  font-size: 32px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.88);
+  }
+
+  // Al marcarla, la estrella "salta" con un giro chiquito.
+  &--activa ion-icon {
+    animation: bm-pop-rot var(--bm-duration-slow) var(--bm-ease-spring);
+  }
+}
+
+// El texto de agradecimiento aparece cuando el check terminó de dibujarse.
+.bm-encuesta__gracias {
+  animation-delay: 650ms;
+}
+
+.bm-barra {
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.bm-barra__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--bm-spacing-xs);
+  font-size: var(--bm-font-size-sm);
+}
+
+.bm-barra__pista {
+  height: 10px;
+  border-radius: var(--bm-radius-full);
+  background: var(--bm-color-surface-dark);
+  overflow: hidden;
+}
+
+// La barra se llena con transform (escala desde la izquierda): animarla
+// no recalcula el layout.
+@keyframes bm-barra-llenar {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.bm-barra__relleno {
+  height: 100%;
+  background: var(--bm-color-primary);
+  border-radius: var(--bm-radius-full);
+  transform-origin: left center;
+  animation: bm-barra-llenar 600ms var(--bm-ease-out) 200ms both;
+}

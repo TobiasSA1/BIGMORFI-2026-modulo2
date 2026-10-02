@@ -1,0 +1,168 @@
+// ============================================================
+// Layout de pantallas (mobile first).
+//
+// IMPORTANTE: el padding puesto en <ion-content> NO llega al área que
+// scrollea (Ionic la dibuja adentro de su shadow DOM). Por eso todas las
+// pantallas envuelven su contenido en un <div class="bm-screen">, que es
+// quien pone los márgenes laterales, el aire de abajo (safe area incluida)
+// y el ancho máximo.
+//
+//   <ion-content class="bm-fondo bm-fondo--alta">
+//     <div class="bm-screen">...</div>
+//   </ion-content>
+//
+// Variantes:
+//   .bm-screen--center  el contenido se centra verticalmente en el alto
+//                       disponible (bienvenida, espera, estados).
+//   .bm-screen--wide    sin ancho máximo de formulario (grillas, carta).
+//   .bm-screen--flush   sin márgenes laterales (cuando un hijo los maneja).
+//
+// Hijos útiles:
+//   .bm-screen__grow     ocupa todo el alto sobrante (empuja lo de abajo).
+//   .bm-screen__actions  grupo de acciones principales: se pega al final
+//                        de la pantalla cuando sobra alto, en vez de dejar
+//                        un hueco vacío debajo del formulario.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-screen {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-md;
+  width: 100%;
+  max-width: var(--bm-content-max);
+  min-height: 100%;
+  margin-inline: auto;
+  padding: v.$bm-spacing-lg var(--bm-gutter);
+  padding-bottom: calc(#{v.$bm-spacing-xl} + var(--bm-safe-bottom));
+
+  &--center {
+    justify-content: center;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  &--wide {
+    max-width: 1200px;
+  }
+
+  &--flush {
+    padding-inline: 0;
+  }
+}
+
+.bm-screen__grow {
+  flex: 1 1 auto;
+}
+
+.bm-screen__actions {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+  margin-top: auto;
+  padding-top: v.$bm-spacing-sm;
+}
+
+// Pila vertical con separación uniforme (formularios, grupos de botones).
+.bm-stack {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+
+  &--md {
+    gap: v.$bm-spacing-md;
+  }
+
+  &--lg {
+    gap: v.$bm-spacing-lg;
+  }
+}
+
+// Formulario de pantalla completa: los campos arriba y el botón de enviar
+// al final. Si sobra alto (teléfonos altos, formularios cortos) el botón
+// baja hasta el borde inferior, al alcance del pulgar, en vez de dejar un
+// hueco vacío debajo.
+.bm-form {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  ion-item:last-of-type {
+    margin-bottom: v.$bm-spacing-sm;
+  }
+}
+
+.bm-form__submit {
+  margin-top: auto;
+  padding-top: v.$bm-spacing-md;
+}
+
+// Bloque de contenido con título chico arriba (formularios largos, listas).
+.bm-section {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+}
+
+.bm-section__title {
+  margin: 0;
+  font-family: var(--bm-font-body);
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bm-color-text-muted);
+}
+
+// Contenedor centrado de una pantalla tipo "estado" (centra en alto y
+// ancho). Se mantiene por compatibilidad: es lo mismo que
+// .bm-screen.bm-screen--center pero sin ancho máximo.
+.bm-fullcenter {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: v.$bm-spacing-md;
+  padding: v.$bm-spacing-lg var(--bm-gutter);
+  padding-bottom: calc(#{v.$bm-spacing-lg} + var(--bm-safe-bottom));
+}
+
+// Hero de pantalla (ícono/monto/estado grande arriba del contenido).
+.bm-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: v.$bm-spacing-sm;
+  padding: clamp(#{v.$bm-spacing-lg}, 7vw, #{v.$bm-spacing-xl}) v.$bm-spacing-md;
+  border-radius: var(--bm-radius-lg);
+  background: var(--bm-color-surface);
+  border: 2px solid var(--bm-color-primary);
+  box-shadow: var(--bm-shadow-md);
+  text-align: center;
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-out) both;
+
+  h1,
+  h2,
+  p {
+    margin: 0;
+  }
+}
+
+.bm-hero__icono {
+  font-size: clamp(48px, 15vw, 64px);
+  color: var(--bm-color-primary);
+}
+
+// Logo de marca en pantallas de entrada (login, bienvenida, escaneo):
+// escala con el ancho Y con el alto, así en un teléfono bajito o girado no
+// empuja el formulario fuera de la pantalla.
+.bm-logo-hero {
+  width: clamp(120px, min(46vw, 24vh), 200px);
+  height: auto;
+  margin-inline: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 16px rgba(245, 164, 0, 0.3));
+}

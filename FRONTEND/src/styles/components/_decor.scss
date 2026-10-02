@@ -1,0 +1,117 @@
+// ============================================================
+// Firuletes decorativos de la marca (para que la app no se vea plana).
+// Todo es opcional: son clases que se suman donde queda bien.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+@keyframes bm-shine {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
+
+// Título de sección con subrayado dorado corto, centrado. Reemplaza al
+// "texto plano arriba": se nota que es un título.
+.bm-titulo {
+  position: relative;
+  text-align: center;
+  padding-bottom: v.$bm-spacing-md;
+  margin-bottom: v.$bm-spacing-md;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 64px;
+    height: 4px;
+    transform: translateX(-50%);
+    border-radius: var(--bm-radius-full);
+    background: linear-gradient(90deg, var(--bm-color-primary), var(--bm-color-danger));
+  }
+}
+
+// Cinta en la esquina de una card (ej: "NUEVO", "POPULAR", "MESA 5").
+.bm-ribbon {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: attr(data-cinta);
+    position: absolute;
+    top: 14px;
+    right: -34px;
+    z-index: 2;
+    width: 120px;
+    padding: 3px 0;
+    transform: rotate(45deg);
+    background: var(--bm-color-danger);
+    color: #fff;
+    font-size: 10px;
+    font-weight: v.$bm-font-weight-bold;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
+// Brillo que cruza un botón primario (se pone con class="bm-shine").
+.bm-shine {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: bm-shine 3.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+// Card que "se levanta" al tocarla.
+.bm-lift {
+  transition: transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: translateY(2px) scale(0.99);
+  }
+}
+
+// Franja de rayas diagonales, típica de cartel de local de comida rápida.
+.bm-rayas {
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--bm-color-primary) 0 12px,
+    var(--bm-color-surface-dark) 12px 24px
+  );
+}
+
+// Ícono dentro de un círculo dorado (para encabezar secciones/pantallas).
+.bm-icono-circulo {
+  @include m.bm-flex-center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto v.$bm-spacing-md;
+  border-radius: 50%;
+  background: var(--bm-color-surface-dark);
+  border: 3px solid var(--bm-color-primary);
+  color: var(--bm-color-primary);
+  font-size: 34px;
+  box-shadow: 0 0 0 6px rgba(245, 164, 0, 0.12);
+
+  &--danger {
+    border-color: var(--bm-color-danger);
+    color: var(--bm-color-danger);
+    box-shadow: 0 0 0 6px rgba(232, 67, 58, 0.14);
+  }
+}

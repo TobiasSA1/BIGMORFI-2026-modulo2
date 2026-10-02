@@ -1,0 +1,98 @@
+<!-- MOCKUP VISUAL - Módulo 3, Puntos 13/14/19. Ver comentario en el .ts -->
+<app-header-marca titulo="Pedidos" backHref="/home"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-mozo">
+    <!-- Filtro: la píldora se desliza a la opción elegida -->
+    <div class="bm-tabs bm-scroll-x bm-mozo__filtro" role="tablist" bmIndicador="bm-chip--active">
+      <button class="bm-chip" role="tab" [class.bm-chip--active]="filtro === 'todos'" (click)="filtro = 'todos'">
+        Todos
+      </button>
+      <button class="bm-chip" role="tab" [class.bm-chip--active]="filtro === 'confirmar'" (click)="filtro = 'confirmar'">
+        Por confirmar
+        <span class="bm-mozo__cuenta" *ngIf="porConfirmar.length">{{ porConfirmar.length }}</span>
+      </button>
+      <button class="bm-chip" role="tab" [class.bm-chip--active]="filtro === 'entregar'" (click)="filtro = 'entregar'">
+        Para entregar
+        <span class="bm-mozo__cuenta" *ngIf="paraEntregar.length">{{ paraEntregar.length }}</span>
+      </button>
+    </div>
+
+    <section class="bm-section bm-fade-in" *ngIf="filtro !== 'entregar'">
+      <h2 class="bm-mozo__titulo">
+        <ion-icon name="time-outline"></ion-icon>
+        Por confirmar
+        <span class="bm-badge bm-badge--primary bm-pop-rot" *ngFor="let n of porConfirmar.length ? [porConfirmar.length] : []">{{ n }}</span>
+      </h2>
+
+      <div class="bm-empty-state" *ngIf="porConfirmar.length === 0">
+        <p>No hay pedidos esperando confirmación.</p>
+      </div>
+
+      <div class="bm-stack bm-stagger bm-stagger--right">
+        <div class="bm-card bm-pedido-mozo bm-pedido-mozo--nuevo" *ngFor="let pedido of porConfirmar">
+          <div class="bm-pedido-mozo__mesa">Mesa {{ pedido.mesaNumero }}</div>
+          <div class="bm-card__body">
+            <p *ngFor="let item of pedido.items">
+              <strong>{{ item.cantidad }}×</strong> {{ item.nombre }}
+            </p>
+            <p class="bm-text-price">${{ pedido.total | number: '1.0-0' }}</p>
+
+            <ion-textarea
+              *ngIf="pedido.mostrandoRechazo"
+              [(ngModel)]="pedido.motivoRechazo"
+              placeholder="Motivo del rechazo (ej: no queda stock del producto)"
+              [autoGrow]="true"
+              class="bm-textarea bm-fade-in"
+            ></ion-textarea>
+          </div>
+          <div class="bm-card__footer bm-mozo-acciones">
+            <ion-button
+              *ngIf="!pedido.mostrandoRechazo"
+              fill="outline"
+              color="danger"
+              (click)="mostrarRechazo(pedido)"
+            >
+              Rechazar
+            </ion-button>
+            <ion-button
+              *ngIf="pedido.mostrandoRechazo"
+              fill="outline"
+              color="danger"
+              [disabled]="!pedido.motivoRechazo?.trim()"
+              (click)="rechazar(pedido)"
+            >
+              Confirmar rechazo
+            </ion-button>
+            <ion-button (click)="confirmar(pedido)">Confirmar</ion-button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bm-section bm-fade-in" *ngIf="filtro !== 'confirmar'">
+      <h2 class="bm-mozo__titulo">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+        Para entregar
+        <span class="bm-badge bm-badge--success bm-pop-rot" *ngFor="let n of paraEntregar.length ? [paraEntregar.length] : []">{{ n }}</span>
+      </h2>
+
+      <div class="bm-empty-state" *ngIf="paraEntregar.length === 0">
+        <p>No hay pedidos listos todavía.</p>
+      </div>
+
+      <div class="bm-list bm-stagger bm-stagger--right">
+        <div class="bm-list__item" *ngFor="let pedido of paraEntregar">
+          <div>
+            <p class="bm-list__item-title">Mesa {{ pedido.mesaNumero }}</p>
+            <p class="bm-list__item-subtitle">{{ pedido.items.length }} ítem(s) · listo para servir</p>
+          </div>
+          <ion-button size="small" (click)="marcarEntregado(pedido)">
+            <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+            Entregado
+          </ion-button>
+        </div>
+      </div>
+    </section>
+  </div>
+</ion-content>

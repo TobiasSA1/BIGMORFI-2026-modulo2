@@ -1,0 +1,156 @@
+// MOCKUP VISUAL - Módulo 3, Puntos 13/14/18/19.
+
+// Ícono del estado: entra girando con rebote y suelta una onda (el hero se
+// vuelve a crear en cada cambio de estado, así que esto se repite cada vez
+// que el pedido avanza: el cambio se "siente").
+@keyframes bm-estado-icono-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.4);
+  }
+  70% {
+    opacity: 1;
+    transform: rotate(8deg) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bm-estado-icono {
+  position: relative;
+  display: inline-flex;
+
+  .bm-hero__icono {
+    animation: bm-estado-icono-in 620ms var(--bm-ease-out) both;
+  }
+}
+
+.bm-estado-icono__onda {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--bm-color-primary);
+  opacity: 0;
+  animation: bm-ripple 900ms var(--bm-ease-out) 300ms both;
+}
+
+.bm-pedido__hero--rechazado {
+  border-color: var(--bm-color-danger);
+
+  .bm-hero__icono {
+    color: var(--bm-color-danger);
+  }
+
+  .bm-estado-icono__onda {
+    border-color: var(--bm-color-danger);
+  }
+}
+
+.bm-timeline {
+  display: flex;
+  flex-direction: column;
+  padding: var(--bm-spacing-md);
+  border-radius: var(--bm-radius-lg);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.bm-timeline__paso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bm-spacing-md);
+  color: var(--bm-color-text-muted);
+  transition: color var(--bm-duration-base) var(--bm-ease-standard);
+
+  &--hecho {
+    color: var(--bm-color-text-light);
+
+    .bm-timeline__marca ion-icon {
+      color: var(--bm-color-success);
+    }
+
+    .bm-timeline__linea::after {
+      transform: scaleY(1);
+    }
+  }
+
+  &--actual {
+    color: var(--bm-color-primary);
+    font-weight: 700;
+
+    .bm-timeline__marca ion-icon {
+      color: var(--bm-color-primary);
+      animation: bm-pop var(--bm-duration-slow) var(--bm-ease-spring);
+    }
+
+    // Halo que late detrás del paso actual (3 veces y se queda quieto).
+    .bm-timeline__marca::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 26px;
+      height: 26px;
+      margin-left: -13px;
+      border-radius: 50%;
+      border: 2px solid var(--bm-color-primary);
+      animation: bm-ripple 1.4s var(--bm-ease-out) 3 both;
+    }
+  }
+}
+
+.bm-timeline__marca {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 26px;
+  }
+}
+
+// La línea entre pasos se "llena" de verde de arriba hacia abajo cuando
+// el paso se completa (transform, no altura: no recalcula layout).
+.bm-timeline__linea {
+  position: relative;
+  width: 2px;
+  flex: 1;
+  min-height: 24px;
+  margin: 2px 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bm-color-success);
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 480ms var(--bm-ease-out) 120ms;
+  }
+}
+
+.bm-timeline__texto {
+  padding-top: 2px;
+  padding-bottom: var(--bm-spacing-md);
+}
+
+// Bloque de controles de prueba: separado visualmente de la UI real.
+.bm-mock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bm-spacing-sm);
+  margin-top: var(--bm-spacing-md);
+  padding: var(--bm-spacing-md);
+  border: 1px dashed rgba(245, 164, 0, 0.35);
+  border-radius: var(--bm-radius-md);
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+}

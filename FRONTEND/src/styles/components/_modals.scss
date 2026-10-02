@@ -1,0 +1,26 @@
+// ============================================================
+// .bm-modal-card — contenido interno de un <ion-modal> o de un overlay
+// custom (reemplaza los `alert()` nativos grises, regla del documento
+// original de UX).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-modal-card {
+  background: var(--bm-color-surface);
+  border-radius: var(--bm-radius-lg);
+  padding: v.$bm-spacing-lg;
+  text-align: center;
+}
+
+.bm-modal-card__title {
+  font-family: var(--bm-font-heading);
+  margin-bottom: v.$bm-spacing-sm;
+}
+
+.bm-modal-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+  margin-top: v.$bm-spacing-lg;
+}

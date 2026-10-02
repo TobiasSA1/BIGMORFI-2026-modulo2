@@ -1,0 +1,24 @@
+<!-- MOCKUP VISUAL - Módulo 3. Ver comentario en el .ts -->
+<ion-content class="bm-fondo bm-fondo--login bm-fondo--animado">
+  <!-- Volver al login (la pantalla no tiene navbar: es la "portada" del cliente). -->
+  <ion-back-button class="bm-header__volver bm-volver-flotante" defaultHref="/login" text=""></ion-back-button>
+
+  <div class="bm-screen bm-screen--center bm-bienvenida">
+    <div class="bm-bienvenida__marca">
+      <img src="assets/LogoBigMorfi.png" class="bm-logo-hero bm-bienvenida__logo" alt="Big Morfi" />
+      <h1 class="bm-heading--xl bm-reveal bm-bienvenida__titulo">¡Bienvenido a Big Morfi!</h1>
+      <p class="bm-lead bm-fade-in bm-bienvenida__texto">
+        Escaneaste exitosamente el QR de ingreso. ¿Qué deseás hacer a continuación?
+      </p>
+    </div>
+
+    <div class="bm-screen__actions bm-stagger bm-bienvenida__acciones">
+      <ion-button expand="block" routerLink="/sala/registro-anonimo">
+        Anotarme en la lista de espera
+      </ion-button>
+      <ion-button expand="block" fill="outline" routerLink="/cierre/encuesta">
+        Ver encuestas y estadísticas
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

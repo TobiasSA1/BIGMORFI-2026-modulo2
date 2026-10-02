@@ -9,22 +9,32 @@ import { SupabaseService } from '../supabase/supabase.service';
 import { StorageService } from '../common/storage/storage.service';
 import { CrearProductoDto } from './dto/crear-producto.dto';
 
-// 'postre' existe en la base (columna `tipo`) porque así se definió el
-// esquema junto con el Módulo 3, pero acá solo se implementa la carga de
-// 'plato' y 'bebida' (Puntos 2 y 3 de la consigna).
-export type TipoProducto = 'plato' | 'bebida';
+// 'postre' lo pidió agregar el equipo (avisó Nahue): la consigna del TP lo
+// exige y el enum de la base ya lo tenía preparado desde que se diseñó el
+// esquema junto con el Módulo 3.
+export type TipoProducto = 'plato' | 'bebida' | 'postre';
 export type SectorPreparacion = 'cocina' | 'bar';
 
 // A qué sector va cada tipo cuando se pide (Puntos 16 y 17). Se guarda como
 // columna propia en la base (no se recalcula ahí), pero acá es donde se
 // decide para los tipos que carga este módulo.
+// El postre sale por Cocina (así quedó anotado al diseñar el esquema con
+// Nahue: "un postre también puede salir de cocina").
 const SECTOR_POR_TIPO: Record<TipoProducto, SectorPreparacion> = {
   plato: 'cocina',
   bebida: 'bar',
+  postre: 'cocina',
+};
+
+// Nombre en español para los mensajes de error, según el tipo.
+const NOMBRE_TIPO: Record<TipoProducto, string> = {
+  plato: 'un plato',
+  bebida: 'una bebida',
+  postre: 'un postre',
 };
 
 /**
- * Lógica del catálogo de productos (Puntos 2 y 3).
+ * Lógica del catálogo de productos (Puntos 2 y 3, más postres).
  *
  * Trabaja siempre con el "admin client" de Supabase (service role), igual que
  * el Módulo 1: el backend es el único que escribe estas tablas.
@@ -39,10 +49,10 @@ export class ProductosService {
   ) {}
 
   /**
-   * Alta de un plato (Punto 2) o una bebida (Punto 3).
+   * Alta de un plato (Punto 2), una bebida (Punto 3) o un postre.
    *
    * @param dto        Datos validados del formulario.
-   * @param tipo       'plato' o 'bebida'. Lo fija el controller, NO el body.
+   * @param tipo       'plato' | 'bebida' | 'postre'. Lo fija el controller, NO el body.
    * @param creadoPor  id del profile del cocinero/cantinero que está cargando.
    */
   async crear(dto: CrearProductoDto, tipo: TipoProducto, creadoPor: string) {
@@ -62,7 +72,7 @@ export class ProductosService {
 
     if (existente) {
       throw new ConflictException(
-        `Ya hay ${tipo === 'plato' ? 'un plato' : 'una bebida'} con el nombre "${dto.nombre}" en la carta`,
+        `Ya hay ${NOMBRE_TIPO[tipo]} con el nombre "${dto.nombre}" en la carta`,
       );
     }
 

@@ -1,0 +1,48 @@
+<!-- MOCKUP VISUAL - Módulo 3, Punto 10. Ver comentario en el .ts -->
+<app-header-marca titulo="Lista de espera" backHref="/home"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen">
+    <!-- Resumen de mesas libres (dato real del backend) -->
+    <div class="bm-metre-resumen bm-fade-in">
+      <ng-container *ngIf="!cargandoMesas; else cargandoResumen">
+        <span class="bm-metre-resumen__numero bm-pop">{{ mesasLibres.length }}</span>
+        <span class="bm-metre-resumen__texto">mesa(s) libre(s) ahora mismo</span>
+      </ng-container>
+      <ng-template #cargandoResumen>
+        <ion-spinner name="dots"></ion-spinner>
+        <span class="bm-metre-resumen__texto">Consultando mesas libres…</span>
+      </ng-template>
+    </div>
+
+    <div class="bm-empty-state" *ngIf="clientes.length === 0">
+      <p>No hay nadie esperando.</p>
+    </div>
+
+    <div class="bm-list bm-stagger">
+      <div class="bm-list__item bm-espera-item" *ngFor="let cliente of clientes">
+        <div class="bm-espera-item__datos">
+          <p class="bm-list__item-title">{{ cliente.nombre }}</p>
+          <p class="bm-list__item-subtitle">
+            {{ cliente.tipo === 'registrado' ? 'Cliente registrado' : 'Cliente anónimo' }}
+            · esperando desde las {{ cliente.esperandoDesde }}
+          </p>
+        </div>
+
+        <div class="bm-espera-item__accion">
+          <ion-select
+            [(ngModel)]="mesaSeleccionada[cliente.id]"
+            interface="popover"
+            placeholder="Elegir mesa"
+            [disabled]="cargandoMesas || mesasLibres.length === 0"
+          >
+            <ion-select-option *ngFor="let mesa of mesasLibres" [value]="mesa.id">
+              Mesa {{ mesa.numero }} ({{ mesa.cantidad_comensales }}p)
+            </ion-select-option>
+          </ion-select>
+          <ion-button size="small" (click)="asignar(cliente)">Asignar</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,65 @@
+// ============================================================
+// Big Morfi — librería SCSS global
+// ============================================================
+//
+// Se carga UNA sola vez desde src/global.scss (después del CSS base de
+// Ionic). Ningún .page.scss debe volver a importar este archivo.
+//
+// Orden de la cascada (importa, cada capa puede pisar a la anterior):
+//   1. abstracts  -> variables/mixins, no generan CSS por sí solos
+//   2. base       -> tokens (CSS vars), reset, tipografía, theming de Ionic
+//   3. layout     -> contenedores y grillas
+//   4. components -> piezas reutilizables (.bm-btn, .bm-card, etc.)
+//   5. utilities  -> helpers de una sola responsabilidad (spacing, display)
+//   6. modules    -> ajustes puntuales de un módulo específico (van al final
+//                    para poder pisar algo de las capas anteriores si hace
+//                    falta un caso puntual)
+//
+// Ver STYLEGUIDE.md para cómo usar cada pieza con ejemplos.
+// ============================================================
+
+// Re-exporta variables/mixins para quien haga `@use 'styles/main' as *;`
+// (no emite CSS: son solo definiciones).
+@forward 'abstracts/variables';
+@forward 'abstracts/breakpoints';
+@forward 'abstracts/mixins';
+@forward 'abstracts/functions';
+
+@use 'base/tokens';
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/global';
+@use 'base/ionic-overrides';
+
+@use 'layout/container';
+@use 'layout/grid';
+@use 'layout/scroll';
+
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/inputs';
+@use 'components/avatars';
+@use 'components/badges';
+@use 'components/lists';
+@use 'components/empty-state';
+@use 'components/photo-upload';
+@use 'components/qr';
+@use 'components/modals';
+@use 'components/tabs';
+@use 'components/stepper';
+@use 'components/bottom-bar';
+@use 'components/chat';
+@use 'components/carousel';
+@use 'components/brand';
+@use 'components/divider';
+@use 'components/decor';
+@use 'components/fondos';
+@use 'components/header';
+@use 'components/nav-inferior';
+@use 'components/check';
+
+@use 'utilities/spacing';
+@use 'utilities/display';
+@use 'utilities/animations';
+
+@use 'modules/module-2/preparacion';

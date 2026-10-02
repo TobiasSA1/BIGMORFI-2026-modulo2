@@ -1,0 +1,35 @@
+<!-- MOCKUP VISUAL - Módulo 3, Punto 9/10. Ver comentario en el .ts -->
+<app-header-marca titulo="En espera" backHref="/sala/bienvenida"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--login bm-fondo--blur">
+  <div class="bm-screen bm-screen--center">
+    <div class="bm-espera bm-screen__grow">
+      <div class="bm-espera__circulo">
+        <span class="bm-espera__onda"></span>
+        <span class="bm-espera__onda bm-espera__onda--2"></span>
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <span class="bm-espera__numero">{{ posicionEnFila }}°</span>
+      </div>
+
+      <span class="bm-eyebrow">Tu lugar en la fila</span>
+      <h1 class="bm-heading--lg bm-reveal">En la lista de espera</h1>
+      <p class="bm-lead">
+        Aguardá unos instantes mientras el metre prepara y te asigna tu mesa.
+        Te vamos a avisar apenas esté lista.
+      </p>
+
+      <span class="bm-badge bm-badge--primary">Comensal: Cliente Anónimo</span>
+    </div>
+
+    <div class="bm-screen__actions bm-stagger">
+      <ion-button expand="block" fill="outline" routerLink="/cierre/encuesta">
+        Ver encuestas y estadísticas
+      </ion-button>
+
+      <!-- Botón de desarrollo: simula que el metre ya asignó la mesa. -->
+      <ion-button expand="block" fill="clear" routerLink="/sala/escaneo-qr/mesa">
+        (mock) Ya me asignaron una mesa →
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

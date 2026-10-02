@@ -1,0 +1,44 @@
+<!-- MOCKUP VISUAL - Módulo 3, Punto 11. Ver comentario en el .ts -->
+<app-header-marca titulo="Mesa número 1" subtitulo="Sala de chat" backHref="/sala/carta"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-screen--wide bm-chat-pantalla">
+    <div class="bm-chat">
+      <div
+        class="bm-chat-bubble"
+        *ngFor="let m of mensajes"
+        [ngClass]="m.autor === 'mozo' ? 'bm-chat-bubble--mozo' : 'bm-chat-bubble--cliente'"
+      >
+        {{ m.texto }}
+        <span class="bm-chat-bubble__hora">{{ m.hora }}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="bm-chat-footer">
+  <div class="bm-chat-quick-row bm-scroll-x">
+    <button class="bm-chip" *ngFor="let q of consultasRapidas" (click)="enviar(q)">
+      {{ q }}
+    </button>
+  </div>
+
+  <div class="bm-chat-input">
+    <input
+      type="text"
+      placeholder="Escribí tu consulta al mozo..."
+      enterkeyhint="send"
+      [(ngModel)]="mensajeNuevo"
+      (keyup.enter)="enviarConAnimacion()"
+    />
+    <button
+      class="bm-chat-input__enviar"
+      [class.bm-chat-input__enviar--activo]="mensajeNuevo.trim()"
+      [class.bm-chat-input__enviar--despegando]="despegando"
+      (click)="enviarConAnimacion()"
+      aria-label="Enviar"
+    >
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </div>
+</ion-footer>

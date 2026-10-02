@@ -1,0 +1,101 @@
+// ============================================================
+// .bm-carousel — carrusel de fotos de un producto (carta).
+// El espacio de la foto se reserva con aspect-ratio (no hay salto de
+// layout mientras carga) y la foto entra con un fade + leve zoom.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-carousel {
+  position: relative;
+}
+
+.bm-carousel__track {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  // Mientras la foto baja se ve un bloque cálido, no un hueco negro.
+  background: rgba(255, 255, 255, 0.06);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes bm-carousel-img {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bm-carousel__img {
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  animation: bm-carousel-img var(--bm-duration-slow) var(--bm-ease-out) both;
+}
+
+.bm-carousel__contador {
+  position: absolute;
+  right: v.$bm-spacing-sm;
+  bottom: v.$bm-spacing-sm;
+  padding: 2px v.$bm-spacing-sm;
+  border-radius: var(--bm-radius-full);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-semibold;
+}
+
+.bm-carousel__dots {
+  position: absolute;
+  left: 50%;
+  bottom: v.$bm-spacing-sm;
+  display: flex;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: var(--bm-radius-full);
+  background: rgba(0, 0, 0, 0.45);
+  transform: translateX(-50%);
+}
+
+.bm-carousel__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: transform var(--bm-duration-base) var(--bm-ease-out);
+
+  &--activo {
+    background: var(--bm-color-primary);
+    transform: scale(1.3);
+  }
+}
+
+.bm-page-dots {
+  display: flex;
+  justify-content: center;
+  gap: v.$bm-spacing-xs;
+  padding: v.$bm-spacing-sm 0;
+}
+
+.bm-page-dots__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bm-color-surface-dark);
+  border: 1px solid var(--bm-color-primary);
+
+  &--activo {
+    background: var(--bm-color-primary);
+  }
+}

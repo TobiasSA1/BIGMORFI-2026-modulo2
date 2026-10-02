@@ -1,0 +1,54 @@
+// ============================================================
+// Mixins compartidos. No generan CSS por sí solos (solo cuando se
+// incluyen con @include), así que es seguro importarlos desde cualquier
+// parte de la librería sin duplicar estilos.
+// ============================================================
+
+@use 'variables' as v;
+
+@mixin bm-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin bm-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin bm-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Oculta visualmente pero deja accesible para lectores de pantalla.
+@mixin bm-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Base compartida por cards/superficies elevadas. El borde dorado GRUESO
+// (2px, no un hairline fino) es parte de la identidad "cartel de comida
+// rápida" de la marca: aparece en TODAS las cards de la carta del cliente,
+// en los renglones de aprobación de clientes, etc.
+@mixin bm-surface-card {
+  background: var(--bm-color-surface);
+  border: 2px solid var(--bm-color-primary);
+  border-radius: var(--bm-radius-md);
+  box-shadow: var(--bm-shadow-sm);
+}
+
+@mixin bm-focus-ring {
+  outline: 2px solid v.$bm-color-primary;
+  outline-offset: 2px;
+}

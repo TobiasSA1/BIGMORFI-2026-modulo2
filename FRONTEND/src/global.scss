@@ -35,3 +35,10 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* ============================================================
+ * Librería de diseño Big Morfi (compartida por todos los módulos).
+ * Se carga acá, al final, para poder pisar los estilos por defecto de
+ * Ionic importados arriba. Ver src/styles/ y STYLEGUIDE.md.
+ * ============================================================ */
+@import 'styles/main';

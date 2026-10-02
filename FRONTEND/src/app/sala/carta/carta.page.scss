@@ -1,0 +1,367 @@
+// MOCKUP VISUAL - Módulo 3, Puntos 11 y 12.
+// La navbar reutiliza las piezas globales de styles/components/_header.scss
+// (sello, rótulo, acento, botón de volver).
+
+// ============================================================
+// Navbar: marca + buscador fijo + filtro por tipo
+// ============================================================
+
+// El header de esta pantalla no usa <ion-toolbar> (necesita marca, buscador
+// y filtro), así que se respeta a mano el notch con el safe area de arriba.
+.bm-carta-top {
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 0%, rgba(245, 164, 0, 0.12), transparent 70%),
+    linear-gradient(180deg, #000000 0%, #1d1208 100%);
+  padding-top: var(--bm-safe-top);
+}
+
+.bm-carta-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--bm-spacing-xs);
+  padding: var(--bm-spacing-sm) var(--bm-spacing-sm) 0;
+
+  .bm-header__volver {
+    margin-inline: 0;
+  }
+}
+
+// Botón de ícono redondo (mozo): mismo lenguaje que el de volver.
+.bm-icono-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 164, 0, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--bm-color-primary);
+  font-size: 20px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 260ms var(--bm-ease-spring);
+
+  &:active {
+    transform: scale(0.9);
+    transition-duration: 90ms;
+  }
+}
+
+// Buscador: siempre visible, ocupa el ancho del contenido (con tope).
+.bm-carta-busqueda {
+  display: flex;
+  align-items: center;
+  gap: var(--bm-spacing-sm);
+  max-width: 560px;
+  min-height: 46px;
+  margin: var(--bm-spacing-sm) auto 0;
+  margin-inline: max(var(--bm-gutter), calc((100% - 560px) / 2));
+  padding: 0 6px 0 var(--bm-spacing-md);
+  border-radius: var(--bm-radius-full);
+  border: 1px solid rgba(245, 164, 0, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: text;
+  transition:
+    border-color var(--bm-duration-fast) var(--bm-ease-standard),
+    box-shadow var(--bm-duration-base) var(--bm-ease-out),
+    background-color var(--bm-duration-base) var(--bm-ease-standard);
+
+  // Foco: se ilumina con el mismo halo que los campos de formulario.
+  &:focus-within {
+    border-color: var(--bm-color-primary);
+    background: var(--bm-color-surface-dark);
+    box-shadow: 0 0 0 4px rgba(245, 164, 0, 0.14);
+  }
+
+  > ion-icon {
+    flex-shrink: 0;
+    color: var(--bm-color-primary);
+    font-size: 18px;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--bm-color-text-light);
+    font-family: var(--bm-font-body);
+    font-size: var(--bm-font-size-md); // 16px: evita el zoom automático de iOS
+
+    &::placeholder {
+      color: var(--bm-color-text-muted);
+    }
+
+    // Saca la "x" nativa del navegador (ya hay un botón propio).
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+}
+
+.bm-carta-busqueda__limpiar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(245, 164, 0, 0.15);
+  color: var(--bm-color-primary);
+  font-size: 18px;
+  animation: bm-pop-rot var(--bm-duration-base) var(--bm-ease-spring) backwards;
+}
+
+// Filtro por tipo: selector segmentado de 4 opciones iguales, centrado.
+// Ícono arriba y texto abajo: entra completo hasta en 320px, sin scroll.
+.bm-tipos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  max-width: 440px;
+  margin: var(--bm-spacing-sm) auto var(--bm-spacing-sm);
+  margin-inline: max(var(--bm-gutter), calc((100% - 440px) / 2));
+  padding: 4px;
+  border-radius: var(--bm-radius-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(245, 164, 0, 0.2);
+
+  // Píldora del indicador deslizante (directiva [bmIndicador]).
+  .bm-indicador {
+    border-radius: calc(var(--bm-radius-lg) - 4px);
+  }
+}
+
+.bm-tipos__opcion {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 52px;
+  padding: 4px 2px;
+  border: none;
+  border-radius: calc(var(--bm-radius-lg) - 4px);
+  background: transparent;
+  color: var(--bm-color-text-muted);
+  font-family: var(--bm-font-body);
+  font-size: var(--bm-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--bm-duration-base) var(--bm-ease-standard),
+    transform 260ms var(--bm-ease-spring);
+
+  &:active {
+    transform: scale(0.94);
+    transition-duration: 90ms;
+  }
+
+  &--activa {
+    color: var(--bm-color-primary-contrast);
+
+    .bm-tipos__icono {
+      animation: bm-pop-rot var(--bm-duration-slow) var(--bm-ease-spring);
+    }
+  }
+}
+
+.bm-tipos__icono {
+  font-size: 20px;
+  line-height: 1;
+}
+
+// ============================================================
+// Grilla y card de producto
+// ============================================================
+
+// 1 columna en el teléfono; 2–3 columnas recién cuando entran cómodas.
+.bm-carta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--bm-spacing-md);
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--bm-spacing-md) var(--bm-gutter);
+  padding-bottom: var(--bm-spacing-xl);
+
+  .bm-empty-state {
+    grid-column: 1 / -1;
+  }
+}
+
+// Card: superficie cálida con un brillo sutil arriba, borde fino dorado y
+// la foto "enmarcada" adentro con un margen chico.
+.bm-producto {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 22px;
+  border: 1px solid rgba(245, 164, 0, 0.45);
+  background:
+    linear-gradient(180deg, rgba(245, 164, 0, 0.08), transparent 40%),
+    var(--bm-color-surface);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.bm-producto__foto {
+  overflow: hidden;
+  border-radius: 16px;
+
+  // Degradé abajo de la foto para que los datos encima siempre se lean.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 45%;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.55));
+    pointer-events: none;
+  }
+
+  .bm-carousel__track {
+    border-radius: 16px;
+  }
+
+  .bm-carousel__dots,
+  .bm-carousel__contador {
+    z-index: 1;
+  }
+}
+
+// Tiempo de preparación: chip oscuro sobre la foto, abajo a la izquierda.
+.bm-producto__tiempo {
+  position: absolute;
+  left: var(--bm-spacing-sm);
+  bottom: var(--bm-spacing-sm);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--bm-radius-full);
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: var(--bm-font-size-xs);
+  font-weight: 700;
+
+  ion-icon {
+    color: var(--bm-color-primary);
+    font-size: 14px;
+  }
+}
+
+// Los puntos del carrusel pasan al centro-derecha para no pisar el tiempo.
+.bm-producto .bm-carousel__dots {
+  left: auto;
+  right: 48px;
+  transform: none;
+}
+
+// Sello que aparece sobre la foto cuando el producto ya está pedido.
+.bm-producto__en-pedido {
+  position: absolute;
+  top: var(--bm-spacing-sm);
+  left: var(--bm-spacing-sm);
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: var(--bm-radius-full);
+  background: var(--bm-color-primary);
+  color: var(--bm-color-primary-contrast);
+  font-size: var(--bm-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bm-producto__cuerpo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 8px 4px;
+}
+
+.bm-producto__tipo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bm-color-primary);
+}
+
+.bm-producto__nombre {
+  margin: 0;
+  font-family: var(--bm-font-heading);
+  font-size: var(--bm-font-size-lg);
+  line-height: 1.15;
+}
+
+.bm-producto__descripcion {
+  margin: 0;
+  color: var(--bm-color-text-muted);
+  font-size: var(--bm-font-size-sm);
+  line-height: 1.45;
+}
+
+// Pie: precio grande a la izquierda y acción a la derecha (patrón de apps
+// de delivery: el precio y el botón quedan juntos a la altura del pulgar).
+.bm-producto__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bm-spacing-sm);
+  margin-top: var(--bm-spacing-sm);
+  padding: 10px 8px 4px;
+  border-top: 1px dashed rgba(245, 164, 0, 0.25);
+}
+
+.bm-producto__precio {
+  font-family: var(--bm-font-body);
+  font-weight: 800;
+  font-size: var(--bm-font-size-xl);
+  line-height: 1;
+  color: var(--bm-color-text-light);
+  white-space: nowrap;
+}
+
+.bm-producto__agregar {
+  min-height: 46px;
+  --padding-start: 18px;
+  --padding-end: 20px;
+  --border-radius: var(--bm-radius-full);
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.bm-producto__stepper {
+  flex: 0 0 auto;
+  width: auto;
+  gap: var(--bm-spacing-sm);
+
+  .bm-stepper__valor {
+    min-width: 32px;
+  }
+}
+
+// Con la navegación inferior debajo, la barra del total se compacta un poco
+// para no comerse la pantalla.
+.bm-carta-footer .bm-bottom-bar {
+  padding-top: var(--bm-spacing-sm);
+  padding-bottom: var(--bm-spacing-sm);
+  box-shadow: none;
+}

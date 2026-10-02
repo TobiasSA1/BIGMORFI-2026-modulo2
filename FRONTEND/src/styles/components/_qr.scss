@@ -1,0 +1,41 @@
+// ============================================================
+// .bm-qr-card — QR grande (mesa recién creada, pago de la cuenta).
+// .bm-qr-mini  — QR chico en listados.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-qr-card {
+  @include m.bm-flex-center;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+  padding: v.$bm-spacing-lg v.$bm-spacing-md;
+  background: var(--bm-color-surface);
+  border: 2px solid var(--bm-color-primary);
+  border-radius: var(--bm-radius-lg);
+  text-align: center;
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-out) both;
+
+  h3,
+  p {
+    margin: 0;
+  }
+}
+
+.bm-qr-card__image {
+  width: min(220px, 62vw);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--bm-radius-md);
+  background: #fff; // el QR necesita fondo blanco sí o sí para poder escanearse
+  padding: v.$bm-spacing-sm;
+}
+
+.bm-qr-mini {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--bm-radius-sm);
+  background: #fff;
+  padding: 2px;
+}

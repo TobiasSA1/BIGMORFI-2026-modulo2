@@ -4,35 +4,34 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonItem,
   IonLabel,
   IonInput,
   IonButton,
   IonText,
   IonSpinner,
+  IonInputPasswordToggle,
 } from '@ionic/angular';
 import { AuthService } from '../../core/services/auth.service';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonItem,
     IonLabel,
     IonInput,
     IonButton,
     IonText,
     IonSpinner,
+    IonInputPasswordToggle,
+    HeaderMarcaComponent,
   ],
 })
 export class LoginPage {

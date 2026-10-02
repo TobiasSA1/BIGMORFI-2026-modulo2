@@ -1,10 +1,35 @@
+// Retoque visual (Módulo 1). El modal ya entra con la animación propia de
+// Ionic (sube + fade); acá se le da la jerarquía: cliente al centro y las
+// acciones abajo, la principal llena y "Cancelar" como acción terciaria.
+
+.bm-confirmar__cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bm-spacing-sm);
+  animation: bm-scale-in var(--bm-duration-slow) var(--bm-ease-out) both;
+
+  h2,
+  p {
+    margin: 0;
+  }
+}
+
 .foto-frame {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  width: clamp(112px, 36vw, 140px);
+  aspect-ratio: 1 / 1;
+  margin-bottom: var(--bm-spacing-sm);
   overflow: hidden;
-  margin: 0 auto 16px auto;
-  border: 2px solid var(--ion-color-medium);
+  border-radius: 50%;
+  border: 3px solid var(--bm-color-success);
+  background: var(--bm-color-surface-dark);
+  box-shadow: 0 0 0 6px rgba(91, 153, 80, 0.15);
+
+  &--rechazo {
+    border-color: var(--bm-color-danger);
+    box-shadow: 0 0 0 6px rgba(232, 67, 58, 0.15);
+  }
 
   img {
     width: 100%;

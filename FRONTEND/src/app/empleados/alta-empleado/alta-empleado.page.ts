@@ -5,9 +5,8 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonInputPasswordToggle,
+  IonIcon,
   IonItem,
   IonLabel,
   IonInput,
@@ -16,10 +15,9 @@ import {
   IonButton,
   IonText,
   IonSpinner,
-  IonBackButton,
-  IonButtons,
   ToastController,
 } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 import { CamaraService } from '../../core/services/camara.service';
 import { EscanerQrService } from '../../core/services/escaner-qr.service';
 import { EmpleadosService } from '../empleados.service';
@@ -30,12 +28,12 @@ import { CUIL_REGEX, DNI_REGEX, PASSWORD_REGEX, SOLO_LETRAS_REGEX } from '../../
   templateUrl: './alta-empleado.page.html',
   styleUrls: ['./alta-empleado.page.scss'],
   imports: [
+    HeaderMarcaComponent,
     CommonModule,
     ReactiveFormsModule,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonInputPasswordToggle,
+    IonIcon,
     IonItem,
     IonLabel,
     IonInput,
@@ -44,8 +42,6 @@ import { CUIL_REGEX, DNI_REGEX, PASSWORD_REGEX, SOLO_LETRAS_REGEX } from '../../
     IonButton,
     IonText,
     IonSpinner,
-    IonBackButton,
-    IonButtons,
   ],
 })
 export class AltaEmpleadoPage {

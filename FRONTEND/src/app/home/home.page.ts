@@ -1,14 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton } from '@ionic/angular';
+import { IonContent, IonIcon, IonButton } from '@ionic/angular';
 import { AuthService, Perfil } from '../core/services/auth.service';
 import { RouterLink } from '@angular/router';
+import { HeaderMarcaComponent } from '../core/components/header-marca/header-marca.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
-  imports: [CommonModule, IonContent, IonHeader, IonToolbar, IonTitle, IonButton, RouterLink],
+  styleUrls: ['./home.page.scss'],
+  imports: [CommonModule, IonContent, IonIcon, IonButton, RouterLink, HeaderMarcaComponent],
 })
 export class HomePage implements OnInit {
   perfil: Perfil | null = null;

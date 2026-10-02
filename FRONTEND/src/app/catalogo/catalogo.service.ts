@@ -14,8 +14,6 @@ import { environment } from '../../environments/environment';
 
 // ---- Tipos que devuelve el backend (coinciden con las columnas de la base) ----
 
-// 'postre' existe en la base (se definió junto con el Módulo 3) pero este
-// módulo todavía no tiene pantalla de alta para ese tipo.
 export type TipoProducto = 'plato' | 'bebida' | 'postre';
 export type SectorPreparacion = 'cocina' | 'bar';
 export type TipoMesa = 'vip' | 'estandar' | 'movilidad_reducida';
@@ -49,14 +47,18 @@ export interface Mesa {
   created_at: string;
 }
 
-/** Un ítem pendiente en Cocina o Bar (Puntos 16 y 17). */
+/**
+ * Un ítem pendiente en Cocina o Bar (Puntos 16 y 17).
+ * A nivel ítem no existe 'entregado' (eso es un estado del pedido completo,
+ * Punto 19, definido por el Módulo 3) — por eso no está en este union type.
+ */
 export interface PreparacionItem {
   itemId: string;
   pedidoId: string;
   nombre: string;
   cantidad: number;
   tiempoElaboracion: number;
-  estado: 'pendiente' | 'en_preparacion' | 'listo' | 'entregado';
+  estado: 'pendiente' | 'en_preparacion' | 'listo';
   desde: string;
 }
 
@@ -107,6 +109,11 @@ export class CatalogoService {
   // ===== PUNTO 3 - Alta de bebida =====
   crearBebida(payload: CrearProductoPayload) {
     return this.http.post<Producto>(`${this.api}/productos/bebidas`, payload);
+  }
+
+  // ===== Alta de postre (agregado a pedido del equipo, lo exige el TP) =====
+  crearPostre(payload: CrearProductoPayload) {
+    return this.http.post<Producto>(`${this.api}/productos/postres`, payload);
   }
 
   /** Carta completa (o filtrada por tipo). Sirve para la "verificación en carta". */

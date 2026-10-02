@@ -1,0 +1,51 @@
+// MOCKUP VISUAL - Módulo 3, Punto 10.
+
+.bm-metre-resumen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bm-spacing-sm);
+  min-height: 64px;
+  padding: var(--bm-spacing-sm) var(--bm-spacing-md);
+  border-radius: var(--bm-radius-lg);
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(245, 164, 0, 0.35);
+  text-align: center;
+}
+
+.bm-metre-resumen__numero {
+  font-family: var(--bm-font-heading);
+  font-size: var(--bm-font-size-xxl);
+  line-height: 1;
+  color: var(--bm-color-primary);
+}
+
+.bm-metre-resumen__texto {
+  color: var(--bm-color-text-muted);
+  font-weight: 600;
+}
+
+.bm-espera-item {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--bm-spacing-sm);
+}
+
+.bm-espera-item__accion {
+  display: flex;
+  gap: var(--bm-spacing-sm);
+  align-items: center;
+
+  ion-select {
+    flex: 1;
+    min-width: 0;
+    min-height: var(--bm-control-h-sm);
+    padding-inline: var(--bm-spacing-md);
+    border-radius: var(--bm-radius-md);
+    background: var(--bm-color-surface-dark);
+  }
+
+  ion-button {
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,80 @@
+// MOCKUP VISUAL - Módulo 3, Puntos 13/14/19.
+
+.bm-mozo {
+  gap: var(--bm-spacing-xl);
+}
+
+.bm-mozo__titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--bm-spacing-sm);
+  margin: 0;
+  font-size: var(--bm-font-size-lg);
+
+  ion-icon {
+    color: var(--bm-color-primary);
+  }
+}
+
+// Franja superior con el número de mesa: identidad clara de cada pedido
+// de un vistazo, sin tener que leer el detalle.
+.bm-pedido-mozo__mesa {
+  padding: var(--bm-spacing-sm) var(--bm-spacing-md);
+  background: var(--bm-color-surface-dark);
+  color: var(--bm-color-primary);
+  font-family: var(--bm-font-heading);
+  font-size: var(--bm-font-size-md);
+}
+
+.bm-mozo-acciones ion-button {
+  flex: 1;
+}
+
+// Filtro: dentro de .bm-screen ya hay margen lateral; se saca el de .bm-tabs.
+// En 320px los tres chips no entran juntos: la fila scrollea de costado.
+.bm-mozo__filtro {
+  padding: 2px 0;
+}
+
+// Contador dentro de un chip del filtro.
+.bm-mozo__cuenta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: var(--bm-radius-full);
+  background: var(--bm-color-primary-contrast);
+  color: var(--bm-color-primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+// Pedido nuevo: además de entrar desde la derecha, un destello ámbar lo
+// recorre una vez ("¡llegó un pedido!"). Solo opacidad: no repinta sombras.
+@keyframes bm-pedido-destello {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.bm-pedido-mozo--nuevo {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgba(245, 164, 0, 0.28), transparent 60%);
+    pointer-events: none;
+    animation: bm-pedido-destello 1.1s var(--bm-ease-out) 300ms both;
+  }
+}

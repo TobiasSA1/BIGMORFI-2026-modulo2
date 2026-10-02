@@ -1,0 +1,64 @@
+<!-- MOCKUP VISUAL - Módulo 4, Punto 21. Ver comentario en el .ts -->
+<app-header-marca titulo="Tu cuenta" backHref="/sala/estado-pedido"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-cuenta">
+    <!-- ---- Hero: total grande ---- -->
+    <div class="bm-hero">
+      <span class="bm-eyebrow">Total a pagar</span>
+      <!-- Se recrea al cambiar el total (al elegir propina) → el monto nuevo "cae". -->
+      <span class="bm-cuenta__monto bm-flip-in" *ngFor="let t of [total]">${{ t | number: '1.0-0' }}</span>
+      <span class="bm-caption bm-fade" *ngIf="propinaSeleccionada">
+        Incluye ${{ montoPropina | number: '1.0-0' }} de propina ({{ propinaSeleccionada }}%)
+      </span>
+    </div>
+
+    <section class="bm-section bm-fade-in">
+      <h2 class="bm-section__title">Detalle del pedido</h2>
+      <div class="bm-card">
+        <div class="bm-card__body">
+          <div class="bm-cuenta__linea" *ngFor="let item of items">
+            <span>{{ item.cantidad }}× {{ item.nombre }}</span>
+            <span>${{ item.cantidad * item.precioUnitario | number: '1.0-0' }}</span>
+          </div>
+          <div class="bm-cuenta__linea bm-cuenta__linea--subtotal">
+            <span class="bm-text-muted">Subtotal</span>
+            <span class="bm-text-price">${{ subtotal | number: '1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bm-section bm-fade-in">
+      <h2 class="bm-section__title">¿Querés dejar propina?</h2>
+      <div class="bm-propinas" role="radiogroup">
+        <button
+          class="bm-propina-btn"
+          role="radio"
+          [attr.aria-checked]="propinaSeleccionada === nivel"
+          [class.bm-propina-btn--activo]="propinaSeleccionada === nivel"
+          *ngFor="let nivel of nivelesPropina"
+          (click)="elegirPropina(nivel)"
+        >
+          {{ nivel }}%
+        </button>
+      </div>
+    </section>
+
+    <div class="bm-qr-card bm-cuenta__qr" *ngIf="propinaSeleccionada !== null">
+      <h3 class="bm-heading--md">Escaneá para pagar</h3>
+      <img
+        src="https://placehold.co/400x400/FFFFFF/000000?text=QR+DE+PAGO"
+        class="bm-qr-card__image"
+        alt="QR para pagar la cuenta"
+      />
+      <p class="bm-caption">
+        El mozo confirma el pago del otro lado (Punto 22) y la mesa se libera sola.
+      </p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <app-nav-cliente></app-nav-cliente>
+</ion-footer>

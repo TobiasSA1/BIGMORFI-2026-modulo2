@@ -1,0 +1,38 @@
+// ============================================================
+// Utilidades de espaciado (margin/padding), generadas a partir de la misma
+// escala de abstracts/_variables.scss para no tener valores mágicos.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+$bm-spacers: (
+  'xs': v.$bm-spacing-xs,
+  'sm': v.$bm-spacing-sm,
+  'md': v.$bm-spacing-md,
+  'lg': v.$bm-spacing-lg,
+  'xl': v.$bm-spacing-xl,
+);
+
+@each $name, $val in $bm-spacers {
+  .bm-mt-#{$name} {
+    margin-top: $val;
+  }
+  .bm-mb-#{$name} {
+    margin-bottom: $val;
+  }
+  .bm-mx-#{$name} {
+    margin-inline: $val;
+  }
+  .bm-my-#{$name} {
+    margin-block: $val;
+  }
+  .bm-p-#{$name} {
+    padding: $val;
+  }
+  .bm-px-#{$name} {
+    padding-inline: $val;
+  }
+  .bm-py-#{$name} {
+    padding-block: $val;
+  }
+}

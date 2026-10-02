@@ -1,0 +1,26 @@
+// ============================================================
+// Scroll horizontal (carruseles de chips, consultas rápidas del chat).
+// El scroll vertical lo maneja SIEMPRE <ion-content>: no se crean
+// contenedores con overflow-y propio (evita el "doble scroll").
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-scroll-x {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  gap: v.$bm-spacing-sm;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

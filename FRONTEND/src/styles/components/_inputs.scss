@@ -1,0 +1,41 @@
+// ============================================================
+// .bm-field — envoltorio de un <ion-item>/<ion-input> + su label + su
+// mensaje de error, para no repetir el mismo layout de "campo de
+// formulario" a mano en cada pantalla.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-field {
+  margin-bottom: v.$bm-spacing-md;
+}
+
+.bm-field__label {
+  display: block;
+  margin-bottom: v.$bm-spacing-xs;
+  font-size: var(--bm-font-size-sm);
+  color: var(--bm-color-text-muted);
+}
+
+.bm-field__error {
+  margin-top: v.$bm-spacing-xs;
+  font-size: var(--bm-font-size-xs);
+  color: var(--bm-color-danger);
+}
+
+// Textarea suelto (fuera de un ion-item): misma caja que los campos.
+ion-textarea.bm-textarea {
+  --padding-start: #{v.$bm-spacing-md};
+  --padding-end: #{v.$bm-spacing-md};
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  min-height: 96px;
+  border: 2px solid rgba(245, 164, 0, 0.18);
+  border-radius: var(--bm-radius-md);
+  background: var(--bm-color-surface-dark);
+  transition: border-color var(--bm-duration-fast) var(--bm-ease-standard);
+
+  &.has-focus {
+    border-color: var(--bm-color-primary);
+  }
+}

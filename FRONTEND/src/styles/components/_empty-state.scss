@@ -1,0 +1,32 @@
+// ============================================================
+// .bm-empty-state — "no hay nada todavía" (listas vacías).
+// Ícono + texto centrados dentro de un recuadro punteado: la pantalla no
+// queda "rota" ni con un texto suelto perdido.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-empty-state {
+  @include m.bm-flex-center;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+  padding: v.$bm-spacing-xl v.$bm-spacing-md;
+  border: 2px dashed rgba(245, 164, 0, 0.3);
+  border-radius: var(--bm-radius-lg);
+  background: rgba(0, 0, 0, 0.35);
+  text-align: center;
+  color: var(--bm-color-text-muted);
+  animation: bm-fade var(--bm-duration-base) var(--bm-ease-out) both;
+
+  p {
+    margin: 0;
+  }
+
+  // El ícono flota muy lento: la pantalla vacía no se ve "muerta".
+  ion-icon {
+    font-size: 2.5rem;
+    color: var(--bm-color-primary);
+    animation: bm-float var(--bm-duration-ambient) ease-in-out infinite;
+  }
+}

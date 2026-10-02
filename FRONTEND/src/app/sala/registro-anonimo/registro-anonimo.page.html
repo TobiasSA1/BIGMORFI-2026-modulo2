@@ -1,0 +1,50 @@
+<!-- MOCKUP VISUAL - Módulo 3, Punto 9. Ver comentario en el .ts -->
+<app-header-marca titulo="Registro rápido" backHref="/sala/bienvenida"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--login bm-fondo--blur">
+  <div class="bm-screen bm-screen--center bm-registro">
+    <p class="bm-lead ion-text-center bm-reveal">
+      Sacate una foto y decinos tu nombre: en 10 segundos estás en la lista de espera.
+    </p>
+
+    <div class="bm-photo-single bm-scale-in">
+      <img *ngIf="fotoPreview" [src]="fotoPreview" class="bm-photo-single__preview" alt="Foto personal" />
+      <button
+        type="button"
+        *ngIf="!fotoPreview"
+        class="bm-photo-single__preview bm-photo-single__placeholder"
+        (click)="tomarFoto()"
+      >
+        <ion-icon name="camera-outline"></ion-icon>
+        Tomar foto personal
+      </button>
+      <ion-button *ngIf="fotoPreview" fill="outline" size="small" (click)="tomarFoto()">Cambiar foto</ion-button>
+    </div>
+    <ion-text color="danger" *ngIf="f.fotoBase64.touched && f.fotoBase64.invalid">
+      <p class="ion-text-center">La foto es obligatoria.</p>
+    </ion-text>
+
+    <form class="bm-registro__form bm-fade-in" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Nombre completo</ion-label>
+        <ion-input formControlName="nombreCompleto" placeholder="Lionel Andrés" autocomplete="name"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="f.nombreCompleto.touched && f.nombreCompleto.invalid">
+        <p>Ingresá tu nombre y apellido.</p>
+      </ion-text>
+
+      <ion-button expand="block" type="submit" [disabled]="cargando">
+        <ion-spinner *ngIf="cargando" name="dots"></ion-spinner>
+        <span *ngIf="!cargando">Confirmar</span>
+      </ion-button>
+    </form>
+
+    <div class="bm-registro__pie">
+      <div class="bm-divider"><span>o</span></div>
+      <p class="ion-text-center">
+        <ion-text color="medium">¿Ya tenés una cuenta?</ion-text>
+        <a routerLink="/login" class="bm-link">Iniciar sesión</a>
+      </p>
+    </div>
+  </div>
+</ion-content>

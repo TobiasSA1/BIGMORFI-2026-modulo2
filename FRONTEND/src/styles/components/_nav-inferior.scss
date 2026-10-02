@@ -1,0 +1,85 @@
+// ============================================================
+// .bm-nav — navegación inferior del cliente (<app-nav-cliente>).
+// Píldora que se desliza a la sección activa; el ícono activo "salta"
+// con un rebote corto y se tiñe de ámbar. Respeta la barra de iOS.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+@keyframes bm-nav-icono {
+  0% {
+    transform: none;
+  }
+  40% {
+    transform: translate3d(0, -5px, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(0, -1px, 0);
+  }
+}
+
+.bm-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: v.$bm-spacing-xs;
+  // En tablet/escritorio no se estira de punta a punta (mismo tope que el contenido).
+  padding: 6px max(var(--bm-gutter), calc((100% - var(--bm-content-max)) / 2));
+  padding-bottom: calc(6px + var(--bm-safe-bottom));
+  background: linear-gradient(180deg, #120b05 0%, #000000 100%);
+  border-top: 1px solid rgba(245, 164, 0, 0.25);
+
+  // La píldora de la navegación es un "halo" suave, no un relleno lleno.
+  .bm-indicador {
+    border-radius: v.$bm-radius-md;
+    background: rgba(245, 164, 0, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(245, 164, 0, 0.35);
+  }
+}
+
+.bm-nav__item {
+  @include m.bm-flex-center;
+  position: relative;
+  z-index: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 52px;
+  border-radius: v.$bm-radius-md;
+  color: var(--bm-color-text-muted);
+  font-size: 11px;
+  font-weight: v.$bm-font-weight-semibold;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--bm-duration-base) var(--bm-ease-standard),
+    transform 260ms var(--bm-ease-spring);
+
+  ion-icon {
+    font-size: 22px;
+  }
+
+  &:active {
+    transform: scale(0.92);
+    transition-duration: 90ms;
+  }
+
+  &--activo {
+    color: var(--bm-color-primary);
+
+    ion-icon {
+      animation: bm-nav-icono 420ms var(--bm-ease-spring) both;
+    }
+  }
+}
+
+.bm-nav__texto {
+  letter-spacing: 0.02em;
+}
+
+@media (max-height: 500px) {
+  .bm-nav__item {
+    flex-direction: row;
+    gap: 6px;
+    min-height: 40px;
+  }
+}

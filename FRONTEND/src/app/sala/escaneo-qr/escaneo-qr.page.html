@@ -1,0 +1,31 @@
+<!-- MOCKUP VISUAL - Módulo 3. Ver comentario en el .ts -->
+<ion-content class="bm-scan-content">
+  <button class="bm-scan__cerrar" [routerLink]="destinoVolver" aria-label="Volver">
+    <ion-icon name="close-circle"></ion-icon>
+  </button>
+
+  <div class="bm-screen bm-screen--center bm-scan">
+    <img src="assets/LogoBigMorfi.png" class="bm-scan__logo bm-fade" alt="Big Morfi" />
+
+    <div class="bm-scan__header bm-fade-in">
+      <h1 class="bm-heading--lg">{{ titulo }}</h1>
+      <p>{{ subtitulo }}</p>
+    </div>
+
+    <div class="bm-scan__visor" (click)="simularEscaneo()">
+      <span class="bm-scan__esquina bm-scan__esquina--tl"></span>
+      <span class="bm-scan__esquina bm-scan__esquina--tr"></span>
+      <span class="bm-scan__esquina bm-scan__esquina--bl"></span>
+      <span class="bm-scan__esquina bm-scan__esquina--br"></span>
+      <span class="bm-scan__linea"></span>
+    </div>
+
+    <p class="bm-scan__ayuda">{{ ayuda }}</p>
+
+    <div class="bm-screen__actions">
+      <ion-button expand="block" fill="outline" (click)="simularEscaneo()">
+        Simular escaneo (mock)
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

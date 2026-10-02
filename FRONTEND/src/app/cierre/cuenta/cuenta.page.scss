@@ -1,0 +1,90 @@
+// MOCKUP VISUAL - Módulo 4, Punto 21.
+
+.bm-cuenta {
+  gap: var(--bm-spacing-lg);
+}
+
+.bm-cuenta__monto {
+  font-family: var(--bm-font-heading);
+  color: var(--bm-color-primary);
+  font-size: clamp(2.25rem, 1.4rem + 4vw, 3rem);
+  line-height: 1.05;
+}
+
+.bm-cuenta__linea {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--bm-spacing-md);
+
+  span:last-child {
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &--subtotal {
+    align-items: center;
+    padding-top: var(--bm-spacing-sm);
+    border-top: 1px solid rgba(245, 164, 0, 0.25);
+    font-weight: 600;
+  }
+}
+
+// Grilla de propina: 5 botones parejos que llenan el ancho, cuadrados y
+// con área táctil de sobra incluso en 320px.
+.bm-propinas {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--bm-spacing-sm);
+}
+
+.bm-propina-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  min-height: var(--bm-touch-min);
+  border-radius: var(--bm-radius-md);
+  border: 2px solid var(--bm-color-primary);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--bm-color-primary);
+  font-family: var(--bm-font-body);
+  font-weight: 700;
+  font-size: var(--bm-font-size-md);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--bm-duration-base) var(--bm-ease-standard),
+    color var(--bm-duration-base) var(--bm-ease-standard),
+    transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  &--activo {
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+    animation: bm-pop var(--bm-duration-base) var(--bm-ease-spring);
+  }
+}
+
+// El QR de pago se "despliega" al elegir la propina: entra girado y chico
+// y se endereza con rebote (se nota que apareció algo para escanear).
+@keyframes bm-qr-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: rotate(2deg) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bm-cuenta__qr .bm-qr-card__image {
+  animation: bm-qr-in 560ms var(--bm-ease-out) 120ms both;
+}

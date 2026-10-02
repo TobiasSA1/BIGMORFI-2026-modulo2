@@ -1,0 +1,16 @@
+// Retoque visual (Módulo 1): estado centrado en la pantalla y la acción
+// abajo, al alcance del pulgar.
+
+.bm-estado-cuenta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bm-spacing-sm);
+  animation: bm-fade-in var(--bm-duration-slow) var(--bm-ease-out) both;
+
+  h2,
+  p {
+    margin: 0;
+  }
+}

@@ -12,6 +12,7 @@ import { CrearProductoDto } from './dto/crear-producto.dto';
  *
  *  - POST /productos/platos    -> Punto 2 (alta de plato, la hace el cocinero)
  *  - POST /productos/bebidas   -> Punto 3 (alta de bebida, la hace el cantinero)
+ *  - POST /productos/postres   -> alta de postre (la hace el cocinero, sale por cocina)
  *  - GET  /productos           -> ver la carta (cualquier usuario logueado)
  */
 @Controller('productos')
@@ -37,6 +38,17 @@ export class ProductosController {
   @Post('bebidas')
   crearBebida(@Body() dto: CrearProductoDto, @CurrentUser() user: any) {
     return this.productosService.crear(dto, 'bebida', user.id);
+  }
+
+  /**
+   * Alta de postre. Lo carga el cocinero (sale por el sector cocina), igual
+   * que el plato. Pedido agregado por el equipo (avisó Nahue) porque el TP
+   * lo exige; el enum de la base ya tenía 'postre' preparado.
+   */
+  @Auth('cocinero', 'dueño', 'supervisor')
+  @Post('postres')
+  crearPostre(@Body() dto: CrearProductoDto, @CurrentUser() user: any) {
+    return this.productosService.crear(dto, 'postre', user.id);
   }
 
   /**

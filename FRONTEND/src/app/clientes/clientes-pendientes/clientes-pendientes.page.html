@@ -1,40 +1,41 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Clientes pendientes</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header-marca titulo="Clientes pendientes" backHref="/home"></app-header-marca>
 
-<ion-content>
+<!-- Retoque visual (Módulo 1): solo maquetado y estilos, misma lógica. -->
+<ion-content class="bm-fondo bm-fondo--alta">
   <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div class="ion-text-center ion-padding" *ngIf="cargando && clientes.length === 0">
-    <ion-spinner name="dots"></ion-spinner>
+  <div class="bm-screen">
+    <div class="bm-stack" *ngIf="cargando && clientes.length === 0">
+      <div class="bm-skeleton bm-skeleton--card"></div>
+      <div class="bm-skeleton bm-skeleton--card"></div>
+      <div class="bm-skeleton bm-skeleton--card"></div>
+    </div>
+
+    <div class="bm-empty-state" *ngIf="!cargando && clientes.length === 0">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <p>No hay clientes pendientes de aprobación.</p>
+    </div>
+
+    <div class="bm-stack bm-stagger">
+      <div class="bm-card bm-pendiente" *ngFor="let cliente of clientes">
+        <div class="bm-pendiente__datos">
+          <ion-avatar class="avatar-cliente">
+            <img *ngIf="cliente.foto_url" [src]="cliente.foto_url" [alt]="cliente.nombre" />
+            <ion-icon *ngIf="!cliente.foto_url" name="person-circle-outline"></ion-icon>
+          </ion-avatar>
+          <h2 class="bm-pendiente__nombre">{{ cliente.apellido }}, {{ cliente.nombre }}</h2>
+        </div>
+        <div class="bm-pendiente__acciones">
+          <ion-button fill="outline" color="danger" (click)="abrirConfirmacion(cliente, 'rechazar')">
+            Rechazar
+          </ion-button>
+          <ion-button color="success" (click)="abrirConfirmacion(cliente, 'aprobar')">
+            Aceptar
+          </ion-button>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <ion-text class="ion-padding" *ngIf="!cargando && clientes.length === 0">
-    <p>No hay clientes pendientes de aprobación.</p>
-  </ion-text>
-
-  <ion-list>
-    <ion-item *ngFor="let cliente of clientes">
-      <ion-avatar slot="start" class="avatar-cliente">
-        <img *ngIf="cliente.foto_url" [src]="cliente.foto_url" [alt]="cliente.nombre" />
-        <ion-icon *ngIf="!cliente.foto_url" name="person-circle-outline"></ion-icon>
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ cliente.apellido }}, {{ cliente.nombre }}</h2>
-      </ion-label>
-      <ion-button slot="end" color="success" fill="outline" (click)="abrirConfirmacion(cliente, 'aprobar')">
-        Aceptar
-      </ion-button>
-      <ion-button slot="end" color="danger" fill="outline" (click)="abrirConfirmacion(cliente, 'rechazar')">
-        Rechazar
-      </ion-button>
-    </ion-item>
-  </ion-list>
 </ion-content>

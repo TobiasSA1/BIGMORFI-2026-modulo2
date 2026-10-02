@@ -1,0 +1,96 @@
+// ============================================================
+// .bm-tabs / .bm-chip — categorías de la carta, filtros y chips de
+// acción rápida (chat).
+//
+// Con la directiva [bmIndicador] (core/motion) el chip activo no se
+// "pinta": una píldora ámbar (.bm-indicador) se DESLIZA hasta él con un
+// rebote suave. Sin la directiva, el chip activo se rellena solo.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-tabs {
+  display: flex;
+  gap: v.$bm-spacing-sm;
+  padding: v.$bm-spacing-sm var(--bm-gutter) v.$bm-spacing-md;
+}
+
+.bm-chip {
+  @include m.bm-flex-center;
+  position: relative;
+  z-index: 1;
+  gap: v.$bm-spacing-xs;
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 0 v.$bm-spacing-md;
+  border-radius: var(--bm-radius-full);
+  border: 2px solid rgba(245, 164, 0, 0.55);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--bm-color-primary);
+  font-family: var(--bm-font-body);
+  font-weight: v.$bm-font-weight-semibold;
+  font-size: var(--bm-font-size-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--bm-duration-base) var(--bm-ease-standard),
+    border-color var(--bm-duration-base) var(--bm-ease-standard),
+    color var(--bm-duration-base) var(--bm-ease-standard),
+    transform 260ms var(--bm-ease-spring);
+
+  &:active {
+    transform: scale(0.94);
+    transition-duration: 90ms;
+  }
+
+  &:focus-visible {
+    @include m.bm-focus-ring;
+  }
+
+  &--active {
+    border-color: var(--bm-color-primary);
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+  }
+}
+
+// ---- Indicador deslizante -------------------------------------------
+.bm-con-indicador {
+  position: relative;
+
+  // La píldora pinta el fondo: el chip activo queda transparente encima.
+  .bm-chip--active {
+    background: transparent;
+  }
+}
+
+.bm-indicador {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--bm-radius-full);
+  background: var(--bm-color-primary);
+  box-shadow: 0 4px 14px rgba(245, 164, 0, 0.35);
+  pointer-events: none;
+  transition:
+    transform 420ms var(--bm-ease-spring-soft),
+    width 420ms var(--bm-ease-spring-soft),
+    opacity var(--bm-duration-fast) linear;
+
+  &--sin-transicion {
+    transition: none;
+  }
+}
+
+@media (max-height: 500px) {
+  .bm-tabs {
+    padding-bottom: v.$bm-spacing-sm;
+  }
+
+  .bm-chip {
+    min-height: 36px;
+  }
+}

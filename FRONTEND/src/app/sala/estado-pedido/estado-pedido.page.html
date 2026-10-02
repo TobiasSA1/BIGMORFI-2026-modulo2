@@ -1,0 +1,79 @@
+<!-- MOCKUP VISUAL - Módulo 3, Puntos 13/14/18/19. Ver comentario en el .ts -->
+<app-header-marca titulo="Tu pedido" backHref="/sala/carta"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <!-- ---- Cargando el estado inicial ---- -->
+  <div class="bm-screen" *ngIf="cargando">
+    <div class="bm-skeleton bm-skeleton--hero"></div>
+    <div class="bm-skeleton bm-skeleton--card"></div>
+    <div class="bm-skeleton bm-skeleton--card"></div>
+  </div>
+
+  <div class="bm-screen" *ngIf="!cargando">
+    <!-- ---- Hero: ícono grande + estado actual (se re-anima al cambiar) ---- -->
+    <ng-container *ngFor="let e of [estado]">
+      <div class="bm-hero bm-pedido__hero" [class.bm-pedido__hero--rechazado]="e === 'rechazado'">
+        <span class="bm-estado-icono">
+          <span class="bm-estado-icono__onda"></span>
+          <ion-icon class="bm-hero__icono" [name]="iconoPorEstado[e]"></ion-icon>
+        </span>
+        <h1 class="bm-heading--lg bm-reveal">{{ etiquetas[e] }}</h1>
+        <p class="bm-caption" *ngIf="e !== 'rechazado'">Mesa 1 · Pedido #4821</p>
+      </div>
+    </ng-container>
+
+    <!-- ---- Rama: rechazado ---- -->
+    <div class="bm-card bm-fade-in" *ngIf="estado === 'rechazado'">
+      <div class="bm-card__body ion-text-center">
+        <p>{{ motivoRechazo }}</p>
+        <ion-button expand="block" routerLink="/sala/carta">Volver a la carta</ion-button>
+      </div>
+    </div>
+
+    <!-- ---- Línea de tiempo normal ---- -->
+    <div class="bm-timeline bm-stagger" *ngIf="estado !== 'rechazado'">
+      <div
+        class="bm-timeline__paso"
+        *ngFor="let etiqueta of [etiquetas.pendiente_confirmacion, etiquetas.confirmado, etiquetas.listo, etiquetas.entregado, etiquetas.recibido]; let i = index"
+        [class.bm-timeline__paso--hecho]="i < indiceActual"
+        [class.bm-timeline__paso--actual]="i === indiceActual"
+      >
+        <div class="bm-timeline__marca">
+          <ion-icon [name]="i <= indiceActual ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
+          <span class="bm-timeline__linea" *ngIf="i < 4"></span>
+        </div>
+        <span class="bm-timeline__texto">{{ etiqueta }}</span>
+      </div>
+    </div>
+
+    <div class="bm-screen__actions">
+      <ion-button expand="block" class="bm-scale-in" *ngIf="estado === 'entregado'" (click)="confirmarRecepcion()">
+        Confirmar que lo recibí
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="bm-scale-in"
+        *ngIf="estado === 'recibido'"
+        routerLink="/cierre/cuenta"
+      >
+        Pedir la cuenta
+      </ion-button>
+
+      <!-- ---- Controles de desarrollo (mock, sacar cuando haya backend real) ---- -->
+      <div class="bm-mock" *ngIf="estado !== 'recibido' && estado !== 'rechazado'">
+        <p class="bm-eyebrow">Controles de prueba (simulan push/Realtime)</p>
+        <ion-button expand="block" fill="outline" size="small" (click)="avanzarMock()">
+          (mock) Avanzar al siguiente estado
+        </ion-button>
+        <ion-button expand="block" fill="clear" color="danger" size="small" (click)="simularRechazoMock()">
+          (mock) Simular rechazo del mozo
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <app-nav-cliente></app-nav-cliente>
+</ion-footer>

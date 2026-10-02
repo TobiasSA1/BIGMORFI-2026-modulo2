@@ -1,0 +1,228 @@
+// ============================================================
+// Navbar de marca (.bm-header) — la usan <app-header-marca> y el header
+// propio de la carta.
+//
+//   ┌──────────────────────────────────────────────┐
+//   │ (←)      (BM)  BIG MORFI                     │  ← sello con anillo dorado
+//   │                Nueva mesa                    │    + rótulo + título
+//   └───────────── ━━━━━━━━━━━━━━━━ ───────────────┘  ← acento que se dibuja
+//
+// Entrada (cada vez que se abre una pantalla): el sello gira y "aterriza"
+// con rebote, el título se revela subiendo y el acento se dibuja desde el
+// centro con un brillo que lo cruza una vez.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+@keyframes bm-sello-in {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bm-acento-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.bm-header {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+
+  ion-toolbar {
+    // Resplandor ámbar detrás del sello + degradé negro → marrón.
+    --background:
+      radial-gradient(ellipse 60% 120% at 50% 120%, rgba(245, 164, 0, 0.16), transparent 70%),
+      linear-gradient(180deg, #000000 0%, #1d1208 100%);
+    --min-height: 60px;
+  }
+
+  // Ionic (modo md) le pone 20px de padding a cada lado al título: con el
+  // sello y el botón de volver eso cortaba títulos como "Registro rápido".
+  ion-title {
+    padding-inline: 4px;
+  }
+}
+
+// Línea de acento: degradé ámbar → rojo ketchup → ámbar que se desvanece
+// hacia los bordes, con un brillo que la cruza una sola vez.
+.bm-header__acento {
+  position: relative;
+  height: 3px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--bm-color-primary) 20%,
+    var(--bm-color-danger) 50%,
+    var(--bm-color-primary) 80%,
+    transparent 100%
+  );
+  transform-origin: center;
+  animation: bm-acento-in 520ms var(--bm-ease-out) 80ms both;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+    transform: translate3d(-120%, 0, 0);
+    animation: bm-sheen 900ms var(--bm-ease-out) 500ms both;
+  }
+}
+
+// Botón de volver: círculo oscuro con borde dorado tenue; la flecha se
+// corre hacia atrás al presionar ("me voy para allá").
+.bm-header__volver {
+  --background: rgba(255, 255, 255, 0.06);
+  --background-hover: rgba(245, 164, 0, 0.12);
+  --background-focused: rgba(245, 164, 0, 0.12);
+  --border-radius: 50%;
+  --color: var(--bm-color-primary);
+  --icon-font-size: 22px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --min-width: 42px;
+  --min-height: 42px;
+  width: 42px;
+  height: 42px;
+  margin-inline: 6px;
+  border: 1px solid rgba(245, 164, 0, 0.35);
+  border-radius: 50%;
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-spring) 120ms both;
+
+  &::part(icon) {
+    transition: transform 260ms var(--bm-ease-spring);
+  }
+
+  &:active::part(icon) {
+    transform: translate3d(-4px, 0, 0);
+    transition-duration: 90ms;
+  }
+}
+
+.bm-header-marca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+// Sello: el logo dentro de un círculo negro con anillo dorado y halo.
+.bm-header-marca__sello {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #2a1b0b, #000000 70%);
+  border: 2px solid var(--bm-color-primary);
+  box-shadow:
+    0 0 0 3px rgba(245, 164, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  animation: bm-sello-in 560ms var(--bm-ease-spring-soft) both;
+}
+
+.bm-header-marca__logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.bm-header-marca__textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.bm-header-marca__rotulo {
+  font-family: var(--bm-font-body);
+  font-size: 10px;
+  font-weight: v.$bm-font-weight-bold;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bm-color-primary);
+  animation: bm-fade var(--bm-duration-base) var(--bm-ease-out) 120ms both;
+}
+
+.bm-header-marca__titulo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--bm-font-heading);
+  font-size: var(--bm-font-size-lg);
+  color: var(--bm-color-text-light);
+  animation: bm-reveal var(--bm-duration-slow) var(--bm-ease-out) 160ms both;
+}
+
+.bm-header-marca__subtitulo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--bm-font-body);
+  font-size: var(--bm-font-size-xs);
+  font-weight: 500;
+  color: var(--bm-color-text-muted);
+}
+
+.bm-header-marca__espaciador {
+  display: block;
+  width: 54px; // ancho del botón de volver + su margen
+}
+
+// Teléfonos angostos (320–374px): sello más chico y sin espaciador, así
+// entran títulos largos como "Clientes pendientes" completos.
+@media (max-width: 374px) {
+  .bm-header-marca {
+    gap: 8px;
+  }
+
+  .bm-header-marca__sello {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bm-header-marca__logo {
+    width: 25px;
+    height: 25px;
+  }
+
+  .bm-header-marca__espaciador {
+    width: 0;
+  }
+
+  .bm-header-marca__titulo {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bm-header__acento::after {
+    animation: none;
+  }
+}
+
+// Botón de volver suelto (pantallas sin navbar, ej. bienvenida): flota
+// arriba a la izquierda respetando el notch.
+.bm-volver-flotante {
+  position: absolute;
+  top: calc(var(--bm-spacing-sm) + var(--bm-safe-top));
+  left: 0;
+  z-index: 10;
+  --background: rgba(0, 0, 0, 0.55);
+}

@@ -1,0 +1,18 @@
+// ============================================================
+// Utilidades de visibilidad/tamaño. `.bm-hidden` es la ÚNICA excepción
+// deliberada a "no usar !important" del proyecto: una utilidad de
+// visibilidad existe justamente para ganarle a cualquier otro estilo,
+// igual que .d-none en Bootstrap o los "!" de Tailwind.
+// ============================================================
+
+.bm-hidden {
+  display: none !important;
+}
+
+.bm-block {
+  display: block;
+}
+
+.bm-w-full {
+  width: 100%;
+}

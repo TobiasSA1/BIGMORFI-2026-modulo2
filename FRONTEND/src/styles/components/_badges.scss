@@ -1,0 +1,39 @@
+// ============================================================
+// .bm-badge — para estados/etiquetas cortas (aprobado, pendiente, cantidad
+// de ítems, etc.). Pensado para usarse tanto solo como dentro de un
+// <ion-badge slot="end"> (Ionic le da el posicionamiento, esta clase le da
+// el color/forma Big Morfi).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px v.$bm-spacing-sm;
+  border-radius: var(--bm-radius-full);
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-bold;
+  text-transform: uppercase; // "NUEVO", "LISTO", etc. — como un sticker de cartel
+  letter-spacing: 0.03em;
+  background: var(--bm-color-surface-dark);
+  color: var(--bm-color-text-light);
+
+  &--success {
+    background: var(--bm-color-success);
+    color: #fff;
+  }
+  &--danger {
+    background: var(--bm-color-danger);
+    color: #fff;
+  }
+  &--warning {
+    background: var(--bm-color-warning);
+    color: #1a1a1a;
+  }
+  &--primary {
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+  }
+}

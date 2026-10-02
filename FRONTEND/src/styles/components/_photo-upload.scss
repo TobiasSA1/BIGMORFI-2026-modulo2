@@ -1,0 +1,89 @@
+// ============================================================
+// Carga de fotos (altas). Las previsualizaciones reservan su espacio con
+// aspect-ratio y la foto nueva entra con un fade corto.
+//   .bm-photo-grid   3 fotos en fila (platos, bebidas, postres).
+//   .bm-photo-single foto única circular (cliente, empleado, mesa).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(#{v.$bm-spacing-sm}, 2.5vw, #{v.$bm-spacing-md});
+}
+
+.bm-photo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: v.$bm-spacing-sm;
+  min-width: 0;
+
+  ion-button {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    letter-spacing: 0;
+  }
+}
+
+.bm-photo-slot__preview,
+.bm-photo-slot__placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--bm-radius-md);
+  object-fit: cover;
+  border: 2px solid var(--bm-color-primary);
+}
+
+.bm-photo-slot__preview {
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-out);
+}
+
+.bm-photo-slot__placeholder {
+  @include m.bm-flex-center;
+  border-style: dashed;
+  border-color: rgba(245, 164, 0, 0.55);
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-semibold;
+  color: var(--bm-color-text-muted);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.bm-photo-single {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: v.$bm-spacing-sm;
+}
+
+.bm-photo-single__preview {
+  width: clamp(120px, 38vw, 160px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bm-color-primary);
+  box-shadow: 0 0 0 6px rgba(245, 164, 0, 0.12);
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-out);
+}
+
+.bm-photo-single__placeholder {
+  @include m.bm-flex-center;
+  flex-direction: column;
+  gap: v.$bm-spacing-xs;
+  text-align: center;
+  border-style: dashed;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--bm-color-text-muted);
+  font-size: var(--bm-font-size-sm);
+  font-weight: v.$bm-font-weight-semibold;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.97);
+  }
+}

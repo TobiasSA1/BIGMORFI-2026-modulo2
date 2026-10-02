@@ -1,27 +1,35 @@
-#container {
-  text-align: center;
+// Home (panel por rol): saludo arriba, acciones del rol como botones
+// principales y, debajo, la vista previa temporal de mockups con menos
+// peso visual (outline, en grilla).
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.bm-home {
+  gap: var(--bm-spacing-lg);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.bm-home__preview {
+  padding: var(--bm-spacing-md);
+  border-radius: var(--bm-radius-lg);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed rgba(245, 164, 0, 0.35);
+
+  .bm-caption {
+    margin: var(--bm-spacing-xs) 0 0;
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+// Una columna en teléfonos; dos columnas cuando entran cómodas.
+.bm-home__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--bm-spacing-sm);
 
-  color: #8c8c8c;
-
-  margin: 0;
+  ion-button {
+    min-height: 48px;
+    font-size: var(--bm-font-size-xs);
+  }
 }
 
-#container a {
-  text-decoration: none;
+// El rol aparece después del saludo, con su pop.
+.bm-home__rol {
+  animation-delay: 300ms;
 }

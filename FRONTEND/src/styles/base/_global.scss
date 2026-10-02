@@ -1,0 +1,19 @@
+// ============================================================
+// Reglas globales de layout/fondo.
+//
+// Regla de UX del documento original: "fondo continuo, sin franjas blancas
+// detrás del status bar / notch". Se logra pintando el fondo en ion-app /
+// ion-router-outlet / ion-content, no solo en el <body>.
+// ============================================================
+
+html,
+body {
+  min-height: 100%;
+  background: var(--bm-color-background);
+}
+
+ion-app,
+ion-router-outlet,
+ion-content {
+  --background: var(--bm-color-background);
+}

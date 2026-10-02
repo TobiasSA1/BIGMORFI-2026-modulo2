@@ -8,13 +8,15 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 
 import { registrarIconos } from './app/core/icons';
+import { bmModalEntrada, bmModalSalida, bmTransicionPagina } from './app/core/motion/motion';
 
 registrarIconos();
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    // Transiciones de pantalla y de modales propias de la app (ver core/motion).
+    provideIonicAngular({ navAnimation: bmTransicionPagina, modalEnter: bmModalEntrada, modalLeave: bmModalSalida }),
     provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptor]))
   ],

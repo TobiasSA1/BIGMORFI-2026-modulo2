@@ -1,0 +1,79 @@
+// ============================================================
+// .bm-fondo — fondos con foto para <ion-content>.
+//
+// La foto se pinta en ::part(background), que es la capa de fondo que
+// ion-content expone oficialmente: queda fija mientras el contenido
+// scrollea y se puede animar sin tocar el shadow DOM.
+//
+// Uso:
+//   <ion-content class="bm-fondo bm-fondo--alta">            fondo fijo
+//   <ion-content class="bm-fondo bm-fondo--login bm-fondo--animado">
+//   <ion-content class="bm-fondo" [style.--bm-fondo-img]="'url(...)'">
+//
+// Fondos disponibles (assets/fondos/):
+//   login  → login, registro anónimo, bienvenida, lista de espera
+//   alta   → pantallas que no son de comida (altas, gestión, cuenta)
+//   menu1..menu5 → carta (rota uno distinto cada vez que se entra)
+//   splash → splash screen
+// ============================================================
+
+// Movimiento ambiental MUY sutil (4% de zoom en 20s, ida y vuelta): la
+// foto "respira" sin llamar la atención. Solo transform: lo resuelve la GPU.
+@keyframes bm-fondo-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+ion-content.bm-fondo {
+  // Velo oscuro encima de la foto para que el texto mantenga el contraste.
+  --bm-fondo-velo: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+ion-content.bm-fondo::part(background) {
+  background: var(--bm-fondo-velo), var(--bm-fondo-img) center / cover no-repeat;
+  background-color: #000000;
+}
+
+ion-content.bm-fondo--animado::part(background) {
+  animation: bm-fondo-zoom 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+// Velo más suave cuando la foto ya es oscura y queremos que luzca más.
+ion-content.bm-fondo--suave {
+  --bm-fondo-velo: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.bm-fondo--login {
+  --bm-fondo-img: url('/assets/fondos/login.jpg');
+}
+
+.bm-fondo--alta {
+  --bm-fondo-img: url('/assets/fondos/alta.jpg');
+}
+
+.bm-fondo--splash {
+  --bm-fondo-img: url('/assets/fondos/splash.jpg');
+}
+
+// Desenfoque de la foto, para pantallas con formulario/texto encima. El
+// scale tapa el borde transparente que deja el blur. Un fondo desenfocado
+// NO se anima (re-dibujar un blur en cada frame castiga a los teléfonos de
+// gama media), por eso esta regla le gana a .bm-fondo--animado.
+ion-content.bm-fondo--blur::part(background),
+ion-content.bm-fondo--blur.bm-fondo--animado::part(background) {
+  filter: blur(10px);
+  transform: scale(1.12);
+  animation: none;
+}
+
+// Con "reducir movimiento" el fondo queda quieto (es decoración pura).
+@media (prefers-reduced-motion: reduce) {
+  ion-content.bm-fondo--animado::part(background) {
+    animation: none;
+  }
+}

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Auth } from '../common/decorators/auth.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { MesasService } from './mesas.service';
@@ -7,8 +7,9 @@ import { CrearMesaDto } from './dto/crear-mesa.dto';
 /**
  * API de mesas.
  *
- *  - POST /mesas   -> Punto 4 (alta de mesa + QR automático). Solo dueño/supervisor.
- *  - GET  /mesas   -> listado de mesas con su QR (cualquier usuario logueado).
+ *  - POST /mesas       -> Punto 4 (alta de mesa + QR automático). Solo dueño/supervisor.
+ *  - GET  /mesas       -> listado de mesas con su QR (cualquier usuario logueado).
+ *  - GET  /mesas/:id   -> una mesa puntual (la usa el Módulo 3 para validar el QR escaneado).
  */
 @Controller('mesas')
 export class MesasController {
@@ -28,5 +29,11 @@ export class MesasController {
   @Get()
   listar() {
     return this.mesasService.listar();
+  }
+
+  @Auth()
+  @Get(':id')
+  buscarPorId(@Param('id') id: string) {
+    return this.mesasService.buscarPorId(id);
   }
 }

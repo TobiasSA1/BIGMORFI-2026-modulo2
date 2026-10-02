@@ -1,19 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Estado de tu cuenta</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header-marca titulo="Estado de tu cuenta"></app-header-marca>
 
-<ion-content class="ion-padding ion-text-center">
-  <ng-container *ngIf="estado === 'pendiente'">
-    <h2>Tu registro está pendiente de aprobación</h2>
-    <p>Todavía no podés ingresar. Te avisamos por correo apenas el restaurante revise tu solicitud.</p>
-  </ng-container>
+<!-- Retoque visual (Módulo 1): solo maquetado y estilos, misma lógica. -->
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-screen--center">
+    <div class="bm-estado-cuenta bm-screen__grow">
+      <ng-container *ngIf="estado === 'pendiente'">
+        <div class="bm-icono-circulo bm-pop-rot">
+          <ion-icon name="hourglass-outline"></ion-icon>
+        </div>
+        <h2 class="bm-heading--lg bm-reveal">Tu registro está pendiente de aprobación</h2>
+        <p class="bm-lead">Todavía no podés ingresar. Te avisamos por correo apenas el restaurante revise tu solicitud.</p>
+      </ng-container>
 
-  <ng-container *ngIf="estado === 'rechazado'">
-    <h2>Tu registro no fue aprobado</h2>
-    <p>No podés ingresar a la aplicación. Te enviamos un correo con más información.</p>
-  </ng-container>
+      <ng-container *ngIf="estado === 'rechazado'">
+        <div class="bm-icono-circulo bm-icono-circulo--danger bm-pop-rot">
+          <ion-icon name="close-circle"></ion-icon>
+        </div>
+        <h2 class="bm-heading--lg bm-reveal">Tu registro no fue aprobado</h2>
+        <p class="bm-lead">No podés ingresar a la aplicación. Te enviamos un correo con más información.</p>
+      </ng-container>
+    </div>
 
-  <ion-button expand="block" class="ion-margin-top" (click)="volverAlLogin()">Volver al login</ion-button>
+    <div class="bm-screen__actions">
+      <ion-button expand="block" (click)="volverAlLogin()">Volver al login</ion-button>
+    </div>
+  </div>
 </ion-content>

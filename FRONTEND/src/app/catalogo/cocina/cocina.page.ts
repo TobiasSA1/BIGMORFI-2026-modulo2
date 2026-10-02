@@ -3,23 +3,16 @@ import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonList,
-  IonListHeader,
   IonItem,
   IonLabel,
   IonButton,
-  IonSpinner,
   IonRefresher,
   IonRefresherContent,
-  IonText,
-  IonButtons,
-  IonBackButton,
-  IonBadge,
+  IonIcon,
   ToastController,
 } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 import { CatalogoService, PreparacionMesa } from '../catalogo.service';
 
 /**
@@ -43,23 +36,16 @@ import { CatalogoService, PreparacionMesa } from '../catalogo.service';
   templateUrl: './cocina.page.html',
   styleUrls: ['./cocina.page.scss'],
   imports: [
+    HeaderMarcaComponent,
     CommonModule,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonList,
-    IonListHeader,
     IonItem,
     IonLabel,
     IonButton,
-    IonSpinner,
     IonRefresher,
     IonRefresherContent,
-    IonText,
-    IonButtons,
-    IonBackButton,
-    IonBadge,
+    IonIcon,
   ],
 })
 export class CocinaPage implements OnInit {

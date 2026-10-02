@@ -1,0 +1,40 @@
+// ============================================================
+// .bm-divider — línea con un texto corto en el medio ("o", "Detalle", etc.)
+// perfectamente centrado: dos líneas que se estiran parejo a cada lado y el
+// texto queda en el centro exacto, sin importar su ancho.
+//
+// Uso: <div class="bm-divider"><span>o</span></div>
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$bm-spacing-md;
+  width: 100%;
+  margin: v.$bm-spacing-md 0;
+  color: var(--bm-color-text-muted);
+  font-size: var(--bm-font-size-sm);
+  font-weight: v.$bm-font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--bm-color-primary));
+  }
+
+  &::after {
+    background: linear-gradient(90deg, var(--bm-color-primary), transparent);
+  }
+
+  span {
+    flex-shrink: 0;
+    line-height: 1;
+  }
+}

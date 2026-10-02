@@ -1,0 +1,107 @@
+// ============================================================
+// Tipografía global.
+// Las fuentes (Archivo Black / Montserrat) se cargan desde Google Fonts en
+// src/index.html (con preconnect, para no bloquear el primer render). Acá
+// solo se aplican como reglas de texto.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+body {
+  font-family: var(--bm-font-body);
+  color: var(--bm-color-text-light);
+  font-size: var(--bm-font-size-md);
+  line-height: v.$bm-line-height-body;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.bm-heading {
+  font-family: var(--bm-font-heading);
+  // Archivo Black solo tiene un peso (funciona como "black"/900 visualmente
+  // con su propio dibujo, no hace falta forzar font-weight).
+  font-weight: v.$bm-font-weight-regular;
+  line-height: v.$bm-line-height-tight;
+  margin: 0 0 v.$bm-spacing-sm;
+  overflow-wrap: break-word; // un título largo baja de línea, nunca desborda
+  color: var(--bm-color-text-light);
+}
+
+h1,
+.bm-heading--xl {
+  font-size: var(--bm-font-size-xxl);
+}
+h2,
+.bm-heading--lg {
+  font-size: var(--bm-font-size-xl);
+}
+h3,
+.bm-heading--md {
+  font-size: var(--bm-font-size-lg);
+}
+
+p {
+  margin: 0 0 v.$bm-spacing-sm;
+}
+
+// Precios: siempre Montserrat Bold, sin importar dónde aparezcan (carta,
+// cuenta, badge de precio, etc.) — regla del documento original. Grandes a
+// propósito: en un menú de comida rápida el precio es uno de los elementos
+// con más peso visual de la pantalla, no un dato chico al costado.
+.bm-text-price {
+  font-family: var(--bm-font-body);
+  font-weight: v.$bm-font-weight-bold;
+  font-size: var(--bm-font-size-lg);
+}
+
+// Jerarquía de texto chico:
+//   .bm-caption  dato secundario (horarios, tiempos, ayudas)
+//   .bm-eyebrow  rótulo en mayúsculas arriba de un dato ("TOTAL A PAGAR")
+.bm-caption {
+  font-size: var(--bm-font-size-sm);
+  color: var(--bm-color-text-muted);
+}
+
+.bm-eyebrow {
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bm-color-text-muted);
+}
+
+// Texto de apoyo debajo de un título de pantalla (ancho de lectura cómodo).
+.bm-lead {
+  max-width: 34ch;
+  margin-inline: auto;
+  color: var(--bm-color-text-light);
+  opacity: 0.9;
+}
+
+.bm-text-muted {
+  color: var(--bm-color-text-muted);
+}
+
+.bm-text-center {
+  text-align: center;
+}
+
+// Link de texto (acciones terciarias dentro de un párrafo).
+.bm-link {
+  margin-inline-start: 4px;
+  color: var(--bm-color-primary);
+  font-weight: v.$bm-font-weight-bold;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(245, 164, 0, 0.4);
+  transition: border-color var(--bm-duration-fast) var(--bm-ease-standard);
+
+  &:active {
+    border-color: var(--bm-color-primary);
+  }
+}

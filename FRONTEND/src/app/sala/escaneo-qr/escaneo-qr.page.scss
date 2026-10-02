@@ -1,0 +1,135 @@
+// MOCKUP VISUAL - Módulo 3.
+// Esta pantalla simula una cámara: fondo negro real, porque una cámara de
+// verdad tampoco se puede "teñir" con la paleta de la app.
+:host ::ng-deep .bm-scan-content {
+  --background: #000000;
+}
+
+// Tamaño del visor: 70% del ancho, con tope de 260px y sin pasar el 38% del
+// alto (teléfonos bajitos o girados).
+.bm-scan {
+  --visor: min(70vw, 260px, 38vh);
+  gap: var(--bm-spacing-lg);
+  align-items: center;
+}
+
+.bm-scan__logo {
+  width: clamp(56px, 18vw, 80px);
+  height: auto;
+  object-fit: contain;
+}
+
+.bm-scan__header {
+  h1 {
+    margin: 0 0 var(--bm-spacing-xs);
+    color: #fff;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.bm-scan__cerrar {
+  position: absolute;
+  top: calc(var(--bm-spacing-sm) + var(--bm-safe-top));
+  right: var(--bm-spacing-sm);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bm-touch-min);
+  height: var(--bm-touch-min);
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 32px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.bm-scan__visor {
+  position: relative;
+  width: var(--visor);
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  animation: bm-scale-in var(--bm-duration-slow) var(--bm-ease-out) both;
+}
+
+// Línea que recorre el visor: se mueve con transform (no animando "top"),
+// así no recalcula layout en cada frame.
+@keyframes bm-scan-linea {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(0, calc(var(--visor) * 0.8), 0);
+    opacity: 1;
+  }
+}
+
+.bm-scan__linea {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  right: 8%;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--bm-color-primary);
+  box-shadow: 0 0 10px var(--bm-color-primary);
+  animation: bm-scan-linea 2.4s ease-in-out infinite;
+}
+
+.bm-scan__esquina {
+  position: absolute;
+  width: 22%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid var(--bm-color-primary);
+
+  &--tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+    border-top-left-radius: 12px;
+  }
+  &--tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+    border-top-right-radius: 12px;
+  }
+  &--bl {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+    border-bottom-left-radius: 12px;
+  }
+  &--br {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+    border-bottom-right-radius: 12px;
+  }
+}
+
+.bm-scan__ayuda {
+  max-width: 30ch;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bm-scan .bm-screen__actions {
+  width: 100%;
+  margin-top: 0;
+}

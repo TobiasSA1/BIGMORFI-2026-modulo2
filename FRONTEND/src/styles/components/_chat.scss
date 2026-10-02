@@ -1,0 +1,43 @@
+// ============================================================
+// .bm-chat — burbujas de conversación cliente <-> mozo.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-chat {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+}
+
+.bm-chat-bubble {
+  max-width: min(80%, 420px);
+  padding: 10px v.$bm-spacing-md;
+  border-radius: var(--bm-radius-lg);
+  font-size: var(--bm-font-size-md);
+  line-height: 1.4;
+  box-shadow: var(--bm-shadow-sm);
+  overflow-wrap: anywhere;
+
+  &__hora {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--bm-font-size-xs);
+    opacity: 0.75;
+    text-align: right;
+  }
+
+  &--mozo {
+    align-self: flex-start;
+    background: var(--bm-color-surface);
+    color: var(--bm-color-text-light);
+    border-bottom-left-radius: var(--bm-radius-sm);
+  }
+
+  &--cliente {
+    align-self: flex-end;
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+    border-bottom-right-radius: var(--bm-radius-sm);
+  }
+}

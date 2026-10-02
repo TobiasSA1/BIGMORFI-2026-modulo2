@@ -1,0 +1,355 @@
+// ============================================================
+// Theming global de los componentes de Ionic.
+//
+// Regla del proyecto (ver STYLEGUIDE.md): para estilizar un componente de
+// Ionic se usan sus variables CSS oficiales (--background, --color, etc.)
+// o sus ::part públicos. Nunca se perfora el Shadow DOM con selectores
+// hacky. Esto se define UNA SOLA VEZ acá y aplica a toda la app.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+// ---- Contenido ------------------------------------------------
+ion-content {
+  // Fondo con profundidad (no plano): resplandor ámbar arriba a la derecha y
+  // un toque de rojo "ketchup" abajo a la izquierda sobre el casi negro.
+  // Las pantallas con foto lo reemplazan con .bm-fondo (components/_fondos).
+  --background:
+    radial-gradient(circle at 100% 0%, rgba(245, 164, 0, 0.13) 0, transparent 42%),
+    radial-gradient(circle at 0% 100%, rgba(232, 67, 58, 0.1) 0, transparent 38%),
+    var(--bm-color-background);
+  --color: var(--bm-color-text-light);
+}
+
+// ---- Header ---------------------------------------------------
+ion-header ion-toolbar,
+ion-footer ion-toolbar {
+  // Negro del logo con un leve degradé cálido hacia abajo (no negro plano).
+  --background: linear-gradient(180deg, #000000 0%, #1d1208 100%);
+  --color: var(--bm-color-text-light);
+  --min-height: 56px;
+  --padding-start: #{v.$bm-spacing-xs};
+  --padding-end: #{v.$bm-spacing-xs};
+}
+
+// El acento dorado del header lo dibuja .bm-header__acento (components/_header).
+
+ion-header::after {
+  display: none; // saca la sombra gris por defecto de Ionic
+}
+
+ion-title {
+  font-family: var(--bm-font-heading);
+  font-weight: 400;
+  color: var(--bm-color-primary);
+  text-align: center;
+  font-size: var(--bm-font-size-lg);
+}
+
+ion-back-button {
+  --color: var(--bm-color-text-light);
+  --icon-font-size: 24px;
+  // Área táctil cómoda aunque el ícono sea chico.
+  --min-width: #{v.$bm-touch-min};
+  --min-height: #{v.$bm-touch-min};
+}
+
+// ---- Botones --------------------------------------------------
+// Jerarquía:
+//   solid (default)  → acción PRINCIPAL de la pantalla (ámbar lleno)
+//   fill="outline"   → acción secundaria
+//   fill="clear"     → acción terciaria / link
+//   color="danger"   → acción destructiva
+ion-button {
+  --border-radius: var(--bm-radius-lg);
+  --box-shadow: none;
+  --padding-start: #{v.$bm-spacing-md};
+  --padding-end: #{v.$bm-spacing-md};
+  min-height: var(--bm-control-h);
+  height: auto;
+  margin: 0;
+  font-family: var(--bm-font-body);
+  font-size: 0.9375rem; // 15px: legible en mayúsculas sin desbordar en 320px
+  font-weight: v.$bm-font-weight-bold;
+  // MAYÚSCULAS con tracking: recurso típico de cartel de comida rápida.
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: normal; // un texto largo baja de línea en vez de cortarse
+  -webkit-tap-highlight-color: transparent;
+  // Al soltar vuelve con un mini rebote; al apretar se comprime rápido.
+  transition:
+    transform 260ms var(--bm-ease-spring),
+    opacity var(--bm-duration-fast) var(--bm-ease-standard);
+
+  &:active {
+    transform: scale(var(--bm-motion-press));
+    transition-duration: 90ms;
+    transition-timing-function: var(--bm-ease-out);
+  }
+
+  &.button-solid {
+    --box-shadow: 0 4px 14px rgba(245, 164, 0, 0.25);
+  }
+
+  &[fill='outline'] {
+    --border-color: var(--bm-color-primary);
+    --border-width: 2px;
+    --color: var(--bm-color-primary);
+    --background-activated: rgba(245, 164, 0, 0.12);
+  }
+
+  &[fill='outline'][color='danger'] {
+    --border-color: var(--bm-color-danger);
+    --color: var(--bm-color-danger);
+  }
+
+  &[fill='outline'][color='success'] {
+    --border-color: var(--bm-color-success);
+    --color: #7fc174; // verde aclarado: 4.6:1 sobre el fondo oscuro
+  }
+
+  &[fill='clear'] {
+    --color: var(--bm-color-primary);
+    font-size: var(--bm-font-size-sm);
+    letter-spacing: 0.03em;
+  }
+
+  &[size='small'] {
+    min-height: var(--bm-control-h-sm);
+    --padding-start: #{v.$bm-spacing-md};
+    --padding-end: #{v.$bm-spacing-md};
+    font-size: var(--bm-font-size-xs);
+  }
+
+  &.button-disabled {
+    opacity: 0.45;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bm-color-primary);
+    outline-offset: 2px;
+  }
+
+  // Teléfonos de 320–359px: un poco más compacto para que los textos de
+  // los botones no se partan en dos renglones sin necesidad.
+  @media (max-width: 359px) {
+    font-size: var(--bm-font-size-sm);
+    letter-spacing: 0.02em;
+    --padding-start: #{v.$bm-spacing-sm};
+    --padding-end: #{v.$bm-spacing-sm};
+  }
+
+  ion-spinner {
+    width: 28px;
+    height: 28px;
+    color: currentColor;
+  }
+}
+
+// Botones dentro de un renglón de lista: separados del texto y entre sí.
+ion-item ion-button[slot='end'] {
+  margin-inline-start: v.$bm-spacing-sm;
+}
+
+// ---- Campos de formulario ----------------------------------------
+// Cada campo es una CAJA oscura redondeada (no el renglón subrayado de
+// Ionic). El borde cambia de color con el estado: foco (ámbar) y error
+// (rojo), con transición corta.
+ion-item {
+  --background: var(--bm-color-surface-dark);
+  --border-color: transparent;
+  --color: var(--bm-color-text-light);
+  --padding-start: #{v.$bm-spacing-md};
+  --inner-padding-end: #{v.$bm-spacing-md};
+  --min-height: 56px;
+  --highlight-height: 0; // la línea de foco de Ionic se reemplaza por el borde
+  border: 2px solid rgba(245, 164, 0, 0.18);
+  border-radius: var(--bm-radius-md);
+  margin-bottom: v.$bm-spacing-sm;
+  overflow: hidden; // para que el radius se note (Ionic dibuja el fondo adentro)
+  transition:
+    border-color var(--bm-duration-fast) var(--bm-ease-standard),
+    box-shadow var(--bm-duration-base) var(--bm-ease-out);
+
+  // Foco: borde ámbar + halo suave alrededor del campo.
+  &.item-has-focus {
+    border-color: var(--bm-color-primary);
+    box-shadow: 0 0 0 4px rgba(245, 164, 0, 0.14);
+  }
+
+  // Error: borde rojo y una sacudida corta en el momento en que el campo
+  // pasa a inválido (la animación corre una vez, al aparecer la clase).
+  &.ion-invalid.ion-touched {
+    border-color: var(--bm-color-danger);
+    animation: bm-shake 360ms var(--bm-ease-standard);
+  }
+
+  &.ion-invalid.ion-touched.item-has-focus {
+    box-shadow: 0 0 0 4px rgba(232, 67, 58, 0.14);
+  }
+}
+
+ion-input,
+ion-textarea,
+ion-select {
+  --color: var(--bm-color-text-light);
+  --placeholder-color: var(--bm-color-text-muted);
+  --placeholder-opacity: 0.8;
+  font-family: var(--bm-font-body);
+  font-size: var(--bm-font-size-md); // 16px: evita el zoom automático de iOS
+}
+
+// Con label flotante, el placeholder se muestra recién al enfocar el campo
+// (si no, el label y el placeholder se pisan uno arriba del otro).
+ion-item.item-label-floating:not(.item-has-focus) {
+  --placeholder-opacity: 0;
+
+  ion-input,
+  ion-textarea {
+    --placeholder-opacity: 0;
+  }
+}
+
+ion-label {
+  color: var(--bm-color-text-muted);
+  transition: color var(--bm-duration-fast) var(--bm-ease-standard);
+}
+
+ion-item.item-has-focus ion-label {
+  color: var(--bm-color-primary);
+}
+
+ion-input-password-toggle {
+  --color: var(--bm-color-text-muted);
+}
+
+ion-checkbox {
+  --checkbox-background-checked: var(--bm-color-primary);
+  --border-color-checked: var(--bm-color-primary);
+  --checkmark-color: var(--bm-color-primary-contrast);
+  --size: 22px;
+}
+
+// Mensajes de error debajo de un campo: chicos, pegados al campo que
+// corresponden y con una entrada corta (no aparecen "de golpe").
+ion-text[color='danger'] p {
+  margin: -#{v.$bm-spacing-xs} v.$bm-spacing-xs v.$bm-spacing-sm;
+  font-size: var(--bm-font-size-sm);
+  font-weight: v.$bm-font-weight-semibold;
+  animation: bm-fade-in var(--bm-duration-base) var(--bm-ease-out) both;
+}
+
+// ---- Cards / listas ------------------------------------------------
+ion-card {
+  --background: var(--bm-color-surface);
+  --color: var(--bm-color-text-light);
+  border: 2px solid var(--bm-color-primary);
+  border-radius: var(--bm-radius-md);
+  box-shadow: var(--bm-shadow-sm);
+}
+
+// .list-md / .list-ios traen fondo propio con más especificidad que el
+// selector de elemento: se pisan explícitamente para que las listas no
+// muestren una franja gris detrás de los renglones.
+ion-list,
+ion-list.list-md,
+ion-list.list-ios {
+  background: transparent;
+  padding: 0;
+}
+
+ion-list-header {
+  --color: var(--bm-color-text-muted);
+  padding-inline-start: 0;
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+ion-badge {
+  border-radius: var(--bm-radius-full);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+ion-avatar {
+  border: 2px solid var(--bm-color-primary);
+}
+
+ion-spinner {
+  color: var(--bm-color-primary);
+}
+
+ion-refresher-content {
+  --color: var(--bm-color-primary);
+}
+
+// ---- Overlays ------------------------------------------------------
+// Toasts: Ionic ya los anima (fade + desplazamiento); acá se les da la
+// identidad de la app y se los separa de la barra inferior / safe area.
+ion-toast {
+  --border-radius: var(--bm-radius-md);
+  --background: var(--bm-color-surface-dark);
+  --color: var(--bm-color-text-light);
+  --box-shadow: var(--bm-shadow-lg);
+  --start: var(--bm-gutter);
+  --end: var(--bm-gutter);
+  --max-width: var(--bm-content-max);
+  font-family: var(--bm-font-body);
+  font-weight: v.$bm-font-weight-semibold;
+
+  // Con color="success" / "danger" / "warning" Ionic los pinta solo con
+  // los juegos --ion-color-* definidos en base/_tokens.scss.
+}
+
+// Ionic ya desliza el toast desde abajo; encima, el contenido entra con un
+// pop controlado (se nota que "llegó un aviso" sin ser agresivo).
+@keyframes bm-toast-pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+  }
+}
+
+ion-toast::part(container) {
+  animation: bm-toast-pop var(--bm-duration-slow) var(--bm-ease-out) both;
+}
+
+// Modales: en teléfono ocupan la pantalla (como manda la plataforma); en
+// pantallas anchas se muestran como una tarjeta centrada, no como una
+// ventanita de escritorio.
+ion-modal {
+  --background: var(--bm-color-background);
+  --color: var(--bm-color-text-light);
+  --backdrop-opacity: 0.6;
+  --border-radius: var(--bm-radius-lg);
+
+  @media (min-width: 768px) {
+    --width: min(480px, 92vw);
+    --height: auto;
+    --max-height: 90vh;
+  }
+}
+
+ion-popover {
+  --background: var(--bm-color-surface-dark);
+  --box-shadow: var(--bm-shadow-lg);
+  --width: min(280px, 90vw);
+}
+
+ion-select-option,
+ion-popover ion-item {
+  --background: var(--bm-color-surface-dark);
+  border: 0;
+  margin: 0;
+  border-radius: 0;
+}

@@ -5,9 +5,6 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonItem,
   IonLabel,
   IonInput,
@@ -16,10 +13,9 @@ import {
   IonButton,
   IonText,
   IonSpinner,
-  IonBackButton,
-  IonButtons,
   ToastController,
 } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 import { CamaraService } from '../../core/services/camara.service';
 import { CatalogoService } from '../catalogo.service';
 
@@ -40,12 +36,10 @@ import { CatalogoService } from '../catalogo.service';
   templateUrl: './alta-plato.page.html',
   styleUrls: ['./alta-plato.page.scss'],
   imports: [
+    HeaderMarcaComponent,
     CommonModule,
     ReactiveFormsModule,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonItem,
     IonLabel,
     IonInput,
@@ -54,8 +48,6 @@ import { CatalogoService } from '../catalogo.service';
     IonButton,
     IonText,
     IonSpinner,
-    IonBackButton,
-    IonButtons,
   ],
 })
 export class AltaPlatoPage {

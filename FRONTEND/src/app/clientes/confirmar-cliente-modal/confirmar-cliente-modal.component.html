@@ -1,30 +1,38 @@
-<ion-header>
+<ion-header class="bm-header">
   <ion-toolbar>
     <ion-title>{{ accion === 'aprobar' ? 'Aprobar cliente' : 'Rechazar cliente' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar(false)">Cerrar</ion-button>
+      <ion-button fill="clear" (click)="cerrar(false)">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <div class="bm-header__acento"></div>
 </ion-header>
 
-<ion-content class="ion-padding ion-text-center">
-  <div class="foto-frame">
-    <img *ngIf="cliente.foto_url" [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
+<!-- Retoque visual (Módulo 1): solo maquetado y estilos, misma lógica. -->
+<ion-content>
+  <div class="bm-screen bm-screen--center bm-confirmar">
+    <div class="bm-confirmar__cliente bm-screen__grow">
+      <div class="foto-frame" [class.foto-frame--rechazo]="accion === 'rechazar'">
+        <img *ngIf="cliente.foto_url" [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
+      </div>
+
+      <h2 class="bm-heading--lg">{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+
+      <p class="bm-lead" *ngIf="accion === 'aprobar'">
+        ¿Confirmás <strong>aprobar</strong> el registro de este cliente? Va a poder ingresar a la app y le enviamos un
+        correo de confirmación.
+      </p>
+      <p class="bm-lead" *ngIf="accion === 'rechazar'">
+        ¿Confirmás <strong>rechazar</strong> el registro de este cliente? No va a poder ingresar a la app y le enviamos
+        un correo informándole la situación.
+      </p>
+    </div>
+
+    <div class="bm-screen__actions">
+      <ion-button expand="block" [color]="accion === 'aprobar' ? 'success' : 'danger'" (click)="cerrar(true)">
+        {{ accion === 'aprobar' ? 'Confirmar aprobación' : 'Confirmar rechazo' }}
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="cerrar(false)">Cancelar</ion-button>
+    </div>
   </div>
-
-  <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
-
-  <p *ngIf="accion === 'aprobar'">
-    ¿Confirmás <strong>aprobar</strong> el registro de este cliente? Va a poder ingresar a la app y le enviamos un
-    correo de confirmación.
-  </p>
-  <p *ngIf="accion === 'rechazar'">
-    ¿Confirmás <strong>rechazar</strong> el registro de este cliente? No va a poder ingresar a la app y le enviamos
-    un correo informándole la situación.
-  </p>
-
-  <ion-button expand="block" [color]="accion === 'aprobar' ? 'success' : 'danger'" (click)="cerrar(true)">
-    {{ accion === 'aprobar' ? 'Confirmar aprobación' : 'Confirmar rechazo' }}
-  </ion-button>
-  <ion-button expand="block" fill="clear" (click)="cerrar(false)">Cancelar</ion-button>
 </ion-content>

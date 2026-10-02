@@ -1,0 +1,72 @@
+// ============================================================
+// .bm-btn — para botones NATIVOS (<button class="bm-btn">) fuera de Ionic,
+// por ejemplo dentro de un modal custom o una card. Para <ion-button> el
+// theming ya se aplica solo (ver base/_ionic-overrides.scss); no hace falta
+// (ni conviene) ponerle además clases .bm-btn.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-btn {
+  @include m.bm-flex-center;
+  gap: v.$bm-spacing-sm;
+  width: 100%;
+  min-height: var(--bm-control-h);
+  padding: 0 v.$bm-spacing-md;
+  border: none;
+  border-radius: var(--bm-radius-lg);
+  font-family: var(--bm-font-body);
+  font-weight: v.$bm-font-weight-bold;
+  font-size: var(--bm-font-size-md);
+  text-transform: uppercase; // identidad "cartel de comida rápida"
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    transform var(--bm-duration-fast) var(--bm-ease-out),
+    opacity var(--bm-duration-fast) var(--bm-ease-standard);
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.97);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  &:focus-visible {
+    @include m.bm-focus-ring;
+  }
+
+  &--primary {
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+  }
+  &--secondary {
+    background: var(--bm-color-surface);
+    color: var(--bm-color-text-light);
+  }
+  &--outline {
+    background: transparent;
+    border: 2px solid var(--bm-color-primary);
+    color: var(--bm-color-primary);
+  }
+  &--danger {
+    background: var(--bm-color-danger);
+    color: #fff;
+  }
+  &--ghost {
+    background: transparent;
+    color: var(--bm-color-text-light);
+    text-decoration: underline;
+  }
+
+  &--auto {
+    width: auto;
+  }
+  &--sm {
+    min-height: var(--bm-control-h-sm);
+    font-size: var(--bm-font-size-sm);
+    padding: 0 v.$bm-spacing-sm;
+  }
+}

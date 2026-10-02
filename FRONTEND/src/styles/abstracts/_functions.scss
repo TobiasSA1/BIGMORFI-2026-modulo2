@@ -1,0 +1,12 @@
+// ============================================================
+// Funciones utilitarias compartidas.
+// ============================================================
+
+@use 'sass:math';
+
+// Convierte un valor en píxeles a rem (asumiendo raíz de 16px), para no
+// tener que hacer la cuenta a mano cada vez que se agrega un tamaño nuevo.
+// Uso: font-size: bm-rem(18);
+@function bm-rem($px, $base: 16) {
+  @return math.div($px, $base) * 1rem;
+}

@@ -1,0 +1,65 @@
+// ============================================================
+// Módulo 2 — Cocina y Bar (Puntos 16 y 17).
+// Pantallas de trabajo: prioridad a la claridad y la velocidad. Una
+// tarjeta por mesa; cada ítem con su botón "Listo" grande. Sin
+// animaciones decorativas: solo las que comunican algo (pedido nuevo que
+// entra, contador que cambia, ítem que se está marcando).
+// ============================================================
+
+@use '../../abstracts/variables' as v;
+@use '../../abstracts/mixins' as m;
+
+// Una columna en el teléfono; en una tablet de cocina, 2 o 3 mesas a la vez.
+.bm-sector__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: v.$bm-spacing-md;
+  align-items: start;
+}
+
+.bm-mesa-group {
+  @include m.bm-surface-card;
+  padding: v.$bm-spacing-sm;
+  box-shadow: var(--bm-shadow-md);
+
+  &__header {
+    @include m.bm-flex-between;
+    padding: v.$bm-spacing-xs v.$bm-spacing-sm v.$bm-spacing-sm;
+  }
+
+  &__title {
+    font-family: var(--bm-font-heading);
+    font-size: var(--bm-font-size-lg);
+    color: var(--bm-color-primary);
+    margin: 0;
+  }
+
+  ion-list {
+    display: flex;
+    flex-direction: column;
+    gap: v.$bm-spacing-sm;
+  }
+
+  &__item {
+    margin-bottom: 0;
+    transition:
+      opacity var(--bm-duration-slow) var(--bm-ease-standard),
+      transform var(--bm-duration-slow) var(--bm-ease-out);
+
+    h2 {
+      font-weight: v.$bm-font-weight-bold;
+    }
+
+    ion-button {
+      min-width: 88px;
+    }
+
+    // Al tocar "Listo" el ítem se corre a la derecha y se apaga mientras
+    // se confirma contra el backend: el cocinero ve que su toque se
+    // registró (y que el plato "sale" de la mesa) sin esperar la respuesta.
+    &--procesando {
+      opacity: 0.4;
+      transform: translate3d(16px, 0, 0) scale(0.98);
+    }
+  }
+}

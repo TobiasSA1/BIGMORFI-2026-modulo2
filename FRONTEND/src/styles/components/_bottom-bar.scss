@@ -1,0 +1,83 @@
+// ============================================================
+// .bm-bottom-bar — barra fija abajo de la pantalla (total + acción
+// principal), como "TOTAL FINAL $12.500 ... REVISAR PEDIDO →" en la carta.
+// Va dentro de <ion-footer>; respeta la barra inferior de iOS/Android.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-bottom-bar {
+  @include m.bm-flex-between;
+  gap: v.$bm-spacing-md;
+  padding: v.$bm-spacing-md var(--bm-gutter);
+  padding-bottom: calc(#{v.$bm-spacing-md} + var(--bm-safe-bottom));
+  background: var(--bm-color-surface-dark);
+  border-top: 2px solid var(--bm-color-primary);
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.45);
+  animation: bm-slide-up var(--bm-duration-slow) var(--bm-ease-out) both;
+
+  ion-button {
+    flex: 0 0 auto;
+    min-height: 56px;
+    white-space: nowrap;
+    --padding-start: clamp(#{v.$bm-spacing-md}, 5vw, #{v.$bm-spacing-lg});
+    --padding-end: clamp(#{v.$bm-spacing-md}, 5vw, #{v.$bm-spacing-lg});
+  }
+}
+
+.bm-bottom-bar__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bm-bottom-bar__label {
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-semibold;
+  letter-spacing: 0.06em;
+  color: var(--bm-color-text-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bm-bottom-bar__valor {
+  font-family: var(--bm-font-body);
+  font-weight: v.$bm-font-weight-bold;
+  font-size: var(--bm-font-size-xl);
+  line-height: 1.1;
+  color: var(--bm-color-primary);
+}
+
+// Contador de ítems sobre el botón principal (ej. cantidad en el pedido).
+.bm-contador {
+  @include m.bm-flex-center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  margin-inline-start: v.$bm-spacing-sm;
+  border-radius: var(--bm-radius-full);
+  background: var(--bm-color-primary-contrast);
+  color: var(--bm-color-primary);
+  font-size: var(--bm-font-size-xs);
+  font-weight: v.$bm-font-weight-bold;
+  letter-spacing: 0;
+}
+
+// Pantallas bajitas (teléfono girado): la barra se compacta para no comerse
+// la mitad del alto disponible.
+@media (max-height: 500px) {
+  .bm-bottom-bar {
+    padding-top: v.$bm-spacing-sm;
+    padding-bottom: calc(#{v.$bm-spacing-sm} + var(--bm-safe-bottom));
+
+    ion-button {
+      min-height: var(--bm-touch-min);
+    }
+  }
+
+  .bm-bottom-bar__valor {
+    font-size: var(--bm-font-size-lg);
+  }
+}

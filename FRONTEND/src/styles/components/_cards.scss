@@ -1,0 +1,50 @@
+// ============================================================
+// .bm-card — tarjeta genérica (productos, pedidos, resúmenes).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-card {
+  @include m.bm-surface-card;
+  overflow: hidden;
+
+  &__media {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__header {
+    padding: v.$bm-spacing-md v.$bm-spacing-md 0;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: v.$bm-spacing-sm;
+    padding: v.$bm-spacing-md;
+
+    > p {
+      margin: 0;
+    }
+  }
+
+  &__footer {
+    padding: 0 v.$bm-spacing-md v.$bm-spacing-md;
+    @include m.bm-flex-between;
+    gap: v.$bm-spacing-sm;
+  }
+
+  &__title {
+    font-family: var(--bm-font-heading);
+    font-size: var(--bm-font-size-lg);
+    line-height: v.$bm-line-height-tight;
+    margin: 0;
+  }
+
+  &--dark {
+    background: var(--bm-color-surface-dark);
+  }
+}

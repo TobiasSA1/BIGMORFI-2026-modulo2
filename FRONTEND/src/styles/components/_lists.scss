@@ -1,0 +1,32 @@
+// ============================================================
+// .bm-list — lista de "cards chicas" (una fila por elemento), alternativa a
+// <ion-list>/<ion-item> cuando se necesita más control visual (por ejemplo,
+// las filas de Cocina/Bar agrupadas por mesa).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$bm-spacing-sm;
+}
+
+.bm-list__item {
+  @include m.bm-flex-between;
+  @include m.bm-surface-card;
+  padding: v.$bm-spacing-sm v.$bm-spacing-md;
+}
+
+.bm-list__item-title {
+  margin: 0;
+  font-size: var(--bm-font-size-md);
+  font-weight: v.$bm-font-weight-semibold;
+}
+
+.bm-list__item-subtitle {
+  margin: 0;
+  font-size: var(--bm-font-size-sm);
+  color: var(--bm-color-text-muted);
+}

@@ -1,0 +1,20 @@
+<!-- El arte de SPLASH (assets/fondos/splash.jpg) ya trae el logo y el slogan,
+     así que acá se suma la secuencia animada: halo, haz de luz, destellos
+     y barra de carga. -->
+<ion-content class="bm-fondo bm-fondo--splash bm-splash-content" [class.bm-splash--saliendo]="saliendo">
+  <div class="bm-splash">
+    <!-- Halo dorado que "late" detrás del logo del arte -->
+    <span class="bm-splash__halo"></span>
+    <!-- Haz de luz que cruza la pantalla una vez -->
+    <span class="bm-splash__haz"></span>
+
+    <span class="bm-splash__destello bm-splash__destello--1"></span>
+    <span class="bm-splash__destello bm-splash__destello--2"></span>
+    <span class="bm-splash__destello bm-splash__destello--3"></span>
+    <span class="bm-splash__destello bm-splash__destello--4"></span>
+
+    <div class="bm-splash__barra">
+      <div class="bm-splash__barra-relleno"></div>
+    </div>
+  </div>
+</ion-content>

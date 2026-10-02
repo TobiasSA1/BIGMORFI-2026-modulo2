@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton } from '@ionic/angular';
+import { IonContent, IonIcon, IonButton } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../../core/components/header-marca/header-marca.component';
 
 @Component({
   selector: 'app-cuenta-no-habilitada',
   templateUrl: './cuenta-no-habilitada.page.html',
-  imports: [CommonModule, IonContent, IonHeader, IonToolbar, IonTitle, IonButton],
+  styleUrls: ['./cuenta-no-habilitada.page.scss'],
+  imports: [HeaderMarcaComponent, CommonModule, IonContent, IonIcon, IonButton],
 })
 export class CuentaNoHabilitadaPage implements OnInit {
   estado: 'pendiente' | 'rechazado' = 'pendiente';

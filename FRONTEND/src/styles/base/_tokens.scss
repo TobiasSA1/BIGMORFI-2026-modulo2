@@ -1,0 +1,133 @@
+// ============================================================
+// Puente entre las variables SCSS (abstracts/_variables.scss, valen solo en
+// tiempo de compilación) y variables CSS reales (valen en runtime).
+//
+// Por qué hace falta esto y no alcanza con las variables SCSS:
+// - Los componentes de Ionic usan Shadow DOM. Una variable SCSS no puede
+//   "verse" desde adentro del shadow DOM de <ion-button>, pero una variable
+//   CSS sí (las variables CSS SÍ atraviesan el Shadow DOM).
+// - Cada .page.scss de Angular compila aislado (view encapsulation): no
+//   puede leer los $bm-* de otro archivo salvo que se importen con @use.
+//   Publicando todo como `var(--bm-*)` en :root, cualquier componente de
+//   cualquier módulo puede usarlas sin tener que importar nada.
+//
+// Regla para todo el equipo: en HTML/SCSS de páginas, usar siempre
+// `var(--bm-color-primary)`, nunca el hex a mano ni `$bm-color-primary`.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+:root {
+  --bm-color-primary: #{v.$bm-color-primary};
+  --bm-color-primary-dark: #{v.$bm-color-primary-dark};
+  --bm-color-primary-contrast: #{v.$bm-color-primary-contrast};
+
+  --bm-color-background: #{v.$bm-color-background};
+  --bm-color-surface: #{v.$bm-color-surface};
+  --bm-color-surface-dark: #{v.$bm-color-surface-dark};
+
+  --bm-color-text: #{v.$bm-color-text};
+  --bm-color-text-light: #{v.$bm-color-text-light};
+  --bm-color-text-muted: #{v.$bm-color-text-muted};
+
+  --bm-color-success: #{v.$bm-color-success};
+  --bm-color-danger: #{v.$bm-color-danger};
+  --bm-color-warning: #{v.$bm-color-warning};
+
+  --bm-font-heading: #{v.$bm-font-heading};
+  --bm-font-body: #{v.$bm-font-body};
+
+  --bm-font-size-xs: #{v.$bm-font-size-xs};
+  --bm-font-size-sm: #{v.$bm-font-size-sm};
+  --bm-font-size-md: #{v.$bm-font-size-md};
+  --bm-font-size-lg: #{v.$bm-font-size-lg};
+  --bm-font-size-xl: #{v.$bm-font-size-xl};
+  --bm-font-size-xxl: #{v.$bm-font-size-xxl};
+
+  --bm-radius-sm: #{v.$bm-radius-sm};
+  --bm-radius-md: #{v.$bm-radius-md};
+  --bm-radius-lg: #{v.$bm-radius-lg};
+  --bm-radius-full: #{v.$bm-radius-full};
+
+  --bm-spacing-xs: #{v.$bm-spacing-xs};
+  --bm-spacing-sm: #{v.$bm-spacing-sm};
+  --bm-spacing-md: #{v.$bm-spacing-md};
+  --bm-spacing-lg: #{v.$bm-spacing-lg};
+  --bm-spacing-xl: #{v.$bm-spacing-xl};
+  --bm-spacing-xxl: #{v.$bm-spacing-xxl};
+
+  --bm-shadow-sm: #{v.$bm-shadow-sm};
+  --bm-shadow-md: #{v.$bm-shadow-md};
+  --bm-shadow-lg: #{v.$bm-shadow-lg};
+
+  // Layout / tacto
+  --bm-gutter: #{v.$bm-gutter};
+  --bm-content-max: #{v.$bm-content-max};
+  --bm-touch-min: #{v.$bm-touch-min};
+  --bm-control-h: #{v.$bm-control-h};
+  --bm-control-h-sm: #{v.$bm-control-h-sm};
+  // Safe areas: Ionic ya las expone como --ion-safe-area-*; se reusan acá
+  // para que cualquier componente propio (barras fijas, botones flotantes)
+  // las respete sin repetir env() en cada archivo.
+  --bm-safe-top: var(--ion-safe-area-top, env(safe-area-inset-top, 0px));
+  --bm-safe-bottom: var(--ion-safe-area-bottom, env(safe-area-inset-bottom, 0px));
+
+  // Movimiento: cambiar estos valores cambia la velocidad de TODA la app.
+  --bm-duration-fast: #{v.$bm-duration-fast};
+  --bm-duration-base: #{v.$bm-duration-base};
+  --bm-duration-slow: #{v.$bm-duration-slow};
+  --bm-stagger-step: #{v.$bm-stagger-step};
+  --bm-ease-out: #{v.$bm-ease-out};
+  --bm-ease-standard: #{v.$bm-ease-standard};
+  --bm-ease-spring: #{v.$bm-ease-spring};
+  --bm-ease-spring-soft: #{v.$bm-ease-spring-soft};
+  --bm-ease-in: #{v.$bm-ease-in};
+  --bm-duration-page: #{v.$bm-duration-page};
+  --bm-duration-ambient: #{v.$bm-duration-ambient};
+  --bm-motion-distance: #{v.$bm-motion-distance};
+  --bm-motion-pop: #{v.$bm-motion-pop};
+  --bm-motion-press: #{v.$bm-motion-press};
+
+  // ---- Reasignación de variables OFICIALES de Ionic -----------------
+  // Así los componentes internos de Ionic que no controlamos con clases
+  // propias (validación nativa, ripple, etc.) también respetan la paleta.
+  --ion-color-primary: #{v.$bm-color-primary};
+  --ion-color-primary-rgb: 245, 164, 0;
+  --ion-color-primary-contrast: #{v.$bm-color-primary-contrast};
+  --ion-color-primary-contrast-rgb: 26, 26, 26;
+  --ion-color-primary-shade: #{v.$bm-color-primary-dark};
+  --ion-color-primary-tint: #{v.$bm-color-primary};
+
+  // Juegos completos (base + rgb + contraste + shade/tint): Ionic los usa
+  // en botones color="success"/"danger", toasts, ripple y estados hover.
+  --ion-color-success: #{v.$bm-color-success};
+  --ion-color-success-rgb: 91, 153, 80;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #508746;
+  --ion-color-success-tint: #6ba362;
+
+  --ion-color-danger: #{v.$bm-color-danger};
+  --ion-color-danger-rgb: 232, 67, 58;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cc3b33;
+  --ion-color-danger-tint: #ea564e;
+
+  --ion-color-warning: #{v.$bm-color-warning};
+  --ion-color-warning-rgb: 217, 130, 43;
+  --ion-color-warning-contrast: #140d08;
+  --ion-color-warning-contrast-rgb: 20, 13, 8;
+  --ion-color-warning-shade: #bf7226;
+  --ion-color-warning-tint: #dd8f40;
+
+  --ion-color-medium: #{v.$bm-color-text-muted};
+
+  --ion-background-color: #{v.$bm-color-background};
+  --ion-text-color: #{v.$bm-color-text-light};
+  --ion-font-family: #{v.$bm-font-body};
+
+  --ion-toolbar-background: #{v.$bm-color-surface-dark};
+  --ion-toolbar-color: #{v.$bm-color-text-light};
+  --ion-item-background: transparent;
+}

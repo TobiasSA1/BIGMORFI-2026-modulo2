@@ -1,39 +1,51 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Iniciar sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header-marca titulo="Iniciar sesión"></app-header-marca>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-item>
-      <ion-label position="floating">Correo electrónico</ion-label>
-      <ion-input type="email" formControlName="email" inputmode="email"></ion-input>
-    </ion-item>
-    <ion-text color="danger" *ngIf="email.touched && email.invalid">
-      <p *ngIf="email.errors?.['required']">El correo es obligatorio.</p>
-      <p *ngIf="email.errors?.['email']">El formato del correo no es válido.</p>
-    </ion-text>
+<!-- Retoque visual (Módulo 1): solo maquetado y estilos. El formulario, sus
+     validaciones y la lógica de login.page.ts no cambian. -->
+<ion-content class="bm-fondo bm-fondo--login bm-fondo--animado">
+  <div class="bm-screen bm-screen--center bm-login">
+    <img src="assets/LogoBigMorfi.png" alt="Big Morfi" class="bm-logo-hero bm-login__logo" />
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <ion-text color="danger" *ngIf="password.touched && password.invalid">
-      <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
-    </ion-text>
+    <form class="bm-login__form bm-stagger" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input type="email" formControlName="email" inputmode="email" autocomplete="email"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="email.touched && email.invalid">
+        <p *ngIf="email.errors?.['required']">El correo es obligatorio.</p>
+        <p *ngIf="email.errors?.['email']">El formato del correo no es válido.</p>
+      </ion-text>
 
-    <ion-text color="danger" *ngIf="errorMensaje">
-      <p>{{ errorMensaje }}</p>
-    </ion-text>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password" autocomplete="current-password">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="password.touched && password.invalid">
+        <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
+      </ion-text>
 
-    <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="cargando">
-      <ion-spinner *ngIf="cargando" name="dots"></ion-spinner>
-      <span *ngIf="!cargando">Ingresar</span>
-    </ion-button>
+      <ion-text color="danger" *ngIf="errorMensaje">
+        <p class="bm-shake">{{ errorMensaje }}</p>
+      </ion-text>
 
-    <ion-button expand="block" fill="clear" routerLink="/clientes/registro">
-      ¿No tenés cuenta? Registrate como cliente
-    </ion-button>
-  </form>
+      <ion-button expand="block" type="submit" class="bm-login__ingresar bm-sheen" [disabled]="cargando">
+        <ion-spinner *ngIf="cargando" name="dots"></ion-spinner>
+        <span *ngIf="!cargando">Ingresar</span>
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" routerLink="/clientes/registro">
+        ¿No tenés cuenta? Registrate como cliente
+      </ion-button>
+    </form>
+
+    <div class="bm-login__anonimo bm-fade-in">
+      <div class="bm-divider"><span>o</span></div>
+
+      <ion-button expand="block" fill="outline" routerLink="/sala/bienvenida">
+        Entrar como cliente anónimo
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

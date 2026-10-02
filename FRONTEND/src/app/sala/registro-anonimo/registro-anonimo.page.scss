@@ -1,0 +1,55 @@
+// MOCKUP VISUAL - Módulo 3, Punto 9.
+// Todo el bloque queda centrado en el alto de la pantalla (igual que la
+// lista de espera), con una secuencia de entrada: texto → foto (pop) →
+// formulario → "¿ya tenés cuenta?".
+
+.bm-registro {
+  gap: var(--bm-spacing-lg);
+  text-align: left;
+
+  .bm-photo-single {
+    animation: bm-scale-in var(--bm-duration-slow) var(--bm-ease-spring-soft) 80ms both;
+  }
+}
+
+.bm-registro__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bm-spacing-sm);
+  animation-delay: 160ms;
+
+  ion-item {
+    margin-bottom: 0;
+  }
+}
+
+.bm-registro__pie {
+  animation: bm-fade var(--bm-duration-slow) var(--bm-ease-out) 260ms both;
+
+  p {
+    margin: 0;
+  }
+}
+
+// El círculo de "tomar foto" respira suave mientras está vacío: invita a
+// tocarlo sin ser insistente.
+@keyframes bm-registro-invitacion {
+  0%,
+  100% {
+    box-shadow: 0 0 0 6px rgba(245, 164, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(245, 164, 0, 0.04);
+  }
+}
+
+.bm-photo-single__placeholder {
+  border: 2px dashed var(--bm-color-primary);
+  font-family: var(--bm-font-body);
+  animation: bm-registro-invitacion 3s ease-in-out infinite;
+
+  ion-icon {
+    font-size: 32px;
+    color: var(--bm-color-primary);
+  }
+}

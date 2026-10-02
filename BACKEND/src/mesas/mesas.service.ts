@@ -3,6 +3,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { SupabaseService } from '../supabase/supabase.service';
@@ -128,6 +129,27 @@ export class MesasService {
       .order('numero', { ascending: true });
 
     if (error) throw new InternalServerErrorException(error.message);
+    return data;
+  }
+
+  /**
+   * Trae una mesa puntual por id. Lo usa el Módulo 3 (Punto 10) cuando el
+   * cliente escanea el QR: el QR trae el `mesaId` en su payload, así que con
+   * esto pueden validar que la mesa existe y comparar el `qr_token` de la
+   * respuesta contra el `token` que venía en el QR escaneado (para
+   * detectar un QR falso o de una mesa vieja/borrada).
+   */
+  async buscarPorId(id: string) {
+    const admin = this.supabase.getAdminClient();
+    const { data, error } = await admin
+      .from('mesas')
+      .select('*')
+      .eq('id', id)
+      .eq('eliminado', false)
+      .maybeSingle();
+
+    if (error) throw new InternalServerErrorException(error.message);
+    if (!data) throw new NotFoundException('No se encontró la mesa');
     return data;
   }
 }

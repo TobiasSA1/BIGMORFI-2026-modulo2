@@ -10,10 +10,17 @@ import { SupabaseService } from '../supabase/supabase.service';
 // productos, así que no hace falta mapear nada: 'cocina' -> 'cocina'.
 export type AreaPreparacion = 'cocina' | 'bar';
 
-// Estados de ítem que todavía "cuentan" como trabajo para el área.
+// Estados de pedido_items (definidos por el Módulo 3 en modulo3_definitivo.sql).
+// OJO: a nivel ítem NO existe 'entregado' (la entrega es del pedido completo,
+// Punto 19) — solo existe en el pedido.
 const ITEMS_ACTIVOS = ['pendiente', 'en_preparacion'];
-// Estados de pedido que se muestran en cocina/bar.
-const PEDIDOS_EN_JUEGO = ['confirmado', 'en_preparacion'];
+
+// Estados de pedidos.estado (enum real del Módulo 3): 'en_armado' |
+// 'pendiente_confirmacion' | 'rechazado' | 'confirmado' | 'listo' |
+// 'entregado' | 'recibido' | 'pagado' | 'cancelado'. Cocina/Bar solo
+// trabajan pedidos ya confirmados por el mozo (Punto 14); NO existe un
+// estado 'en_preparacion' para el pedido en sí (solo para sus ítems).
+const PEDIDOS_EN_JUEGO = ['confirmado'];
 
 /**
  * Lógica compartida de Cocina (Punto 16) y Bar (Punto 17).
@@ -24,6 +31,12 @@ const PEDIDOS_EN_JUEGO = ['confirmado', 'en_preparacion'];
  * Filtran por `productos.sector` (no por `tipo`): con el enum `tipo_producto`
  * ahora incluyendo 'postre', el sector es lo que realmente decide a qué
  * pantalla va cada ítem (un postre también puede ser sector 'cocina').
+ *
+ * El Módulo 3 (`modulo3_definitivo.sql`) agregó `pedido_items.eliminado`
+ * (borrado lógico: el mozo/cliente puede quitar un ítem del pedido) y
+ * `pedido_items.precio_unitario`. Acá solo nos importa `eliminado`: un ítem
+ * quitado no tiene que aparecer nunca en Cocina/Bar ni contar para saber si
+ * el pedido está completo.
  */
 @Injectable()
 export class PreparacionService {
@@ -57,6 +70,7 @@ export class PreparacionService {
         )
       `,
       )
+      .eq('eliminado', false) // el mozo/cliente pudo haber quitado el ítem
       .eq('producto.sector', area)
       .eq('producto.eliminado', false)
       .in('estado', ITEMS_ACTIVOS)
@@ -103,9 +117,11 @@ export class PreparacionService {
   /**
    * PUNTOS 16 y 17 - Marcar un ítem como "listo".
    *
-   * Además, si con este ítem quedan TODOS los ítems del pedido en 'listo',
-   * marca el pedido entero como 'listo' (eso lo va a usar el Módulo 3 para
-   * avisarle al mozo y al cliente - Punto 18).
+   * El Módulo 3 tiene un trigger en la base (`trg_verificar_pedido_completo`)
+   * que YA deja el pedido entero en 'listo' automáticamente en el mismo
+   * update, cuando era el último ítem no-eliminado que faltaba (Punto 18).
+   * Acá no recalculamos esa lógica: solo la leemos después de actualizar,
+   * para no duplicar una regla de negocio que no es nuestra.
    *
    * @param area    'cocina' o 'bar'. Se valida que el ítem sea de esa área.
    * @param itemId  id de la fila de pedido_items.
@@ -116,12 +132,14 @@ export class PreparacionService {
     // Traigo el ítem con el sector de su producto y el pedido al que pertenece.
     const { data: item, error: findError } = await admin
       .from('pedido_items')
-      .select('id, estado, pedido_id, producto:productos!inner ( sector )')
+      .select('id, estado, eliminado, pedido_id, producto:productos!inner ( sector )')
       .eq('id', itemId)
       .maybeSingle();
 
     if (findError) throw new InternalServerErrorException(findError.message);
-    if (!item) throw new NotFoundException('No se encontró el ítem del pedido');
+    if (!item || item.eliminado) {
+      throw new NotFoundException('No se encontró el ítem del pedido');
+    }
 
     // Cocina no puede cerrar un ítem de bar ni viceversa.
     if ((item.producto as any).sector !== area) {
@@ -130,7 +148,7 @@ export class PreparacionService {
       );
     }
 
-    if (item.estado === 'listo' || item.estado === 'entregado') {
+    if (item.estado === 'listo') {
       throw new BadRequestException('Ese ítem ya estaba listo');
     }
 
@@ -141,31 +159,18 @@ export class PreparacionService {
       .select()
       .single();
 
-    if (updateError)
-      throw new InternalServerErrorException(updateError.message);
+    if (updateError) throw new InternalServerErrorException(updateError.message);
 
-    // ---- ¿Quedó el pedido completo? ------------------------------------------
-    const { data: hermanos, error: hermanosError } = await admin
-      .from('pedido_items')
+    // El trigger del Módulo 3 ya corrió como parte del update de arriba
+    // (misma transacción). Solo leemos en qué quedó el pedido.
+    const { data: pedidoActual, error: pedidoError } = await admin
+      .from('pedidos')
       .select('estado')
-      .eq('pedido_id', item.pedido_id);
+      .eq('id', item.pedido_id)
+      .single();
 
-    if (hermanosError)
-      throw new InternalServerErrorException(hermanosError.message);
+    if (pedidoError) throw new InternalServerErrorException(pedidoError.message);
 
-    const pedidoCompleto = (hermanos ?? []).every(
-      (h) => h.estado === 'listo' || h.estado === 'entregado',
-    );
-
-    if (pedidoCompleto) {
-      await admin
-        .from('pedidos')
-        .update({ estado: 'listo' })
-        .eq('id', item.pedido_id);
-      // TODO Módulo 3: acá el pedido pasó a 'listo' -> disparar el push
-      // "tu pedido está listo" al mozo y al cliente (Punto 18).
-    }
-
-    return { item: itemActualizado, pedidoCompleto };
+    return { item: itemActualizado, pedidoCompleto: pedidoActual.estado === 'listo' };
   }
 }

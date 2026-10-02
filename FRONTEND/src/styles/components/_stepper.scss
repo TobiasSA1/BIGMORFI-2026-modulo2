@@ -1,0 +1,66 @@
+// ============================================================
+// .bm-stepper — selector de cantidad (− 2 +) de la carta.
+// Botones de 44px (área táctil completa) y el número rebota al cambiar.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-stepper {
+  @include m.bm-flex-between;
+  gap: v.$bm-spacing-md;
+  width: 100%;
+  animation: bm-scale-in var(--bm-duration-base) var(--bm-ease-out);
+}
+
+.bm-stepper__btn {
+  @include m.bm-flex-center;
+  width: var(--bm-touch-min);
+  height: var(--bm-touch-min);
+  border-radius: 50%;
+  border: none;
+  background: var(--bm-color-primary);
+  color: var(--bm-color-primary-contrast);
+  font-size: var(--bm-font-size-lg);
+  font-weight: v.$bm-font-weight-bold;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:focus-visible {
+    @include m.bm-focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &--secundario {
+    background: transparent;
+    border: 2px solid var(--bm-color-primary);
+    color: var(--bm-color-primary);
+  }
+}
+
+.bm-stepper__valor {
+  flex: 1;
+  text-align: center;
+
+  strong {
+    font-size: var(--bm-font-size-lg);
+    color: var(--bm-color-primary);
+  }
+
+  span {
+    display: block;
+    font-size: var(--bm-font-size-xs);
+    color: var(--bm-color-text-muted);
+    text-transform: uppercase;
+  }
+}

@@ -4,9 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonIcon,
   IonItem,
   IonLabel,
   IonInput,
@@ -15,14 +13,13 @@ import {
   IonButton,
   IonText,
   IonSpinner,
-  IonBackButton,
-  IonButtons,
   IonList,
-  IonListHeader,
   ToastController,
 } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 import { CamaraService } from '../../core/services/camara.service';
 import { CatalogoService, Mesa } from '../catalogo.service';
+import { CheckAnimadoComponent } from '../../core/components/check-animado/check-animado.component';
 
 /**
  * ============================================================
@@ -43,12 +40,11 @@ import { CatalogoService, Mesa } from '../catalogo.service';
   templateUrl: './alta-mesa.page.html',
   styleUrls: ['./alta-mesa.page.scss'],
   imports: [
+    HeaderMarcaComponent,
     CommonModule,
     ReactiveFormsModule,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonIcon,
     IonItem,
     IonLabel,
     IonInput,
@@ -57,10 +53,8 @@ import { CatalogoService, Mesa } from '../catalogo.service';
     IonButton,
     IonText,
     IonSpinner,
-    IonBackButton,
-    IonButtons,
     IonList,
-    IonListHeader,
+    CheckAnimadoComponent,
   ],
 })
 export class AltaMesaPage implements OnInit {

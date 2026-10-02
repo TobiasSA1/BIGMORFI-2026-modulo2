@@ -1,0 +1,61 @@
+// MOCKUP VISUAL - Módulo 3.
+
+.bm-espera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bm-spacing-sm);
+  animation: bm-fade-in var(--bm-duration-slow) var(--bm-ease-out) both;
+
+  h1,
+  p {
+    margin: 0;
+  }
+}
+
+// Círculo con el número de turno: crece con la pantalla (100–132px).
+.bm-espera__circulo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(100px, 32vw, 132px);
+  aspect-ratio: 1 / 1;
+  margin-bottom: var(--bm-spacing-sm);
+  border-radius: 50%;
+  border: 3px solid rgba(245, 164, 0, 0.35);
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 0 8px rgba(245, 164, 0, 0.08);
+  animation: bm-scale-in var(--bm-duration-slow) var(--bm-ease-out) both;
+
+  ion-spinner {
+    position: absolute;
+    inset: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+  }
+}
+
+// Ondas que salen del círculo del turno: comunican "estamos esperando"
+// con un ritmo calmo (2.4s), más vivo que un spinner solo.
+.bm-espera__onda {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--bm-color-primary);
+  animation: bm-ripple 2.4s var(--bm-ease-out) infinite;
+  pointer-events: none;
+
+  &--2 {
+    animation-delay: 1.2s;
+  }
+}
+
+.bm-espera__numero {
+  font-family: var(--bm-font-heading);
+  color: var(--bm-color-primary);
+  font-size: var(--bm-font-size-xxl);
+  line-height: 1;
+  animation: bm-pop-rot var(--bm-duration-slow) var(--bm-ease-spring) 200ms both;
+}

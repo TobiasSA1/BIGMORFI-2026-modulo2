@@ -1,0 +1,51 @@
+// ============================================================
+// Utilidades de layout con flex/grid. Se prioriza esto por sobre
+// "position: absolute" para armar interfaces (ver STYLEGUIDE.md).
+// ============================================================
+
+@use '../abstracts/variables' as v;
+
+.bm-flex {
+  display: flex;
+}
+.bm-flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.bm-flex-wrap {
+  flex-wrap: wrap;
+}
+.bm-items-center {
+  align-items: center;
+}
+.bm-justify-between {
+  justify-content: space-between;
+}
+.bm-justify-center {
+  justify-content: center;
+}
+
+.bm-gap-xs {
+  gap: v.$bm-spacing-xs;
+}
+.bm-gap-sm {
+  gap: v.$bm-spacing-sm;
+}
+.bm-gap-md {
+  gap: v.$bm-spacing-md;
+}
+.bm-gap-lg {
+  gap: v.$bm-spacing-lg;
+}
+
+.bm-grid {
+  display: grid;
+  gap: v.$bm-spacing-sm;
+}
+
+// Grilla de 3 columnas iguales: la usa, por ejemplo, la carga de 3 fotos de
+// un producto, pero sirve para cualquier otra grilla de 3 que necesite
+// cualquier módulo.
+.bm-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}

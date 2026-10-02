@@ -1,37 +1,78 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Inicio</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header-marca titulo="Big Morfi"></app-header-marca>
 
-<ion-content class="ion-padding">
-  <h2 *ngIf="perfil">¡Hola, {{ perfil.nombre }}!</h2>
-  <p *ngIf="perfil">Rol: {{ perfil.rol }}</p>
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen bm-home">
+    <div class="bm-hero bm-home__saludo" *ngIf="perfil">
+      <span class="bm-eyebrow">Panel de trabajo</span>
+      <h1 class="bm-heading--lg bm-reveal">¡Hola, {{ perfil.nombre }}!</h1>
+      <span class="bm-badge bm-badge--primary bm-pop-rot bm-home__rol">{{ perfil.rol }}</span>
+    </div>
 
-  <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
-    <ion-button expand="block" routerLink="/empleados/alta">Agregar empleado</ion-button>
-    <ion-button expand="block" routerLink="/clientes/pendientes">Ver clientes pendientes</ion-button>
-  </ng-container>
+    <section class="bm-section">
+      <div class="bm-stack bm-stagger">
+        <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
+          <ion-button expand="block" routerLink="/empleados/alta">Agregar empleado</ion-button>
+          <ion-button expand="block" routerLink="/clientes/pendientes">Ver clientes pendientes</ion-button>
+        </ng-container>
 
-  <ng-container *ngIf="perfil?.rol === 'metre'">
-    <ion-button expand="block" routerLink="/clientes/registro">Crear cliente</ion-button>
-  </ng-container>
+        <ng-container *ngIf="perfil?.rol === 'metre'">
+          <ion-button expand="block" routerLink="/clientes/registro">Crear cliente</ion-button>
+        </ng-container>
 
-  <!-- ===== Módulo 2 - Catálogo, Mesas y Sectores (Tobi) ===== -->
-  <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
-    <ion-button expand="block" routerLink="/catalogo/mesas/alta">Agregar mesa</ion-button>
-  </ng-container>
+        <!-- ===== Módulo 2 - Catálogo, Mesas y Sectores (Tobi) ===== -->
+        <ng-container *ngIf="perfil?.rol === 'dueño' || perfil?.rol === 'supervisor'">
+          <ion-button expand="block" routerLink="/catalogo/mesas/alta">Agregar mesa</ion-button>
+        </ng-container>
 
-  <ng-container *ngIf="perfil?.rol === 'cocinero'">
-    <ion-button expand="block" routerLink="/catalogo/platos/alta">Cargar plato</ion-button>
-    <ion-button expand="block" routerLink="/catalogo/cocina">Cocina</ion-button>
-  </ng-container>
+        <ng-container *ngIf="perfil?.rol === 'cocinero'">
+          <ion-button expand="block" routerLink="/catalogo/platos/alta">Cargar plato</ion-button>
+          <ion-button expand="block" routerLink="/catalogo/postres/alta">Cargar postre</ion-button>
+          <ion-button expand="block" routerLink="/catalogo/cocina">Cocina</ion-button>
+        </ng-container>
 
-  <ng-container *ngIf="perfil?.rol === 'cantinero'">
-    <ion-button expand="block" routerLink="/catalogo/bebidas/alta">Cargar bebida</ion-button>
-    <ion-button expand="block" routerLink="/catalogo/bar">Bar</ion-button>
-  </ng-container>
-  <!-- ===== fin Módulo 2 ===== -->
+        <ng-container *ngIf="perfil?.rol === 'cantinero'">
+          <ion-button expand="block" routerLink="/catalogo/bebidas/alta">Cargar bebida</ion-button>
+          <ion-button expand="block" routerLink="/catalogo/bar">Bar</ion-button>
+        </ng-container>
+        <!-- ===== fin Módulo 2 ===== -->
+      </div>
+    </section>
 
-  <ion-button expand="block" fill="clear" (click)="logout()">Cerrar sesión</ion-button>
+    <!-- ============================================================
+         VISTA PREVIA DE MOCKUPS (Módulos 3 y 4) - TEMPORAL
+         Sacar este bloque cuando cada módulo tenga su propia navegación real
+         (con roles de cliente/mozo/metre, que hoy no maneja el login).
+         Se muestra a cualquier rol logueado solo para poder probar/mostrar
+         las pantallas sin backend real todavía.
+    ============================================================ -->
+    <section class="bm-section bm-home__preview">
+      <h2 class="bm-section__title">Vista previa (mockups sin conectar)</h2>
+
+      <p class="bm-caption">Módulo 3 — Sala, Pedidos y Mozo</p>
+      <div class="bm-home__grilla bm-stagger">
+        <ion-button expand="block" fill="outline" routerLink="/sala/escaneo-qr/ingreso">Escanear QR de ingreso</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/registro-anonimo">Registro cliente anónimo</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/lista-espera">Lista de espera (cliente)</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/metre">Lista de espera (metre)</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/carta">Carta y pedido</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/chat">Chat con el mozo</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/estado-pedido">Estado del pedido</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/sala/mozo">Pedidos (mozo)</ion-button>
+      </div>
+
+      <p class="bm-caption">Módulo 4 — Encuestas y Cierre</p>
+      <div class="bm-home__grilla bm-stagger">
+        <ion-button expand="block" fill="outline" routerLink="/cierre/encuesta">Encuesta de satisfacción</ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/cierre/cuenta">Cuenta + propina</ion-button>
+      </div>
+    </section>
+    <!-- ===== fin vista previa ===== -->
+
+    <div class="bm-screen__actions">
+      <ion-button expand="block" fill="clear" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

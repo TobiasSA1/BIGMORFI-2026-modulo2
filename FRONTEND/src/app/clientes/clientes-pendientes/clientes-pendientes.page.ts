@@ -3,24 +3,15 @@ import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import {
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonList,
-  IonItem,
   IonAvatar,
-  IonLabel,
   IonButton,
   IonIcon,
-  IonSpinner,
   IonRefresher,
   IonRefresherContent,
-  IonText,
   ModalController,
   ToastController,
-  IonButtons,
-  IonBackButton,
 } from '@ionic/angular';
+import { HeaderMarcaComponent } from '../../core/components/header-marca/header-marca.component';
 import { ClientesService, ClientePendiente } from '../clientes.service';
 import { ConfirmarClienteModalComponent } from '../confirmar-cliente-modal/confirmar-cliente-modal.component';
 
@@ -29,23 +20,14 @@ import { ConfirmarClienteModalComponent } from '../confirmar-cliente-modal/confi
   templateUrl: './clientes-pendientes.page.html',
   styleUrls: ['./clientes-pendientes.page.scss'],
   imports: [
+    HeaderMarcaComponent,
     CommonModule,
     IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonList,
-    IonItem,
     IonAvatar,
-    IonLabel,
     IonButton,
     IonIcon,
-    IonSpinner,
     IonRefresher,
-    IonRefresherContent,
-    IonText,
-    IonButtons,
-    IonBackButton
+    IonRefresherContent
   ],
 })
 export class ClientesPendientesPage implements OnInit {

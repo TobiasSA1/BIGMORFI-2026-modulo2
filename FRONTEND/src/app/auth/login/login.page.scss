@@ -1,0 +1,63 @@
+// Retoque visual (Módulo 1) — solo estética, no toca el formulario ni la
+// lógica de login.page.ts. El logo ya incluye "BIG MORFI" y el slogan.
+//
+// Secuencia de entrada (nunca bloquea: se puede escribir desde el primer
+// momento):
+//   0ms     el logo cae y "aterriza" con un rebote corto
+//   0ms     los campos suben en cascada (40ms entre cada uno)
+//   ~650ms  un brillo cruza el botón "Ingresar" una vez
+//   después el logo queda flotando muy suave
+
+@keyframes bm-login-logo {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -24px, 0) scale(0.88) rotate(-5deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 3px, 0) scale(1.02) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bm-login {
+  gap: var(--bm-spacing-lg);
+}
+
+.bm-login__logo {
+  animation:
+    bm-login-logo 650ms var(--bm-ease-out) both,
+    bm-float var(--bm-duration-ambient) ease-in-out 650ms infinite;
+}
+
+.bm-login__form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.bm-login__ingresar {
+  margin-top: var(--bm-spacing-sm);
+  margin-bottom: var(--bm-spacing-xs);
+  border-radius: var(--bm-radius-lg); // para que el brillo respete las esquinas
+  --bm-sheen-delay: 650ms;
+}
+
+.bm-login__anonimo {
+  display: flex;
+  flex-direction: column;
+  animation-delay: 300ms;
+
+  .bm-divider {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bm-login__logo {
+    animation: bm-login-logo 650ms var(--bm-ease-out) both;
+  }
+}

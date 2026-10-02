@@ -1,0 +1,52 @@
+// ============================================================
+// .bm-check — check de éxito animado (<app-check-animado>).
+// Secuencia: dibuja el círculo (0–420ms) → dibuja el tilde (380–620ms)
+// → pop del conjunto + onda verde que se expande.
+// ============================================================
+
+.bm-check {
+  position: relative;
+  display: inline-flex;
+  width: var(--bm-check-tamano, 72px);
+  height: var(--bm-check-tamano, 72px);
+  animation: bm-pop 360ms var(--bm-ease-spring) 600ms both;
+
+  // Onda que sale del check al terminar de dibujarse.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--bm-color-success);
+    opacity: 0;
+    animation: bm-ripple 700ms var(--bm-ease-out) 620ms both;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+.bm-check__circulo,
+.bm-check__tilde {
+  fill: none;
+  stroke: var(--bm-color-success);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bm-check__circulo {
+  stroke-width: 3;
+  stroke-dasharray: 145;
+  stroke-dashoffset: 145;
+  animation: bm-draw 420ms var(--bm-ease-out) both;
+}
+
+.bm-check__tilde {
+  stroke-width: 4;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: bm-draw 240ms var(--bm-ease-out) 380ms both;
+}

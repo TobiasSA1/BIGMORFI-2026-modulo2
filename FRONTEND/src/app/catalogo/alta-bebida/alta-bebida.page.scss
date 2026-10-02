@@ -1,33 +1,4 @@
-/* MÓDULO 2 - PUNTO 3 - mismos estilos que el alta de plato. */
-
-.fotos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.foto-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.foto-preview,
-.foto-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid var(--ion-color-medium);
-}
-
-.foto-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: var(--ion-color-medium);
-  background: var(--ion-color-light);
-}
+// MÓDULO 2 - PUNTO 3.
+// La grilla de fotos usa las clases globales .bm-photo-grid / .bm-photo-slot
+// (ver src/styles/components/_photo-upload.scss), así que esta pantalla no
+// necesita CSS propio.

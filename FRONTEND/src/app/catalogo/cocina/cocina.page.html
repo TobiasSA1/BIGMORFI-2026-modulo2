@@ -1,46 +1,52 @@
 <!-- MÓDULO 2 - PUNTO 16: Cocina (ítems pendientes agrupados por mesa) -->
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Cocina</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header-marca titulo="Cocina" backHref="/home"></app-header-marca>
 
-<ion-content>
+<ion-content class="bm-fondo bm-fondo--alta">
   <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div class="ion-text-center ion-padding" *ngIf="cargando && mesas.length === 0">
-    <ion-spinner name="dots"></ion-spinner>
+  <div class="bm-screen bm-screen--wide bm-sector">
+    <!-- Primera carga: la forma de los pedidos en vez de un spinner suelto -->
+    <div class="bm-sector__grilla" *ngIf="cargando && mesas.length === 0">
+      <div class="bm-skeleton bm-skeleton--card"></div>
+      <div class="bm-skeleton bm-skeleton--card"></div>
+    </div>
+
+    <div class="bm-empty-state" *ngIf="!cargando && mesas.length === 0">
+      <ion-icon name="restaurant-outline"></ion-icon>
+      <p>No hay nada pendiente en cocina.</p>
+    </div>
+
+    <!-- Una tarjeta por mesa -->
+    <div class="bm-sector__grilla bm-stagger bm-stagger--right">
+      <section class="bm-mesa-group" *ngFor="let mesa of mesas">
+        <header class="bm-mesa-group__header">
+          <h3 class="bm-mesa-group__title">Mesa {{ mesa.mesaNumero }}</h3>
+          <span class="bm-badge bm-badge--warning bm-pop-rot" *ngFor="let total of [totalItems(mesa)]">{{ total }}</span>
+        </header>
+
+        <ion-list class="bm-stagger">
+          <ion-item
+            *ngFor="let item of mesa.items"
+            class="bm-mesa-group__item"
+            [class.bm-mesa-group__item--procesando]="procesando.has(item.itemId)"
+          >
+            <ion-label>
+              <h2>{{ item.cantidad }}× {{ item.nombre }}</h2>
+              <p>{{ item.tiempoElaboracion }} min de elaboración</p>
+            </ion-label>
+            <ion-button
+              slot="end"
+              color="success"
+              (click)="marcarListo(mesa.mesaId, item.itemId)"
+              [disabled]="procesando.has(item.itemId)"
+            >
+              Listo
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </section>
+    </div>
   </div>
-
-  <ion-text class="ion-padding" *ngIf="!cargando && mesas.length === 0">
-    <p>No hay nada pendiente en cocina.</p>
-  </ion-text>
-
-  <!-- Una sección por mesa -->
-  <ion-list *ngFor="let mesa of mesas">
-    <ion-list-header>
-      Mesa {{ mesa.mesaNumero }}
-      <ion-badge slot="end" color="warning">{{ totalItems(mesa) }}</ion-badge>
-    </ion-list-header>
-
-    <ion-item *ngFor="let item of mesa.items">
-      <ion-label>
-        <h2>{{ item.cantidad }}× {{ item.nombre }}</h2>
-        <p>{{ item.tiempoElaboracion }} min de elaboración</p>
-      </ion-label>
-      <ion-button
-        slot="end"
-        color="success"
-        (click)="marcarListo(mesa.mesaId, item.itemId)"
-        [disabled]="procesando.has(item.itemId)"
-      >
-        Listo
-      </ion-button>
-    </ion-item>
-  </ion-list>
 </ion-content>

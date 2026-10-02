@@ -1,0 +1,78 @@
+<!-- MÓDULO 2 - Alta de postre (cocinero) -->
+<app-header-marca titulo="Nuevo postre" backHref="/home"></app-header-marca>
+
+<ion-content class="bm-fondo bm-fondo--alta">
+  <div class="bm-screen">
+    <!-- ---- Las 3 fotos (obligatorias) ---- -->
+    <section class="bm-section bm-fade-in">
+      <h2 class="bm-section__title">Fotos</h2>
+      <div class="bm-photo-grid">
+        <div class="bm-photo-slot" *ngFor="let foto of fotos; let i = index">
+          <img *ngIf="foto" [src]="foto" class="bm-photo-slot__preview" alt="Foto {{ i + 1 }} del postre" />
+          <div *ngIf="!foto" class="bm-photo-slot__placeholder">Foto {{ i + 1 }}</div>
+          <ion-button size="small" expand="block" fill="outline" (click)="tomarFoto(i)">
+            {{ foto ? 'Cambiar' : 'Tomar foto' }}
+          </ion-button>
+        </div>
+      </div>
+      <ion-text color="danger" *ngIf="(f.foto1Base64.touched || f.foto2Base64.touched || f.foto3Base64.touched)
+          && (f.foto1Base64.invalid || f.foto2Base64.invalid || f.foto3Base64.invalid)">
+        <p>Hay que cargar las 3 fotos.</p>
+      </ion-text>
+    </section>
+
+    <form class="bm-form bm-stagger" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Nombre del postre</ion-label>
+        <ion-input formControlName="nombre"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="f.nombre.touched && f.nombre.invalid">
+        <p *ngIf="f.nombre.errors?.['required']">El nombre es obligatorio.</p>
+        <p *ngIf="f.nombre.errors?.['minlength']">El nombre es muy corto.</p>
+        <p *ngIf="f.nombre.errors?.['maxlength']">El nombre es muy largo (máx. 80).</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Descripción (opcional)</ion-label>
+        <ion-textarea formControlName="descripcion" [autoGrow]="true" rows="2"></ion-textarea>
+      </ion-item>
+      <ion-text color="danger" *ngIf="f.descripcion.touched && f.descripcion.errors?.['maxlength']">
+        <p>La descripción es muy larga (máx. 300).</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Precio ($)</ion-label>
+        <ion-input type="number" inputmode="decimal" formControlName="precio"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="f.precio.touched && f.precio.invalid">
+        <p *ngIf="f.precio.errors?.['required']">El precio es obligatorio.</p>
+        <p *ngIf="f.precio.errors?.['min']">El precio tiene que ser mayor a 0.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Tiempo de elaboración (minutos)</ion-label>
+        <ion-input type="number" inputmode="numeric" formControlName="tiempoElaboracion"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="f.tiempoElaboracion.touched && f.tiempoElaboracion.invalid">
+        <p *ngIf="f.tiempoElaboracion.errors?.['required']">El tiempo es obligatorio.</p>
+        <p *ngIf="f.tiempoElaboracion.errors?.['min']">Tiene que ser al menos 1 minuto.</p>
+        <p *ngIf="f.tiempoElaboracion.errors?.['max']">No puede superar los 240 minutos.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-checkbox formControlName="enCarta" labelPlacement="end">
+          Publicar en la carta
+        </ion-checkbox>
+      </ion-item>
+
+      <ion-text color="danger" *ngIf="errorMensaje">
+        <p>{{ errorMensaje }}</p>
+      </ion-text>
+
+      <ion-button expand="block" type="submit" class="bm-form__submit" [disabled]="cargando">
+        <ion-spinner *ngIf="cargando" name="dots"></ion-spinner>
+        <span *ngIf="!cargando">Cargar postre</span>
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

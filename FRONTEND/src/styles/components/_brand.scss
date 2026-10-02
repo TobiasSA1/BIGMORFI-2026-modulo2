@@ -1,0 +1,35 @@
+// ============================================================
+// .bm-brand — el logo real de la marca (assets/LogoBigMorfi.png: fondo transparente,
+// "BM" en ámbar) + el wordmark "Big Morfi". Pensado para usarse en
+// headers, splash, pantallas de login/bienvenida — cualquier lugar donde
+// haga falta anclar la identidad visual real de la marca, no solo texto.
+// ============================================================
+
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.bm-brand {
+  @include m.bm-flex-center;
+  gap: v.$bm-spacing-sm;
+}
+
+.bm-brand__logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--bm-radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.bm-brand__logo--lg {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--bm-radius-md);
+}
+
+.bm-brand__nombre {
+  font-family: var(--bm-font-heading);
+  color: var(--bm-color-primary);
+  font-size: var(--bm-font-size-lg);
+  line-height: 1;
+}

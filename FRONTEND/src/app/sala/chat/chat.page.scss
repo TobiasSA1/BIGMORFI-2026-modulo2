@@ -1,0 +1,135 @@
+// MOCKUP VISUAL - Módulo 3, Punto 11.
+
+// Los mensajes se apilan desde abajo (como cualquier app de chat): con
+// pocos mensajes no quedan "colgados" arriba con un hueco debajo.
+.bm-chat-pantalla {
+  justify-content: flex-end;
+  padding-bottom: var(--bm-spacing-md);
+}
+
+// Cada burbuja nueva "brota" desde su esquina (la del cliente desde abajo
+// a la derecha, la del mozo desde abajo a la izquierda) con un rebote mínimo.
+@keyframes bm-burbuja-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bm-chat-bubble {
+  animation: bm-burbuja-in var(--bm-duration-slow) var(--bm-ease-spring-soft) backwards;
+
+  &--mozo {
+    transform-origin: bottom left;
+  }
+
+  &--cliente {
+    transform-origin: bottom right;
+  }
+}
+
+.bm-chat-footer {
+  background: var(--bm-color-surface-dark);
+  border-top: 2px solid var(--bm-color-primary);
+}
+
+.bm-chat-quick-row {
+  padding: var(--bm-spacing-sm) var(--bm-gutter) 0;
+}
+
+.bm-chat-input {
+  display: flex;
+  align-items: center;
+  gap: var(--bm-spacing-sm);
+  padding: var(--bm-spacing-sm) var(--bm-gutter);
+  padding-bottom: calc(var(--bm-spacing-sm) + var(--bm-safe-bottom));
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: var(--bm-control-h);
+    padding: 0 18px;
+    border: 2px solid rgba(245, 164, 0, 0.18);
+    border-radius: var(--bm-radius-full);
+    background: var(--bm-color-surface);
+    color: var(--bm-color-text-light);
+    font-family: var(--bm-font-body);
+    font-size: var(--bm-font-size-md); // 16px: evita el zoom automático de iOS
+    transition: border-color var(--bm-duration-fast) var(--bm-ease-standard);
+
+    &:focus {
+      border-color: var(--bm-color-primary);
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--bm-color-text-muted);
+    }
+  }
+}
+
+.bm-chat-input__enviar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--bm-control-h);
+  height: var(--bm-control-h);
+  border: none;
+  border-radius: 50%;
+  background: var(--bm-color-surface);
+  color: var(--bm-color-text-muted);
+  font-size: 20px;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--bm-duration-base) var(--bm-ease-standard),
+    color var(--bm-duration-base) var(--bm-ease-standard),
+    transform var(--bm-duration-fast) var(--bm-ease-out);
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  ion-icon {
+    transition: transform 260ms var(--bm-ease-spring);
+  }
+
+  // Se "enciende" cuando hay algo escrito para mandar, y el avioncito se
+  // inclina como listo para salir.
+  &--activo {
+    background: var(--bm-color-primary);
+    color: var(--bm-color-primary-contrast);
+
+    ion-icon {
+      transform: rotate(-20deg);
+    }
+  }
+
+  // Al enviar, el avioncito "despega" (sale por arriba a la derecha y vuelve).
+  &--despegando ion-icon {
+    animation: bm-chat-despegue 420ms var(--bm-ease-out);
+  }
+}
+
+@keyframes bm-chat-despegue {
+  0% {
+    transform: rotate(-20deg);
+    opacity: 1;
+  }
+  45% {
+    transform: translate3d(18px, -18px, 0) rotate(-20deg) scale(0.6);
+    opacity: 0;
+  }
+  46% {
+    transform: translate3d(-12px, 12px, 0) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}

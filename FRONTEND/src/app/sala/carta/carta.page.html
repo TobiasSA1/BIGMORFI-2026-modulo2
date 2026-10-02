@@ -1,0 +1,148 @@
+<!-- MOCKUP VISUAL - Módulo 3, Puntos 11 y 12. Ver comentario en el .ts -->
+<ion-header class="bm-header bm-carta-top">
+  <div class="bm-carta-header">
+    <ion-back-button class="bm-header__volver" defaultHref="/sala/lista-espera" text=""></ion-back-button>
+
+    <div class="bm-header-marca bm-carta-marca">
+      <span class="bm-header-marca__sello">
+        <img src="assets/LogoBigMorfi.png" class="bm-header-marca__logo" alt="Big Morfi" />
+      </span>
+      <span class="bm-header-marca__textos">
+        <span class="bm-header-marca__rotulo">Big Morfi</span>
+        <span class="bm-header-marca__titulo">Carta</span>
+        <span class="bm-header-marca__subtitulo">Mesa 01</span>
+      </span>
+    </div>
+
+    <a class="bm-icono-btn" routerLink="/sala/chat" aria-label="Consulta al mozo">
+      <ion-icon name="chatbubble-outline"></ion-icon>
+    </a>
+  </div>
+
+  <!-- Buscador: siempre visible -->
+  <label class="bm-carta-busqueda">
+    <ion-icon name="search-outline"></ion-icon>
+    <input
+      type="search"
+      placeholder="Buscar hamburguesa, bebida, postre…"
+      enterkeyhint="search"
+      [(ngModel)]="busqueda"
+      aria-label="Buscar en la carta"
+    />
+    <button
+      type="button"
+      class="bm-carta-busqueda__limpiar"
+      *ngIf="busqueda"
+      (click)="busqueda = ''"
+      aria-label="Borrar búsqueda"
+    >
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </label>
+
+  <!-- Filtro por tipo: selector centrado de 4 opciones; la píldora se desliza -->
+  <div class="bm-tipos" role="tablist" bmIndicador="bm-tipos__opcion--activa">
+    <button
+      *ngFor="let tipo of tipos"
+      class="bm-tipos__opcion"
+      role="tab"
+      [class.bm-tipos__opcion--activa]="categoriaActiva === tipo.valor"
+      [attr.aria-selected]="categoriaActiva === tipo.valor"
+      (click)="filtrar(tipo.valor)"
+    >
+      <span class="bm-tipos__icono" aria-hidden="true">{{ tipo.icono }}</span>
+      <span>{{ tipo.texto }}</span>
+    </button>
+  </div>
+  <div class="bm-header__acento"></div>
+</ion-header>
+
+<ion-content
+  class="bm-fondo bm-fondo--suave bm-fondo--animado"
+  [style.--bm-fondo-img]="fondoMenu"
+>
+  <!-- La grilla se vuelve a crear al cambiar de tipo (ngFor de un solo
+       elemento con el tipo como valor): las cards nuevas entran en cascada. -->
+  <div class="bm-carta-grid bm-stagger bm-stagger--cards" *ngFor="let cat of [categoriaActiva]">
+    <article class="bm-producto" *ngFor="let producto of productosFiltrados">
+      <!-- Foto con margen propio dentro de la card -->
+      <div class="bm-producto__foto bm-carousel">
+        <div class="bm-carousel__track">
+          <img
+            *ngFor="let foto of producto.fotos"
+            [src]="foto"
+            class="bm-carousel__img"
+            [alt]="producto.nombre"
+            loading="lazy"
+          />
+        </div>
+        <span class="bm-producto__tiempo">
+          <ion-icon name="time-outline"></ion-icon>
+          {{ producto.tiempoMinutos }} min
+        </span>
+        <span class="bm-carousel__contador">1/{{ producto.fotos.length }}</span>
+        <div class="bm-carousel__dots">
+          <span
+            class="bm-carousel__dot"
+            *ngFor="let foto of producto.fotos; let i = index"
+            [class.bm-carousel__dot--activo]="i === 0"
+          ></span>
+        </div>
+        <!-- Sello "en tu pedido" cuando el producto ya está en la bandeja -->
+        <span class="bm-producto__en-pedido bm-pop-rot" *ngIf="cantidadDe(producto) > 0">En tu pedido</span>
+      </div>
+
+      <div class="bm-producto__cuerpo">
+        <span class="bm-producto__tipo">{{ rotuloTipo[producto.categoria] }}</span>
+        <h2 class="bm-producto__nombre">{{ producto.nombre }}</h2>
+        <p class="bm-producto__descripcion">{{ producto.descripcion }}</p>
+      </div>
+
+      <div class="bm-producto__pie">
+        <span class="bm-producto__precio">${{ producto.precio | number: '1.0-0' }}</span>
+
+        <ion-button
+          *ngIf="cantidadDe(producto) === 0"
+          class="bm-producto__agregar"
+          (click)="agregarConVuelo(producto, $event)"
+        >
+          <ion-icon name="add" slot="start"></ion-icon>
+          Agregar
+        </ion-button>
+
+        <div class="bm-stepper bm-producto__stepper" *ngIf="cantidadDe(producto) > 0">
+          <button class="bm-stepper__btn bm-stepper__btn--secundario" (click)="quitar(producto)" aria-label="Quitar uno">
+            −
+          </button>
+          <div class="bm-stepper__valor">
+            <!-- Se recrea cuando cambia la cantidad → el número nuevo "cae". -->
+            <strong class="bm-flip-in" *ngFor="let n of [cantidadDe(producto)]">{{ n }}</strong>
+          </div>
+          <button class="bm-stepper__btn" (click)="agregarConVuelo(producto, $event)" aria-label="Agregar uno">+</button>
+        </div>
+      </div>
+    </article>
+
+    <div class="bm-empty-state" *ngIf="productosFiltrados.length === 0">
+      <ion-icon name="search-outline"></ion-icon>
+      <p>No encontramos productos para "{{ busqueda }}".</p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="bm-carta-footer">
+  <div class="bm-bottom-bar">
+    <div class="bm-bottom-bar__info">
+      <span class="bm-bottom-bar__label">Total final</span>
+      <span class="bm-bottom-bar__valor" *ngFor="let t of [totalPedido]">
+        <span class="bm-flip-in">${{ t | number: '1.0-0' }}</span>
+      </span>
+      <span class="bm-caption" *ngIf="tiempoEstimado > 0">🕐 {{ tiempoEstimado }} min</span>
+    </div>
+    <ion-button #carrito [disabled]="cantidadTotalItems === 0" routerLink="/sala/estado-pedido">
+      Revisar pedido
+      <span class="bm-contador bm-pop" *ngFor="let c of cantidadTotalItems > 0 ? [cantidadTotalItems] : []">{{ c }}</span>
+    </ion-button>
+  </div>
+  <app-nav-cliente></app-nav-cliente>
+</ion-footer>
